@@ -15,8 +15,9 @@ class JavaTool:
         path=os.walk(libpath)
         for dirpath,dirname,filenames in path:
             for filename in filenames:
-                filepath=os.path.join(dirpath,filename)
-                result=result+split_flag+filepath
+                if filename.endswith('.jar'):
+                    filepath=os.path.join(dirpath,filename)
+                    result=result+split_flag+filepath
         return result.lstrip(split_flag)
 
 class StartJpypeJVM(object):

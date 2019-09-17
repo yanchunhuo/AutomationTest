@@ -1,5 +1,5 @@
 #-*- coding:utf8 -*-
-from base.readConfig import ReadConfig
+from base.read_app_ui_config import Read_APP_UI_Config
 from common.httpclient.doRequest import DoRequest
 from common.java.javaTool import JavaTool
 from init.android.android_init import android_init
@@ -21,7 +21,7 @@ if __name__=='__main__':
     print('开始初始化......')
     print('开始检测appium server是否可用......')
     try:
-        doRquest=DoRequest(ReadConfig().config.appium_hub)
+        doRquest=DoRequest(Read_APP_UI_Config().app_ui_config.appium_hub)
 
         httpResponseResult=doRquest.get('/status')
         result=json.loads(httpResponseResult.body)
@@ -56,7 +56,7 @@ if __name__=='__main__':
 
     print('开始测试......')
     # 执行pytest前的参数准备
-    pytest_execute_params=['-c', 'config/pytest.conf', '-v', '--alluredir', 'output/','--clean-alluredir']
+    pytest_execute_params=['-c', 'config/pytest.conf', '-v', '--alluredir', 'output/app_ui/','--clean-alluredir']
     # 判断目录参数
     dir = 'cases/'
     if args.dir:
