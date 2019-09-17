@@ -1,6 +1,14 @@
 pytest==5.0.0
+pytest-xdist==1.23.2
 allure-pytest==2.7.0
-requests==2.18.4
-PyMySQL==0.8.0
 assertpy==0.13
+requests==2.18.4
+Appium-Python-Client==0.28
+selenium==3.14.0
+cx_Oracle==6.3.1
+JPype1==0.6.3
+paramiko==2.4.0
+Pillow==5.3.0
+PyMySQL==0.8.0
 redis==2.10.6
+
