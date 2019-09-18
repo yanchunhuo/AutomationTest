@@ -1,8 +1,9 @@
 ![avatar](https://github.com/yanchunhuo/resources/blob/master/APIAutomationTest/report.png)
 
-# [API自动化测试]()
+# [自动化测试]()
 
 # [概况]()
+* 本项目支持接口自动化测试、app ui自动化测试、web ui自动化测试、性能测试
 * 本项目由以下工具组成
     * pytest：python的一个单元测试框架,https://docs.pytest.org/en/latest/
     * pytest-xdist：pytest的一个插件,可多进程同时执行测试用例,https://github.com/pytest-dev/pytest-xdist
@@ -182,6 +183,31 @@
 
 ### 注：在使用Ubuntu进行报告生成时，请勿使用sudo权限，否则无法生成，allure不支持
 
+## 五、项目说明
+### 1、API测试
+* 项目
+    * demoProject
+        * 例子项目
+        
+### 2、web ui测试
+* 元素的显式等待时间默认为30s
+* 封装的显式等待类型支持:page_objects/web_ui/wait_type.py
+* 封装的定位类型支持:page_objects/web_ui/locator_type.py
+* 默认使用4个worker进行并行测试
+* 文件下载处理暂不支持ie浏览器
+* 无头浏览器暂不支持ie浏览器
+* 项目
+    * demoProject
+        * 例子项目
+        
+### 3、app ui测试
+* 元素的显式等待时间默认为30s
+* 封装的显式等待类型支持:page_objects/app_ui/wait_type.py
+* 封装的定位类型支持:page_objects/app_ui/locator_type.py
+* 项目
+    * demoProject
+        * 例子项目
+
 # [项目结构]()
 * base 基础请求类
 * cases 测试用例目录
@@ -206,10 +232,12 @@
 * 编码使用-\*- coding:utf8 -\*-,且不指定解释器
 * 类/方法的注释均写在class/def下一行，并且用三个双引号形式注释
 * 局部代码注释使用#号
+* 所有中文都直接使用字符串，不转换成Unicode，即不是用【u'中文'】编写
 * 所有的测试模块文件都以test_projectName_moduleName.py命名
 * 所有的测试类都以Test开头，类中方法(用例)都以test_开头
 * 每个测试项目都在cases目录里创建一个目录，且目录都包含有api、scenrarios两个目录
 * case对应setup/teardown的fixture统一命名成fixture_[test_case_method_name]
+* 每一个模块中测试用例如果有顺序要求【主要针对ui自动化测试】，则自上而下排序，pytest在单个模块里会自上而下按顺序执行
 
 # [pytest常用]()
 * @pytest.mark.skip(reason='该功能已废弃')
@@ -218,6 +246,15 @@
 
 # [注意点]()
 * 运行pytest时指定的目录内应当有conftest.py，方能在其他模块中使用。@allure.step会影响fixture，故在脚本中不使用@allure.step
+* web ui测试
+    * 统一使用Firefox浏览器进行元素定位
+    * 能用id、name、link(不常变化的链接)定位的，不使用css定位，能使用css定位，不使用xpath定位
+    * 项目使用并发运行，故编写测试用例时，应该避免模块与模块直接的用例会相互影响测试结果
+* app ui测试
+    * 能用id、name、link(不常变化的链接)定位的，不使用css定位，能使用css定位，不使用xpath定位
+    * 如需要上传文件到手机或者从手机下载文件，请确保有手机对应目录的读写权限
+    * 视频录制统一对单个单个case进行，保证录制时间不超过3分钟，且录制文件不要过大，否则会引起手机内存无法存储视频
+    * 设备屏幕坐标系原点都在最左上角，往右x轴递增，往下y轴递增
 
 # [打赏]()
 ![avatar](https://github.com/yanchunhuo/resources/blob/master/Alipay.jpg)
