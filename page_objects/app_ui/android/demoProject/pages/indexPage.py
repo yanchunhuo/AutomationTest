@@ -1,5 +1,5 @@
 #-*- coding:utf-8 -*-
-from page_objects.android.demoProject.elements.indexPageElements import IndexPageElements
+from page_objects.app_ui.android.demoProject.elements.indexPageElements import IndexPageElements
 
 class IndexPage:
     def __init__(self,appOperator):

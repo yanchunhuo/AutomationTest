@@ -1,5 +1,5 @@
 #-*- coding:utf8 -*-
-from init.init import init
+from init.api.api_init import api_init
 import argparse
 import pytest
 import sys
@@ -12,13 +12,13 @@ if __name__=='__main__':
 
     # 初始化
     print('开始初始化......')
-    init()
+    api_init()
     print('初始化完成......')
 
     # 执行pytest前的参数准备
     pytest_execute_params=['-c', 'config/pytest.conf', '-v', '--alluredir', 'output/api/','--clean-alluredir']
     # 判断目录参数
-    dir = 'cases'
+    dir = 'cases/api/'
     if args.dir:
         dir=args.dir
     # 判断关键字参数

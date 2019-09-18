@@ -1,6 +1,6 @@
 #-*- coding:utf-8 -*-
-from page_objects.web_ui.demoProject import LoginPageElements
-from page_objects.web_ui.demoProject import IndexPage
+from page_objects.web_ui.demoProject.elements.loginPageElements import LoginPageElements
+from page_objects.web_ui.demoProject.pages.indexPage import IndexPage
 class LoginPage:
     def __init__(self,browserOperator):
         self._browserOperator=browserOperator

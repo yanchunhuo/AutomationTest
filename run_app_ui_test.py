@@ -1,11 +1,11 @@
 #-*- coding:utf8 -*-
 from base.read_app_ui_config import Read_APP_UI_Config
 from common.httpclient.doRequest import DoRequest
-from common.java.javaTool import JavaTool
-from init.android.android_init import android_init
-from init.chrome.chrome_init import chrome_init
-from init.ios.ios_init import ios_init
-from init.winwos.windows_init import windows_init
+from common.java.javaTools import JavaTool
+from init.app_ui.android.android_init import android_init
+from init.app_ui.chrome.chrome_init import chrome_init
+from init.app_ui.ios.ios_init import ios_init
+from init.app_ui.winwos.windows_init import windows_init
 import argparse
 import jpype
 import json
@@ -58,7 +58,7 @@ if __name__=='__main__':
     # 执行pytest前的参数准备
     pytest_execute_params=['-c', 'config/pytest.conf', '-v', '--alluredir', 'output/app_ui/','--clean-alluredir']
     # 判断目录参数
-    dir = 'cases/'
+    dir = 'cases/app_ui/'
     if args.dir:
         dir=args.dir
     # 判断关键字参数

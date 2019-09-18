@@ -6,8 +6,8 @@ from base.read_app_ui_config import Read_APP_UI_Config
 from common.dateTimeTool import DateTimeTool
 from common.httpclient.doRequest import DoRequest
 from common.captchaRecognitionTool import CaptchaRecognitionTool
-from page_objects.web_ui.locator_type import Locator_Type
-from page_objects.web_ui.wait_type import Wait_Type  as Wait_By
+from page_objects.app_ui.locator_type import Locator_Type
+from page_objects.app_ui.wait_type import Wait_Type  as Wait_By
 from pojo.elementInfo import ElementInfo
 from PIL import Image
 from selenium.common.exceptions import StaleElementReferenceException

@@ -1,6 +1,6 @@
 #-*- coding:utf-8 -*-
-from page_objects.web_ui.demoProject import IndexPageElements
-from page_objects.web_ui.demoProject import SecgroupPage
+from page_objects.web_ui.demoProject.elements.indexPageElements import IndexPageElements
+from page_objects.web_ui.demoProject.pages.network.secgroupPage import SecgroupPage
 class IndexPage:
     def __init__(self,browserOperator):
         self._browserOperator=browserOperator

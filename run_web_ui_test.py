@@ -2,7 +2,7 @@
 from base.read_web_ui_config import Read_WEB_UI_Config
 from common.fileTool import FileTool
 from common.httpclient.doRequest import DoRequest
-from init.init import init
+from init.web_ui.web_ui_init import init
 from selenium.webdriver.remote.remote_connection import RemoteConnection
 from selenium.webdriver.remote.command import Command
 import argparse
@@ -45,7 +45,7 @@ if __name__=='__main__':
         # 执行pytest前的参数准备
         pytest_execute_params=['-c', 'config/pytest.conf', '-v', '--alluredir', 'output/web_ui/'+current_browser+'/','--clean-alluredir','-n',Read_WEB_UI_Config().web_ui_config.test_workers,'--dist','loadfile']
         # 判断目录参数
-        dir = 'cases'
+        dir = 'cases/web_ui/'
         if args.dir:
             dir=args.dir
         # 判断关键字参数
