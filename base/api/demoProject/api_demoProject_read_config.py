@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-from pojo.api.demoProjectConfig import DemoProjectConfig
+from pojo.api.demoProject.demoProjectConfig import DemoProjectConfig
 import configparser as ConfigParser
 
 class API_DemoProject_Read_Config(object):
