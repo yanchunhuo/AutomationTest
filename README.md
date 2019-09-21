@@ -18,6 +18,7 @@
     * Pillow：用于图片处理,https://pillow.readthedocs.io/en/latest/
     * PyMySQL：用于操作MySQL数据库,https://github.com/PyMySQL/PyMySQL
     * redis：redis客户端,https://pypi.org/project/redis/
+    * tess4j：java的图片识别工具,http://tess4j.sourceforge.net/ 
 
 # [使用]()
 ## 一、环境准备
@@ -41,7 +42,10 @@
 * sudo apt-get update
 * sudo apt-get install openjdk-8-jdk
 
-#### 1.4、安装Oracle Instant Client
+#### 1.4、安装maven
+* 完成maven的安装配置
+
+#### 1.5、安装Oracle Instant Client
 * linux
     * 安装libaio包
         * centos:yum install libaio
@@ -66,7 +70,7 @@
         * 配置中文编码,环境变量创建NLS_LANG=SIMPLIFIED CHINESE_CHINA.UTF8  
     * 注意:如果使用64位,python和instantclient都需要使用64位
 
-#### 1.5、图像识别字库准备
+#### 1.6、图像识别字库准备
 * 下载对应字库:https://github.com/tesseract-ocr/tessdata
 * 将下载的字库放到common/java/lib/tess4j/tessdata/
 
