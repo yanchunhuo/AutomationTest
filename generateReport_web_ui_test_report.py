@@ -40,7 +40,7 @@ if __name__=='__main__':
                         is_find =True
                         break
             print('生成ie报告,使用端口'+ieport)
-            subprocess.check_output("nohup allure serve -p " + ieport + " output/ie >logs/ie_generateReport.log 2>&1 &",shell=True)
+            subprocess.check_output("nohup allure serve -p " + ieport + " output/ie >logs/ie_generateReport_web_ui_test.log 2>&1 &",shell=True)
         if chromeport:
             # 获得当前监听chrome端口的进程id
             get_chromeport_process_ids_command = "netstat -anp|grep -i " + chromeport + "|grep -v grep|awk '{print $7}'|awk -F '/' '{print $1}'"
@@ -60,7 +60,7 @@ if __name__=='__main__':
                         is_find = True
                         break
             print('生成chrome报告,使用端口' + chromeport)
-            subprocess.check_output("nohup allure serve -p " + chromeport + " output/chrome >logs/chrome_generateReport.log 2>&1 &",shell=True)
+            subprocess.check_output("nohup allure serve -p " + chromeport + " output/chrome >logs/chrome_generateReport_web_ui_test.log 2>&1 &",shell=True)
         if firefoxport:
             # 获得当前监听firefox端口的进程id
             get_firefoxport_process_ids_command = "netstat -anp|grep -i " + firefoxport + "|grep -v grep|awk '{print $7}'|awk -F '/' '{print $1}'"
@@ -80,5 +80,5 @@ if __name__=='__main__':
                         is_find = True
                         break
             print('生成firefox报告,使用端口' + firefoxport)
-            subprocess.check_output("nohup allure serve -p " + firefoxport + " output/firefox >logs/firefox_generateReport.log 2>&1 &",shell=True)
+            subprocess.check_output("nohup allure serve -p " + firefoxport + " output/firefox >logs/firefox_generateReport_web_ui_test.log 2>&1 &",shell=True)
 
