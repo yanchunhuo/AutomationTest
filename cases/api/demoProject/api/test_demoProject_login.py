@@ -1,7 +1,6 @@
 #-*- coding:utf8 -*-
 from assertpy import assert_that
 from base.api.demoProject.api_demoProject_client import API_DemoProject_Client
-import pytest
 
 class TestLogin:
 

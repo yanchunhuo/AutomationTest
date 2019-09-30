@@ -5,9 +5,6 @@ from common.selenium.browserOperator import BrowserOperator
 from common.selenium.driverTool import DriverTool
 class WEB_UI_DemoProject_Client:
     def __init__(self):
-        """
-        :param browserOperator_type:0-未登录、1-已登录
-        """
         self.config=Read_WEB_UI_Config().web_ui_config
         self.demoProjectConfig=WEB_UI_DemoProject_Read_Config().config
 

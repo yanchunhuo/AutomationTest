@@ -2,7 +2,6 @@
 from base.api.demoProject.api_demoProject_read_config import API_DemoProject_Read_Config
 from base.api.demoProject.api_demoProject_db_clients import API_DemoProject_DB_Clients
 from common.httpclient.doRequest import DoRequest
-from common.strTool import StrTool
 
 class API_DemoProject_Client(object):
     __instance=None
