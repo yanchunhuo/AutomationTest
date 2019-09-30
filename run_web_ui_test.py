@@ -41,8 +41,8 @@ if __name__=='__main__':
         print('开始'+current_browser+'浏览器测试......')
         # 由于pytest的并发插件xdist采用子进程形式，当前主进程的单例在子进程中会重新创建，所以将每次要测试的浏览器信息写入到文件中，
         # 保证子进程能够正确读取当前要测试的浏览器
-        FileTool.replaceFileContent('config/config.conf','\r\n','\n')
-        FileTool.replaceFileContentWithLBRB('config/config.conf','='+current_browser,'current_browser','\n')
+        FileTool.replaceFileContent('config/web_ui_config.conf','\r\n','\n')
+        FileTool.replaceFileContentWithLBRB('config/web_ui_config.conf','='+current_browser,'current_browser','\n')
         # 执行pytest前的参数准备
         pytest_execute_params=['-c', 'config/pytest.conf', '-v', '--alluredir', 'output/web_ui/'+current_browser+'/','--clean-alluredir','-n',Read_WEB_UI_Config().web_ui_config.test_workers,'--dist','loadfile']
         # 判断目录参数

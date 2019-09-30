@@ -36,15 +36,15 @@ class BrowserOperator:
         self._driver.get(url)
 
     def get_current_url(self):
-        return self._driver.current_url.encode('utf-8')
+        return self._driver.current_url
 
     def getTitle(self):
-        return self._driver.title.encode('utf-8')
+        return self._driver.title
 
     def getText(self,element,highlight_seconds=5):
         webElement=self._change_element_to_webElement_type(element,highlight_seconds)
         if webElement:
-            return webElement.text.encode('utf-8')
+            return webElement.text
 
     def click(self,element,highlight_seconds=5):
         webElement = self._change_element_to_webElement_type(element,highlight_seconds)
@@ -57,7 +57,7 @@ class BrowserOperator:
             webElement.submit()
 
     def sendText(self,element,text,highlight_seconds=5):
-        text=text.decode('utf-8')
+        text=text
         webElement = self._change_element_to_webElement_type(element,highlight_seconds)
         if webElement:
             webElement.clear()
@@ -215,10 +215,10 @@ class BrowserOperator:
             return webElement.get_attribute(attribute_name)
 
     def get_element_outer_html(self,element):
-        return self.get_attribute(element,'outerHTML').encode('utf-8')
+        return self.get_attribute(element,'outerHTML')
 
     def get_element_inner_html(self, element):
-        return self.get_attribute(element,'innerHTML').encode('utf-8')
+        return self.get_attribute(element,'innerHTML')
 
     def get_captcha(self,element,language='eng',highlight_seconds=0):
         """
@@ -273,7 +273,7 @@ class BrowserOperator:
                 tr_tds = tr.find_elements_by_tag_name('td')
                 if data_type.lower()=='text':
                     for td in tr_tds:
-                        tr_data.append(td.text.encode('utf-8'))
+                        tr_data.append(td.text)
                 elif data_type.lower()=='html':
                     for td in tr_tds:
                         tr_data.append(td.get_attribute('innerHTML'))
@@ -298,7 +298,7 @@ class BrowserOperator:
         wait_seconds = elementInfo.wait_seconds
         wait_expected_value = elementInfo.wait_expected_value
         if wait_expected_value:
-            wait_expected_value = wait_expected_value.decode('utf-8')
+            wait_expected_value = wait_expected_value
 
         # 查找元素,为了保证元素被定位,都进行显式等待
         if wait_type == Wait_By.TITLE_IS:

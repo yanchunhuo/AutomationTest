@@ -1,6 +1,6 @@
 #-*- coding:utf-8 -*-
 from page_objects.web_ui.demoProject.elements.indexPageElements import IndexPageElements
-from page_objects.web_ui.demoProject.pages.network.secgroupPage import SecgroupPage
+from page_objects.web_ui.demoProject.pages.searchPage import SearchPage
 class IndexPage:
     def __init__(self,browserOperator):
         self._browserOperator=browserOperator
@@ -8,22 +8,20 @@ class IndexPage:
         self._browserOperator.explicit_wait_page_title(self._indexPageElements.title)
         self._browserOperator.get_screenshot('indexPage')
 
-    def click_menu_network(self):
-        self._browserOperator.click(self._indexPageElements.menu_network)
-        self._browserOperator.get_screenshot('click_menu_network')
+    def _input_search_kw(self,kw):
+        self._browserOperator.sendText(self._indexPageElements.search_input,kw)
+        self._browserOperator.get_screenshot('input_search_kw')
 
-    def click_menu_network_secgroup(self):
-        self._browserOperator.click(self._indexPageElements.menu_network_secgroup)
-        self._browserOperator.get_screenshot('click_menu_network_secgroup')
-        return SecgroupPage(self._browserOperator)
+    def _click_search_button(self):
+        self._browserOperator.click(self._indexPageElements.search_button)
+        self._browserOperator.get_screenshot('click_search_button')
 
-    def click_user(self):
-        self._browserOperator.click(self._indexPageElements.user)
-        self._browserOperator.get_screenshot('click_user')
-
-    def click_user_logout(self):
-        self._browserOperator.click(self._indexPageElements.user_logout)
-        self._browserOperator.get_screenshot('click_user_logout')
+    def search_kw(self, kw):
+        self._input_search_kw(kw)
+        self._click_search_button()
+        if kw.strip():
+            return SearchPage(self._browserOperator,kw+'_百度搜索')
+        return IndexPage(self._browserOperator)
 
     def getElements(self):
         return self._indexPageElements
