@@ -36,5 +36,5 @@ if __name__=='__main__':
                     is_find = True
                     break
         print('生成报告,使用端口' + port)
-        subprocess.check_output("nohup allure serve -p " + port + " output/ >logs/generateReport_app_ui_test.log 2>&1 &",shell=True)
+        subprocess.check_output("nohup allure serve -p " + port + " output/app_ui >logs/generate_app_ui_test.log 2>&1 &",shell=True)
 
