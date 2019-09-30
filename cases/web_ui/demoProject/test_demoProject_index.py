@@ -4,7 +4,7 @@ from page_objects.web_ui.demoProject.pages.indexPage import IndexPage
 from assertpy import assert_that
 class TestIndex:
     def setup_class(self):
-        self.demoProjectClient = WEB_UI_DemoProject_Client(1)
+        self.demoProjectClient = WEB_UI_DemoProject_Client()
         self.indexPage=IndexPage(self.demoProjectClient.browserOperator)
 
     def test_search_empty_kw(self):

@@ -220,6 +220,9 @@ class BrowserOperator:
     def get_element_inner_html(self, element):
         return self.get_attribute(element,'innerHTML')
 
+    def get_page_source(self):
+        return self._driver.page_source
+
     def get_captcha(self,element,language='eng',highlight_seconds=0):
         """
         识别图片验证码
