@@ -63,6 +63,11 @@ class BrowserOperator:
             webElement.clear()
             webElement.send_keys(text)
 
+    def send_keys(self,element,keys,highlight_seconds=5):
+        webElement = self._change_element_to_webElement_type(element,highlight_seconds)
+        if webElement:
+            webElement.send_keys(keys)
+
     def is_displayed(self,element,highlight_seconds=5):
         webElement = self._change_element_to_webElement_type(element,highlight_seconds)
         if webElement:
