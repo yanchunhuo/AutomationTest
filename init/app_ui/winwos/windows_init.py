@@ -1,5 +1,5 @@
 #-*- coding:utf8 -*-
-from init.tess4j.tess4j_maven_init import tess4j_maven_init
+from init.java.java_maven_init import java_maven_init
 
 def windows_init():
     """
@@ -7,4 +7,4 @@ def windows_init():
     :return:
     """
     # 初始化图像识别tess4j依赖的libs
-    tess4j_maven_init()
+    java_maven_init()

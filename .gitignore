@@ -9,4 +9,4 @@
 *nohup.out*
 *uwsgi.pid*
 *.pytest_cache*
-*common/java/lib/tess4j/libs/*
+*common/java/lib/java/libs/*
