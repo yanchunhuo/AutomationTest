@@ -44,7 +44,7 @@ if __name__=='__main__':
         FileTool.replaceFileContent('config/web_ui_config.conf','\r\n','\n')
         FileTool.replaceFileContentWithLBRB('config/web_ui_config.conf','='+current_browser,'current_browser','\n')
         # 执行pytest前的参数准备
-        pytest_execute_params=['-c', 'config/pytest.conf', '-v', '--alluredir', 'output/web_ui/'+current_browser+'/','--clean-alluredir','-n',Read_WEB_UI_Config().web_ui_config.test_workers,'--dist','loadfile']
+        pytest_execute_params=['-c', 'config/pytest.conf', '-v', '--alluredir', 'output/web_ui/'+current_browser+'/','-n',Read_WEB_UI_Config().web_ui_config.test_workers,'--dist','loadfile']
         # 判断目录参数
         dir = 'cases/web_ui/'
         if args.dir:

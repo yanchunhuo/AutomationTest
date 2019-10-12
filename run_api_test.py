@@ -17,7 +17,7 @@ if __name__=='__main__':
     print('初始化完成......')
 
     # 执行pytest前的参数准备
-    pytest_execute_params=['-c', 'config/pytest.conf', '-v', '--alluredir', 'output/api/','--clean-alluredir']
+    pytest_execute_params=['-c', 'config/pytest.conf', '-v', '--alluredir', 'output/api/']
     # 判断目录参数
     dir = 'cases/api/'
     if args.dir:

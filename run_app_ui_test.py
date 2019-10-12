@@ -57,7 +57,7 @@ if __name__=='__main__':
 
     print('开始测试......')
     # 执行pytest前的参数准备
-    pytest_execute_params=['-c', 'config/pytest.conf', '-v', '--alluredir', 'output/app_ui/','--clean-alluredir']
+    pytest_execute_params=['-c', 'config/pytest.conf', '-v', '--alluredir', 'output/app_ui/']
     # 判断目录参数
     dir = 'cases/app_ui/'
     if args.dir:
