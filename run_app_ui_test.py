@@ -6,6 +6,7 @@ from init.app_ui.android.android_init import android_init
 from init.app_ui.chrome.chrome_init import chrome_init
 from init.app_ui.ios.ios_init import ios_init
 from init.app_ui.winwos.windows_init import windows_init
+from init.java.java_maven_init import java_maven_init
 import argparse
 import jpype
 import json
@@ -36,6 +37,8 @@ if __name__=='__main__':
     print('启动jvm......')
     jpype.startJVM(jpype.get_default_jvm_path(),"-ea","-Djava.class.path="+JavaTool.getAllJar())
     print('启动jvm成功')
+
+    java_maven_init()
 
     print('初始化android基础数据......')
     android_init()

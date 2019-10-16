@@ -2,7 +2,7 @@
 from base.read_web_ui_config import Read_WEB_UI_Config
 from common.fileTool import FileTool
 from common.httpclient.doRequest import DoRequest
-from init.web_ui.web_ui_init import init
+from init.web_ui.web_ui_init import web_ui_init
 from selenium.webdriver.remote.remote_connection import RemoteConnection
 from selenium.webdriver.remote.command import Command
 import argparse
@@ -31,7 +31,7 @@ if __name__=='__main__':
         sys.exit('selenium server状态为不可用')
 
     print('初始化基础数据......')
-    init()
+    web_ui_init()
     print('初始化基础数据完成......')
     print('初始化完成......')
 

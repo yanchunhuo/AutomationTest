@@ -7,16 +7,16 @@ import time
 class TestIndexPage:
     def setup_class(self):
         self.demoProjectClient = APP_UI_Android_demoProject_Client()
-        self.startPage=StartPage(self.demoProjectClient.appPerator)
+        self.startPage=StartPage(self.demoProjectClient.appOperator)
         self.startPage.click_start()
         self.indexPage=self.startPage.choice_a_city()
-        self.appPerator=self.demoProjectClient.appPerator
+        self.appOperator=self.demoProjectClient.appOperator
 
     @pytest.fixture(autouse=True)
     def record_test_case_video(self):
-        self.demoProjectClient.appPerator.start_recording_screen()
+        self.appOperator.start_recording_screen()
         yield self.record_test_case_video
-        self.demoProjectClient.appPerator.stop_recording_screen()
+        self.appOperator.stop_recording_screen()
 
     @pytest.fixture
     def fixture_test_silde(self):
@@ -32,4 +32,4 @@ class TestIndexPage:
         self.indexPage.index_down_silde()
 
     def teardown_class(self):
-        self.demoProjectClient.appPerator.reset_app()
+        self.appOperator.reset_app()

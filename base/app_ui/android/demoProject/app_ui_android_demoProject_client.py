@@ -18,6 +18,6 @@ class APP_UI_Android_demoProject_Client(object):
             self.config = Read_APP_UI_Config().app_ui_config
             self.demoProjectConfig = APP_UI_Android_DemoProject_Read_Config().config
             self.driver = webdriver.Remote(self.config.appium_hub,desired_capabilities=self.demoProjectConfig.get_desired_capabilities())
-            self.appPerator = AppOperator(self.driver)
+            self.appOperator = AppOperator(self.driver)
 
             self.__inited=True
