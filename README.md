@@ -26,6 +26,9 @@
 #### 1.1、安装python依赖模块
 * pip3 install -r requirements.txt
 
+##### 1.1.1、安装xmind-sdk-python
+* 地址:https://github.com/xmindltd/xmind-sdk-python
+
 #### 1.2、安装allure
 * 源安装
     * sudo apt-add-repository ppa:qameta/allure
