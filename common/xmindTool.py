@@ -38,6 +38,9 @@ class XmindTool:
             results = []
         tmp_result += topic.getTitle()
         tmp_result += '--->'
+        if topic.getMarkers():
+            markerId=topic.getMarkers()[0].getMarkerId()
+            tmp_result+=str(markerId)
         subTopics = topic.getSubTopics()
         if subTopics and len(subTopics):
             for subTopic in subTopics:
@@ -59,11 +62,20 @@ class XmindTool:
         xmindData=self.getXmindData()
         sheets=xmindData['sheets']
         tmp_sum = 0
+        wrong_num = 0
+        right_num = 0
         for sheet in sheets:
             for secondTopic in sheet['rootTopic']['secondTopics']:
                 tmp_sum+=len(secondTopic['data'])
+                for tmp_data in secondTopic['data']:
+                    if 'symbol-wr' in tmp_data:
+                        wrong_num += 1
+                    if 'symbol-ri' in tmp_data:
+                        right_num += 1
         result.append(xmindData['fileName'])
         result.append(tmp_sum)
+        result.append(right_num)
+        result.append(wrong_num)
         return result
 
     def countBySheet(self):
@@ -78,16 +90,25 @@ class XmindTool:
             tmp_result=[]
             tmp_result.append(sheet['sheetName'])
             tmp_sum=0
+            wrong_num = 0
+            right_num = 0
             for secondTopic in sheet['rootTopic']['secondTopics']:
                 tmp_sum+=len(secondTopic['data'])
+                for tmp_data in secondTopic['data']:
+                    if 'symbol-wr' in tmp_data:
+                        wrong_num += 1
+                    if 'symbol-ri' in tmp_data:
+                        right_num += 1
             tmp_result.append(tmp_sum)
+            tmp_result.append(right_num)
+            tmp_result.append(wrong_num)
             result.append(tmp_result)
         return result
 
     def countBySecondTopic(self):
         """
         按SecondTopic统计有多少个末尾节点
-        :return: [['sheetName','secondTopicName',num]]
+        :return: [['sheetName','secondTopicName',num,succss,fail]]
         """
         result=[]
         xmindData=self.getXmindData()
@@ -98,5 +119,14 @@ class XmindTool:
                 tmp_result.append(sheet['sheetName'])
                 tmp_result.append(secondTopic['secondTopicName'])
                 tmp_result.append(len(secondTopic['data']))
+                wrong_num = 0
+                right_num = 0
+                for tmp_data in secondTopic['data']:
+                    if 'symbol-wr' in tmp_data:
+                        wrong_num+=1
+                    if 'symbol-ri' in tmp_data:
+                        right_num+=1
+                tmp_result.append(right_num)
+                tmp_result.append(wrong_num)
                 result.append(tmp_result)
         return result
