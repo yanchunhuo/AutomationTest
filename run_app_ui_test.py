@@ -9,7 +9,7 @@ from init.app_ui.winwos.windows_init import windows_init
 from init.java.java_maven_init import java_maven_init
 import argparse
 import jpype
-import json
+import ujson
 import pytest
 import sys
 
@@ -26,7 +26,7 @@ if __name__=='__main__':
         doRquest=DoRequest(Read_APP_UI_Config().app_ui_config.appium_hub)
 
         httpResponseResult=doRquest.get('/status')
-        result=json.loads(httpResponseResult.body)
+        result=ujson.loads(httpResponseResult.body)
         if result['status']==0:
             print('appium server状态为可用......')
         else:

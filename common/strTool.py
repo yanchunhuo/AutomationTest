@@ -1,5 +1,5 @@
 #!-*- coding:utf8 -*-
-import json
+import ujson
 import re
 import random
 import string
@@ -52,7 +52,7 @@ class StrTool:
         :param object:
         :return:
         """
-        return json.dumps(object, default=lambda obj: obj.__dict__)
+        return ujson.dumps(object)
 
     @classmethod
     def objectToJson(cls,object):
@@ -61,7 +61,7 @@ class StrTool:
         :param object:
         :return:
         """
-        return json.loads(json.dumps(object, default=lambda obj: obj.__dict__))
+        return ujson.loads(ujson.dumps(object))
 
     @classmethod
     def getSpecifiedStr(cls,length,char):

@@ -6,7 +6,7 @@ from init.web_ui.web_ui_init import web_ui_init
 from selenium.webdriver.remote.remote_connection import RemoteConnection
 from selenium.webdriver.remote.command import Command
 import argparse
-import json
+import ujson
 import pytest
 import sys
 
@@ -22,7 +22,7 @@ if __name__=='__main__':
     try:
         doRquest=DoRequest(Read_WEB_UI_Config().web_ui_config.selenium_hub)
         httpResponseResult=doRquest.get('/status')
-        result=json.loads(httpResponseResult.body)
+        result=ujson.loads(httpResponseResult.body)
         if result['status']==0:
             print('selenium server状态为可用......')
         else:

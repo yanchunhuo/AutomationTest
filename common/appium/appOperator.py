@@ -19,7 +19,7 @@ from selenium.webdriver.common.by import By
 
 import allure
 import base64
-import json
+import ujson
 import os
 
 class AppOperator:
@@ -34,7 +34,7 @@ class AppOperator:
         self._driver=driver
         self._session_id=driver.session_id
         # 获得设备支持的性能数据类型
-        self._performance_types=json.loads(self._doRequest.post_with_form('/session/'+self._session_id+'/appium/performanceData/types').body)['value']
+        self._performance_types=ujson.loads(self._doRequest.post_with_form('/session/'+self._session_id+'/appium/performanceData/types').body)['value']
         # 获取当前窗口大小
         self._windows_size=self.get_window_size()
 
@@ -360,7 +360,7 @@ class AppOperator:
         location.update({'longitude':longitude})
         location.update({'altitude':altitude})
         geolocation.update({'location':location})
-        self._doRequest.post_with_form('/session/'+self._session_id+'/location',params=json.dumps(geolocation))
+        self._doRequest.post_with_form('/session/'+self._session_id+'/location',params=ujson.dumps(geolocation))
 
     def get_current_activity(self):
         """
@@ -519,7 +519,7 @@ class AppOperator:
             params.update({'packageName':package_name})
             params.update({'dataType':data_type})
             params.update({'dataReadTimeout':data_read_timeout})
-            httpResponseResult=self._doRequest.post_with_form('/session/'+self._session_id+'/appium/getPerformanceData',params=json.dumps(params))
+            httpResponseResult=self._doRequest.post_with_form('/session/'+self._session_id+'/appium/getPerformanceData',params=ujson.dumps(params))
             return httpResponseResult.body
         else:
             return None
@@ -590,7 +590,7 @@ class AppOperator:
         """
         context={}
         context.update({'name':context_name})
-        self._doRequest.post_with_form('/session/'+self._session_id+'/context',params=json.dumps(context))
+        self._doRequest.post_with_form('/session/'+self._session_id+'/context',params=ujson.dumps(context))
 
     def mouse_move_to(self,element,xoffset=None,yoffset=None):
         """

@@ -1,5 +1,5 @@
 #!-*- coding:utf8 -*-
-import json
+import ujson
 import os
 import re
 
@@ -13,7 +13,7 @@ class FileTool:
         :param filePath:
         :return:
         """
-        str = json.dumps(obj, default=lambda obj: obj.__dict__)
+        str = ujson.dumps(obj)
         with open(filePath,'w') as f:
             f.write(str)
             f.close()
@@ -28,7 +28,7 @@ class FileTool:
         with open(filePath,'r') as f:
             result=f.read()
             f.close()
-        result=json.loads(result)
+        result=ujson.loads(result)
         return result
 
     @classmethod
