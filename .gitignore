@@ -10,3 +10,4 @@
 *uwsgi.pid*
 *.pytest_cache*
 *common/java/lib/java/libs/*
+*.vscode*
