@@ -9,6 +9,7 @@ if __name__=='__main__':
     parser.add_argument('-k','--keyword',help='只执行匹配关键字的用例，会匹配文件名、类名、方法名',type=str)
     parser.add_argument('-d','--dir',help='指定要测试的目录',type=str)
     parser.add_argument('-s', '--capture', help='是否在标准输出流中输出日志,1:是、0:否')
+    parser.add_argument('-r', '--reruns', help='失败重跑次数')
     args=parser.parse_args()
 
     # 初始化
@@ -29,7 +30,10 @@ if __name__=='__main__':
     # 判断是否输出日志
     if args.capture:
         pytest_execute_params.append('-s')
-
+    # 判断是否失败重跑
+    if args.reruns:
+        pytest_execute_params.append('--reruns')
+        pytest_execute_params.append(args.reruns)
     pytest_execute_params.append(dir)
 
     print('开始测试......')
