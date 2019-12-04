@@ -1,5 +1,5 @@
 pytest==5.0.0
-pytest-xdist==1.23.2
+pytest-xdist==1.30.0
 allure-pytest==2.7.0
 pytest-rerunfailures==8.0
 assertpy==0.13
