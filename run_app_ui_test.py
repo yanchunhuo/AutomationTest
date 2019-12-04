@@ -72,15 +72,18 @@ if __name__=='__main__':
         pytest_execute_params.append('-k')
         pytest_execute_params.append(args.keyword)
     # 判断是否输出日志
-    if "1"==args.capture:
-        pytest_execute_params.append('-s')
+    if args.capture:
+        if int(args.capture):
+            pytest_execute_params.append('-s')
     # 判断是否失败重跑
-    if not "0"==args.reruns:
-        pytest_execute_params.append('--reruns')
-        pytest_execute_params.append(args.reruns)
+    if args.reruns:
+        if int(args.reruns):
+            pytest_execute_params.append('--reruns')
+            pytest_execute_params.append(args.reruns)
     # 判断是否只运行上一次失败的用例
-    if "1"==args.lf:
-        pytest_execute_params.append('--lf')
+    if args.lf:
+        if int(args.lf):
+            pytest_execute_params.append('--lf')
     pytest_execute_params.append(dir)
     exit_code = pytest.main(pytest_execute_params)
 
