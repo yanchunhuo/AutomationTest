@@ -1,7 +1,6 @@
 from common.fileTool import FileTool
 import os
 import subprocess
-import sys
 
 def java_maven_init():
     print('开始java maven更新......')
