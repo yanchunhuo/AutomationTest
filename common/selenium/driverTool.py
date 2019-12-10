@@ -31,7 +31,8 @@ class DriverTool:
             firefox_options = Firefox_Options()
             if Read_WEB_UI_Config().web_ui_config.is_firefox_headless.lower()=='true':
                 firefox_options.add_argument('--headless')
-            driver = webdriver.Remote(selenium_hub, webdriver.DesiredCapabilities.FIREFOX.copy(),browser_profile=firefox_profile,options=firefox_options)
+            firefox_options.profile=firefox_profile
+            driver = webdriver.Remote(selenium_hub, webdriver.DesiredCapabilities.FIREFOX.copy(),options=firefox_options)
         elif browser_type=='chrome':
             chrome_options=Chrome_Options()
             prefs={'download.default_directory':Read_WEB_UI_Config().web_ui_config.download_dir,'profile.default_content_settings.popups':0}
