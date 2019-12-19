@@ -1,7 +1,6 @@
 # -*- coding:utf8 -*-
 # 作者 yanchunhuo
 # 创建时间 2018/01/19 22:36
-# 文件名 tee.py
 # github https://github.com/yanchunhuo
 from base.api.demoProject.api_demoProject_read_config import API_DemoProject_Read_Config
 from base.api.demoProject.api_demoProject_db_clients import API_DemoProject_DB_Clients
