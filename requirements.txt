@@ -2,7 +2,7 @@ pytest==5.0.0
 pytest-xdist==1.30.0
 allure-pytest==2.7.0
 pytest-rerunfailures==8.0
-assertpy==0.13
+assertpy==1.0
 requests==2.18.4
 Appium-Python-Client==0.28
 selenium==3.14.0
