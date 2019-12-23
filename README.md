@@ -86,9 +86,9 @@
 
 #### 2.2、安装配置selenium
 * 配置selenium server
-    * 下载selenium-server-standalone-3.14.0.jar
+    * 下载selenium-server-standalone-3.141.0.jar
     * 下载地址:http://selenium-release.storage.googleapis.com/index.html
-    * 以管理员身份启动服务:java -jar selenium-server-standalone-3.14.0.jar -log selenium.log
+    * 以管理员身份启动服务:java -jar selenium-server-standalone-3.141.0.jar -log selenium.log
 * 下载浏览器驱动
     * 谷歌浏览器：https://chromedriver.storage.googleapis.com/index.html
     * 火狐浏览器：https://github.com/mozilla/geckodriver/
@@ -120,7 +120,7 @@
 
 #### 3.2、安装配置appium server
 * 安装appium desktop server
-    * 下载appium-desktop-setup-1.8.2.exe
+    * 下载Appium-windows-1.15.1.exe
     * 下载地址:https://github.com/appium/appium-desktop/releases
     * 以管理员身份启动服务
 
