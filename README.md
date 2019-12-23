@@ -10,7 +10,7 @@
     * allure-pytest：用于生成测试报告,http://allure.qatools.ru/
     * assertpy：一个包含丰富的断言库，支持pytest,https://github.com/ActivisionGameScience/assertpy
     * requests：http请求框架,http://docs.python-requests.org/en/master/
-    * Appium-Python-Client：移动端的自动化测试框架,https://github.com/appium/appium/tree/v1.9.1
+    * Appium：移动端的自动化测试框架,https://github.com/appium/appium/tree/v1.15.1
     * selenium：web ui自动化测试框架,https://www.seleniumhq.org/
     * cx_Oracle：oracle操作库,https://cx-oracle.readthedocs.io/en/latest/index.html
     * JPype1：用于执行java代码,https://github.com/jpype-project/jpype
@@ -141,7 +141,7 @@
     * 下载WinAppDriver并安装(V1.1版本),https://github.com/Microsoft/WinAppDriver/releases
     * \[可选\]下载安装WindowsSDK,在Windows Kits\10\bin\10.0.17763.0\x64内包含有inspect.exe用于定位Windows程序的元素信息
 
-* 其他更多配置：https://github.com/appium/appium/tree/v1.9.1/docs/en/drivers
+* 其他更多配置：https://github.com/appium/appium/tree/v1.15.1/docs/en/drivers
 
 ## 二、修改配置
 * vim config/app_ui_config.conf 配置app ui自动化的测试信息
