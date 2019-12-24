@@ -128,6 +128,10 @@
     * 安装java(JDK),并配置JAVA_HOME=/usr/lib/jvm/jdk8
     * 安装Android SDK,并配置ANDROID_HOME="/usr/local/adt/sdk"
     * 使用SDK manager安装需要进行自动化的Android API版本
+    
+* IOS环境准备
+    * 由于测试IOS真实设备没办法直接操作web view，需要通过usb，实现通过usb创建连接需要安装ios-webkit-debug-proxy
+    * 下载安装地址：https://github.com/google/ios-webkit-debug-proxy/tree/v1.8.5
 
 * 手机chrome环境准备
     * 确保手机已安装chrome浏览器
