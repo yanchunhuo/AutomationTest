@@ -182,13 +182,19 @@ class BrowserOperator:
     def pag_back(self):
         self._driver.back()
 
-    def dismiss_alert(self):
-        alert=self._driver.switch_to.alert
-        alert.dismiss()
-
-    def accept_alert(self):
-        alert=self._driver.switch_to.alert
-        alert.accept()
+    def web_alert(self, action_type='accept'):
+        """
+        仅使用web
+        :action_type accept、dismiss
+        :return:
+        """
+        if action_type:
+            action_type.lower()
+        alert = self._driver.switch_to.alert
+        if action_type == 'accept':
+            alert.accept()
+        elif action_type == 'dismiss':
+            alert.dismiss()
 
     def get_alert_text(self):
         alert=self._driver.switch_to.alert
