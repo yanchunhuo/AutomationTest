@@ -439,10 +439,26 @@ class AppOperator:
     def background_app(self,seconds):
         """
         后台运行
-        :param seconds:
+        :param seconds: -1代表完全停用
         :return:
         """
         self._driver.background_app(seconds)
+
+    def activate_app(self,app_id):
+        """
+        :param app_id: IOS是bundleId，Android是Package名
+        """
+        self._driver.activate_app(app_id)
+
+    def terminate_app(self,app_id,timeout=None):
+        """
+        :param app_id IOS是bundleId，Android是Package名
+        :param timeout 重试超时时间，仅支持Android
+        """
+        if timeout:
+            self._driver.terminate_app(app_id,timeout=timeout)
+        else:
+            self._driver.terminate_app(app_id)
 
     def push_file_to_device(self,device_filePath,local_filePath):
         """
