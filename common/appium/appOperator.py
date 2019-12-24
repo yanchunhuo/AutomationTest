@@ -460,6 +460,19 @@ class AppOperator:
         else:
             self._driver.terminate_app(app_id)
 
+    def get_app_state(self,app_id):
+        """
+        :param app_id IOS是bundleId，Android是Package名
+        :return: 0:未安装,1:不在运行,2:在后台运行或者挂起,3:在后台运行,4:在前台运行
+        """
+        return self._driver.query_app_state(app_id)
+
+    def get_clipboard(self):
+        return self._driver.get_clipboard()
+
+    def set_clipboard(self,text):
+        self._driver.set_clipboard(text)
+
     def push_file_to_device(self,device_filePath,local_filePath):
         """
         上传文件设备
@@ -501,7 +514,7 @@ class AppOperator:
 
     def press_keycode(self,keycode):
         """
-        按键盘按键
+        按键盘按键，仅支持Android
         :param keycode: 键盘上每个按键的ascii
         :return:
         """
@@ -509,7 +522,7 @@ class AppOperator:
 
     def long_press_keycode(self,keycode):
         """
-        长按键盘按键
+        长按键盘按键，仅支持Android
         :param keycode:
         :return:
         """
@@ -544,7 +557,7 @@ class AppOperator:
         切换wifi模式(开启关闭),仅支持Android
         :return:
         """
-        self._doRequest.post_with_form('/session/'+self._session_id+'/appium/device/toggle_wifi')
+        self._driver.toggle_wifi()
 
     def toggle_location_services(self):
         """
@@ -561,17 +574,8 @@ class AppOperator:
         :param data_read_timeout:
         :return:
         """
-        if data_type in self._performance_types:
-            params={}
-            if not package_name:
-                package_name=self.get_current_package()
-            params.update({'packageName':package_name})
-            params.update({'dataType':data_type})
-            params.update({'dataReadTimeout':data_read_timeout})
-            httpResponseResult=self._doRequest.post_with_form('/session/'+self._session_id+'/appium/getPerformanceData',params=ujson.dumps(params))
-            return httpResponseResult.body
-        else:
-            return None
+        if data_type in self._driver.get_performance_data_types():
+            return self._driver.get_performance_data(package_name,data_type,data_read_timeout)
 
     def start_recording_screen(self):
         """
@@ -590,12 +594,13 @@ class AppOperator:
         data=self._driver.stop_recording_screen()
         allure.attach(name=fileName, body=base64.b64decode(data), attachment_type=allure.attachment_type.MP4)
 
-    def get_device_time(self):
+    def get_device_time(self,format=None):
         """
         获得设备时间
+        :param format: eg.YYYY-MM-DD
         :return:
         """
-        return self._driver.device_time
+        return self._driver.get_device_time(format)
 
     def get_element_location(self,element):
         """
