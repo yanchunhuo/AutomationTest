@@ -206,21 +206,19 @@ class AppOperator:
         """
         self._driver.back()
 
-    def dismiss_alert(self):
+    def web_alert(self,action_type='accept'):
         """
         仅使用web
+        :action_type accept、dismiss
         :return:
         """
-        alert=self._driver.switch_to.alert
-        alert.dismiss()
-
-    def accept_alert(self):
-        """
-        仅使用web
-        :return:
-        """
-        alert=self._driver.switch_to.alert
-        alert.accept()
+        if action_type:
+            action_type.lower()
+        alert = self._driver.switch_to.alert
+        if action_type=='accept':
+            alert.accept()
+        elif action_type=='dismiss':
+            alert.dismiss()
 
     def get_alert_text(self):
         """
@@ -340,6 +338,34 @@ class AppOperator:
 
     def get_window_size(self):
         return self._driver.get_window_size()
+
+    def app_alert(self, platformName,action_type='accept',buttonLabel=None):
+        """
+        仅使用app
+        :platformName android、ios
+        :action_type accept、dismiss
+        :buttonLabel
+        :return:
+        """
+        if action_type:
+            action_type.lower()
+        if platformName:
+            platformName.lower()
+        script=None
+        script_arg={}
+        if buttonLabel:
+            script_arg.update({'buttonLabel': buttonLabel})
+        if platformName=='android':
+            # 仅支持UiAutomator2
+            if action_type == 'accept':
+                script = 'mobile:acceptAlert'
+            elif action_type == 'dismiss':
+                script = 'mobile:dismissAlert'
+        elif platformName=='ios':
+            script='mobile:alert'
+            script_arg.update({'action':action_type})
+        self._driver.execute_script(script,script_arg)
+
 
     def get_geolocation(self):
         """
