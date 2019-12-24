@@ -362,6 +362,7 @@ class AppOperator:
             elif action_type == 'dismiss':
                 script = 'mobile:dismissAlert'
         elif platformName=='ios':
+            # 仅支持XCUITest
             script='mobile:alert'
             script_arg.update({'action':action_type})
         self._driver.execute_script(script,script_arg)
