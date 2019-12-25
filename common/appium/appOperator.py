@@ -871,7 +871,7 @@ class AppOperator:
             elif locator_type==Locator_Type.ACCESSIBILITY_ID:
                 webElement = WebDriverWait(self._driver,wait_seconds).until(lambda driver:driver.find_element_by_accessibility_id(locator_value))
             elif locator_type==Locator_Type.IMAGE:
-                webElement = WebDriverWait(self._driver,wait_seconds).until(lambda driver:driver.find_element_by_image(locator_type))
+                webElement = WebDriverWait(self._driver,wait_seconds).until(lambda driver:driver.find_element_by_image(locator_value))
         return webElement
 
     def getElements(self,elementInfo):
@@ -911,7 +911,7 @@ class AppOperator:
             elif locator_type==Locator_Type.ACCESSIBILITY_ID:
                 webElements = WebDriverWait(self._driver,wait_seconds).until(lambda driver:driver.find_elements_by_accessibility_id(locator_value))
             elif locator_type==Locator_Type.IMAGE:
-                webElements = WebDriverWait(self._driver,wait_seconds).until(lambda driver:driver.find_elements_by_image(locator_type))
+                webElements = WebDriverWait(self._driver,wait_seconds).until(lambda driver:driver.find_elements_by_image(locator_value))
         return webElements
 
     def getSubElement(self,parent_element,sub_elementInfo):
@@ -952,7 +952,7 @@ class AppOperator:
         elif locator_type == Locator_Type.ACCESSIBILITY_ID:
             subWebElement = WebDriverWait(webElement, wait_seconds).until(lambda webElement: webElement.find_element_by_accessibility_id(locator_value))
         elif locator_type == Locator_Type.IMAGE:
-            subWebElement = WebDriverWait(webElement, wait_seconds).until(lambda webElement: webElement.find_element_by_image(locator_type))
+            subWebElement = WebDriverWait(webElement, wait_seconds).until(lambda webElement: webElement.find_element_by_image(locator_value))
         else:
             return None
         return subWebElement
