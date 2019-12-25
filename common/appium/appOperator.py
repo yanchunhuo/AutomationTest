@@ -395,6 +395,12 @@ class AppOperator:
         geolocation.update({'location':location})
         self._doRequest.post_with_form('/session/'+self._session_id+'/location',params=ujson.dumps(geolocation))
 
+    def start_activity(self,package_name,activity_name):
+        """
+        启动Android的activity
+        """
+        self._driver.start_activity(package_name,activity_name)
+
     def get_current_activity(self):
         """
         获得Android的activity
