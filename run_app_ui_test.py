@@ -39,10 +39,6 @@ if __name__=='__main__':
     except:
         sys.exit('appium server状态为不可用')
 
-    print('启动jvm......')
-    jpype.startJVM(jpype.get_default_jvm_path(),"-ea","-Djava.class.path="+JavaTool.getAllJar())
-    print('启动jvm成功')
-
     java_maven_init()
 
     print('初始化android基础数据......')
