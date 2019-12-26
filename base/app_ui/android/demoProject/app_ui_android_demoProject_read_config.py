@@ -24,15 +24,5 @@ class APP_UI_Android_DemoProject_Read_Config(object):
         config = ConfigParser.ConfigParser()
         config.read(configFile,encoding='utf-8')
         demoProjectConfig = DemoProjectConfig()
-        demoProjectConfig.platformName = config.get('desired_capabilities','platformName')
-        demoProjectConfig.automationName = config.get('desired_capabilities','automationName')
-        demoProjectConfig.platformVersion =  config.get('desired_capabilities','platformVersion')
-        demoProjectConfig.deviceName = config.get('desired_capabilities','deviceName')
-        demoProjectConfig.appActivity = config.get('desired_capabilities','appActivity')
-        demoProjectConfig.appPackage = config.get('desired_capabilities','appPackage')
-        demoProjectConfig.app = config.get('desired_capabilities','app')
         demoProjectConfig.init = config.get('isInit','init')
-        # 将安装包所在位置转为绝对路径
-        if demoProjectConfig.app:
-            demoProjectConfig.app = os.path.abspath(demoProjectConfig.app)
         return demoProjectConfig

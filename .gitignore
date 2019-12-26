@@ -2,7 +2,6 @@
 *.idea*
 *.pyc*
 *.class*
-*.idea*
 *.metadata*
 *output*
 *.iml*
@@ -10,4 +9,5 @@
 *uwsgi.pid*
 *.pytest_cache*
 *common/java/lib/java/libs/*
+*config/app_ui_tmp/*
 *.vscode*

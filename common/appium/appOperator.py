@@ -30,9 +30,8 @@ class AppOperator:
     类中的element参数可以有appium.webdriver.webelement.WebElement和pojo.elementInfo.ElementInfo类型
     """
 
-    def __init__(self,driver):
-        self._config=Read_APP_UI_Config().app_ui_config
-        self._doRequest=DoRequest(self._config.appium_hub)
+    def __init__(self,driver,appium_hub):
+        self._doRequest=DoRequest(appium_hub)
         self._doRequest.setHeaders({'Content-Type':'application/json'})
         self._driver=driver
         self._session_id=driver.session_id

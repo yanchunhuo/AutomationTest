@@ -23,5 +23,5 @@ class Read_APP_UI_Config(object):
         configParser = ConfigParser.ConfigParser()
         configParser.read(configFile,encoding='utf-8')
         app_ui_config = APP_UI_Config()
-        app_ui_config.appium_hub=configParser.get('appium_server','appium_hub')
+        app_ui_config.max_device_pool=configParser.get('test','max_device_pool')
         return app_ui_config

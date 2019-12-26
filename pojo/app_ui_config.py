@@ -4,4 +4,4 @@
 # github https://github.com/yanchunhuo
 class APP_UI_Config:
     def __init__(self):
-        self.appium_hub=None
+        self.max_device_pool=None

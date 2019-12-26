@@ -4,8 +4,11 @@
 # github https://github.com/yanchunhuo
 from appium import webdriver
 from base.read_app_ui_config import Read_APP_UI_Config
-from base.app_ui.android.demoProject.app_ui_android_demoProject_read_config import APP_UI_Android_DemoProject_Read_Config
 from common.appium.appOperator import AppOperator
+from common.fileTool import FileTool
+from init.app_ui.android.android_init import android_init
+import os
+
 class APP_UI_Android_demoProject_Client(object):
 
     __instance=None
@@ -18,9 +21,16 @@ class APP_UI_Android_demoProject_Client(object):
 
     def __init__(self):
         if self.__inited is None:
+            self._init()
             self.config = Read_APP_UI_Config().app_ui_config
-            self.demoProjectConfig = APP_UI_Android_DemoProject_Read_Config().config
-            self.driver = webdriver.Remote(self.config.appium_hub,desired_capabilities=self.demoProjectConfig.get_desired_capabilities())
-            self.appOperator = AppOperator(self.driver)
+            self.device_info=FileTool.readJsonFromFile('config/app_ui_tmp/'+str(os.getpid()))
+            self._appium_hub='http://'+self.device_info['server_ip']+':%s/wd/hub'%self.device_info['server_port']
+            self.driver = webdriver.Remote(self._appium_hub,desired_capabilities=self.device_info['capabilities'])
+            self.appOperator = AppOperator(self.driver,self._appium_hub)
 
             self.__inited=True
+
+    def _init(self):
+        print('初始化android基础数据......')
+        android_init()
+        print('初始化android基础数据完成......')
