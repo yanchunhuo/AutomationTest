@@ -11,5 +11,5 @@ class Locator_Type:
     TAG_NAME = "tag name"
     CLASS_NAME = "class name"
     CSS_SELECTOR = "css selector"
-    IMAGE = "image"
+    IMAGE = "-image"
     ACCESSIBILITY_ID = 'accessibility id'
