@@ -66,7 +66,7 @@ if __name__=='__main__':
     parser.add_argument('-s', '--capture', help='是否在标准输出流中输出日志,1:是、0:否,默认为0')
     parser.add_argument('-r', '--reruns', help='失败重跑次数,默认为0')
     parser.add_argument('-lf', '--lf', help='是否运行上一次失败的用例,1:是、0:否,默认为0')
-    parser.add_argument('-tt', '--test_type', help='【必填】测试类型,android、ios、winapp、chrome')
+    parser.add_argument('-tt', '--test_type', help='【必填】测试类型,phone、windows')
     parser.add_argument('-dif', '--devices_info_file', help='多设备并行信息文件，当--test_type为android、ios、chrome时，此选项需提供')
     args=parser.parse_args()
 
@@ -81,7 +81,7 @@ if __name__=='__main__':
     lf=args.lf
     test_type=args.test_type.lower()
     devices_info_file=args.devices_info_file
-    if test_type in ('android','ios'):
+    if test_type =='phone':
         if not devices_info_file:
             sys.exit('请指定多设备并行信息文件,查看帮助:python run_app_ui_test.py --help')
         # 初始化进程池
@@ -99,7 +99,7 @@ if __name__=='__main__':
         p_pool.join()
     else:
         # 执行pytest前的参数准备
-        pytest_execute_params = ['-c', 'config/pytest.conf', '-v', '--alluredir', 'output/app_ui/']
+        pytest_execute_params = ['-c', 'config/pytest.conf', '-v', '--alluredir', 'output/app_ui/windows']
         # 判断目录参数
         if not dir:
             dir = 'cases/app_ui/'
