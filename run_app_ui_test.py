@@ -81,7 +81,7 @@ if __name__=='__main__':
     lf=args.lf
     test_type=args.test_type.lower()
     devices_info_file=args.devices_info_file
-    if test_type =='phone':
+    if test_type=='phone':
         if not devices_info_file:
             sys.exit('请指定多设备并行信息文件,查看帮助:python run_app_ui_test.py --help')
         # 初始化进程池
