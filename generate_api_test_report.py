@@ -12,7 +12,7 @@ if __name__=='__main__':
 
     port = args.port
     if not port:
-        sys.exit('请指定报告使用的端口,查看帮助:python generateReport.py --help')
+        sys.exit('请指定报告使用的端口,查看帮助:python generate_api_test_report.py --help')
     else:
         # 获得当前allure所有进程id
         get_allure_process_ids_command = "ps -ef|grep -i allure\\.CommandLine|grep -v grep|awk '{print $2}'"
