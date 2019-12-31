@@ -13,3 +13,9 @@ class Locator_Type:
     CSS_SELECTOR = "css selector"
     IMAGE = "-image"
     ACCESSIBILITY_ID = 'accessibility id'
+    IOS_PREDICATE = '-ios predicate string'
+    IOS_UIAUTOMATION = '-ios uiautomation'
+    IOS_CLASS_CHAIN = '-ios class chain'
+    ANDROID_UIAUTOMATOR = '-android uiautomator'
+    ANDROID_VIEWTAG = '-android viewtag'
+    ANDROID_DATA_MATCHER = '-android datamatcher'
