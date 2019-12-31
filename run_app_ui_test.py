@@ -70,7 +70,7 @@ if __name__=='__main__':
     parser.add_argument('-dif', '--devices_info_file', help='多设备并行信息文件，当--test_type为android、ios、chrome时，此选项需提供')
     args=parser.parse_args()
 
-    # java_maven_init()
+    java_maven_init()
 
     if not args.test_type:
         sys.exit('请指定测试类型,查看帮助:python run_app_ui_test.py --help')
