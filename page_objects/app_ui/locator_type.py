@@ -16,6 +16,9 @@ class Locator_Type:
     IOS_PREDICATE = '-ios predicate string'
     IOS_UIAUTOMATION = '-ios uiautomation'
     IOS_CLASS_CHAIN = '-ios class chain'
+    # 仅UiAutomator2可用
     ANDROID_UIAUTOMATOR = '-android uiautomator'
+    # 仅Espresso可用
     ANDROID_VIEWTAG = '-android viewtag'
+    # 仅Espresso可用
     ANDROID_DATA_MATCHER = '-android datamatcher'
