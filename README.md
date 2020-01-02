@@ -76,6 +76,14 @@
 #### 1.6、图像识别字库准备
 * 下载对应字库:https://github.com/tesseract-ocr/tessdata
 * 将下载的字库放到common/java/lib/tess4j/tessdata/
+* 安装tesseract-ocr，下载tesseract-4.1.1.tar.gz，下载地址：https://github.com/tesseract-ocr/tesseract/releases
+    * ./autogen.sh
+    * ./configure
+    * sudo make
+    * sudo make install
+    * sudo ldconfig
+* 安装leptonica，下载leptonica-1.78.0.tar.gz，下载地址：https://github.com/DanBloomberg/leptonica/releases
+    * 安装步骤同tesseract-ocr的安装
 
 ### 2、selenium server运行环境准备
 #### 2.1、安装jdk1.8,并配置环境变量

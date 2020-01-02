@@ -252,7 +252,7 @@ class BrowserOperator:
         bottom = captcha_webElement.location['y'] + captcha_webElement.size['height']
         # 首先进行屏幕截图
         captcha_image_file_name=DateTimeTool.getNowTime('%Y%m%d%H%M%S%f_')+'captcha.png'
-        captcha_image_file_name=os.path.abspath('output/' + self._config.current_browser + '/' + captcha_image_file_name)
+        captcha_image_file_name=os.path.abspath('output/web_ui/' + self._config.current_browser + '/' + captcha_image_file_name)
         self._driver.get_screenshot_as_file(captcha_image_file_name)
         img=Image.open(captcha_image_file_name)
         # 验证码图片裁切并保存

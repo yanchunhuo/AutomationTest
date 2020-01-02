@@ -5,7 +5,6 @@
 from appium.webdriver.common.touch_action import TouchAction
 from appium.webdriver.common.multi_action import MultiAction
 from appium.webdriver.webelement import WebElement
-from base.read_app_ui_config import Read_APP_UI_Config
 from common.dateTimeTool import DateTimeTool
 from common.httpclient.doRequest import DoRequest
 from common.captchaRecognitionTool import CaptchaRecognitionTool
@@ -290,7 +289,7 @@ class AppOperator:
         bottom = captcha_webElement.location['y'] + captcha_webElement.size['height']
         # 首先进行屏幕截图
         captcha_image_file_name=DateTimeTool.getNowTime('%Y%m%d%H%M%S%f_')+'captcha.png'
-        captcha_image_file_name=os.path.abspath('output/' + captcha_image_file_name)
+        captcha_image_file_name=os.path.abspath('output/app_ui/' + captcha_image_file_name)
         self._driver.get_screenshot_as_file(captcha_image_file_name)
         img=Image.open(captcha_image_file_name)
         # 验证码图片裁切并保存
