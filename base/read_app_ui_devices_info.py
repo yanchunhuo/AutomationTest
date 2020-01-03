@@ -27,6 +27,11 @@ class Read_APP_UI_Devices_Info(object):
         devices_info.devices_desc=get_lambda(config.get('devices_info','devices_desc',fallback=''))
         devices_info.server_ports=get_lambda(config.get('devices_info','server_ports',fallback=''))
         devices_info.server_ips = get_lambda(config.get('devices_info', 'server_ips', fallback=''))
+        system_auth_alert_labels=[]
+        get_system_auth_alert_label=lambda tmp_system_auth_alert_label:list(filter(None,tmp_system_auth_alert_label.split('##'))) if tmp_system_auth_alert_label else []
+        for tmp_system_auth_alert_label in get_lambda(config.get('devices_info','system_auth_alert_labels',fallback='')):
+            system_auth_alert_labels.append((get_system_auth_alert_label(tmp_system_auth_alert_label)))
+        devices_info.system_auth_alert_labels=system_auth_alert_labels
         devices_info.udids=get_lambda(config.get('devices_info','udids',fallback=''))
         devices_info.platformNames = get_lambda(config.get('devices_info', 'platformNames',fallback=''))
         devices_info.automationNames = get_lambda(config.get('devices_info', 'automationNames', fallback=''))

@@ -7,6 +7,7 @@ class APP_UI_Devices_Info:
         self.devices_desc = []
         self.server_ports = []
         self.server_ips = []
+        self.system_auth_alert_labels = []
         self.udids = []
         self.platformNames = []
         self.automationNames = []
@@ -26,6 +27,7 @@ class APP_UI_Devices_Info:
             device_info.update({'device_desc':self.devices_desc[i].strip()})
             device_info.update({'server_port':self.server_ports[i].strip()})
             device_info.update({'server_ip':self.server_ips[i].strip()})
+            device_info.update({'system_auth_alert_label': self.system_auth_alert_labels[i]})
             # 构建desired_capabilities
             desired_capabilities={}
             desired_capabilities.update({'udid':self.udids[i].strip()})
