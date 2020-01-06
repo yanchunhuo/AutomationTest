@@ -159,6 +159,7 @@
 * vim config/app_ui_config.conf 配置app ui自动化的测试信息
 * vim config/web_ui_config.conf 配置web ui自动化的测试信息
 * vim config/projectName/projectName.conf 配置测试项目的信息
+* 修改性能测试负载机的系统最大打开文件数,避免并发用户数大于最大打开文件数
 
 ## 三、运行测试
 ### 1、API测试
