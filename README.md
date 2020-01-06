@@ -182,6 +182,11 @@
 * python3 -u run_app_ui_test.py -k keyword 运行匹配关键字的用例，会匹配文件名、类名、方法名
 * python3 -u run_app_ui_test.py -d dir     运行指定目录的用例，默认运行cases/app_ui/目录
 
+### 4、性能测试
+* cd AutomationTest/
+* ./start_locust_master.sh
+* ./start_locust_slave.sh
+
 ## 四、生成测试报告
 ### 1、API测试
 * cd AutomationTest/
