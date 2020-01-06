@@ -164,23 +164,23 @@
 ### 1、API测试
 * cd AutomationTest/
 * python3 -u run_api_test.py --help
-* python3 -u run_api_test.py 运行cases目录所有的用例
+* python3 -u run_api_test.py 运行cases/api/目录所有的用例
 * python3 -u run_api_test.py -k keyword 运行匹配关键字的用例，会匹配文件名、类名、方法名
-* python3 -u run_api_test.py -d dir     运行指定目录的用例，默认运行cases目录
+* python3 -u run_api_test.py -d dir     运行指定目录的用例，默认运行cases/api/目录
 
 ### 2、web ui测试
 * cd AutomationTest/
 * python3 -u run_web_ui_test.py --help
-* python3 -u run_web_ui_test.py 运行cases目录所有的用例
-* python3 -u run_web_ui_test.py -k keyword 运行匹配关键字的用例，会匹配文件名、类名、方法名
-* python3 -u run_web_ui_test.py -d dir     运行指定目录的用例，默认运行cases目录
+* python3 -u run_web_ui_test.py 运行cases/web_ui/目录所有的用例
+* python3 -u run_web_ui_test.py -tt phone -k keyword 运行匹配关键字的用例，会匹配文件名、类名、方法名
+* python3 -u run_web_ui_test.py -tt phone -d dir     运行指定目录的用例，默认运行cases/web_ui/目录
 
 ### 3、app ui测试
 * cd AutomationTest/
 * python3 -u run_app_ui_test.py --help
-* python3 -u run_app_ui_test.py 运行cases目录所有的用例
+* python3 -u run_app_ui_test.py 运行cases/app_ui/目录所有的用例
 * python3 -u run_app_ui_test.py -k keyword 运行匹配关键字的用例，会匹配文件名、类名、方法名
-* python3 -u run_app_ui_test.py -d dir     运行指定目录的用例，默认运行cases目录
+* python3 -u run_app_ui_test.py -d dir     运行指定目录的用例，默认运行cases/app_ui/目录
 
 ## 四、生成测试报告
 ### 1、API测试
@@ -197,7 +197,7 @@
 
 ### 3、app ui测试
 * cd AutomationTest/
-* python3 -u generateReport_app_ui_test_report.py -p 9084
+* python3 -u generateReport_app_ui_test_report.py -sp 9084
 * 访问地址http://ip:9084
 
 ### 注：在使用Ubuntu进行报告生成时，请勿使用sudo权限，否则无法生成，allure不支持
