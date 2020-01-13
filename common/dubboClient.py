@@ -24,8 +24,13 @@ class DubboClient:
         """
         :param requestInterfaceClassName 请求接口类名,需完整包路径
         :param requestMethod 请求方法
-        :param params 无参数填写null,有参数格式:requestType##requestParamClassName##param||requestType##requestParamClassName##param
-                      requestType:1:字典类型、2:数组类型、3:基础数据类型
+        :param params 格式:
+                      无参数填写[]
+                      基本数据类型参数：[{"type":"java.lang.String","data":"value"}]
+                      数组、集合类型参数：[{"type":"java.util.Set","data":[{"type":"java.lang.Long","data":"value"},{"type":"java.lang.Long","data":"value"}]}]
+                      MAP类型参数：[{"type":"java.util.Map","data":[[{"type":"key_type","data":"key_value"},{"type":"value_type","data":"value_value"}]]"}]
+                      自定义对象类型参数：[{"type":"com.company.xxxDTO","data":{"username":"username","age":344}}]
+                      注：type当前支持：java.lang.*、java.util.List、java.util.Set、java.util.Collection、java.util.Map
         :return
         """
         result=self._dubboClient.request(requestInterfaceClassName,requestMethod,params)
