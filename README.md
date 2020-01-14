@@ -231,7 +231,8 @@
 * 封装的显式等待类型支持:page_objects/app_ui/wait_type.py
 * 封装的定位类型支持:page_objects/app_ui/locator_type.py
 * 项目
-    * demoProject 例子项目
+    * android 
+        * demoProject 例子项目
 
 # [项目结构]()
 * base 基础请求类
