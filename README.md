@@ -168,20 +168,23 @@
 * python3 -u run_api_test.py 运行cases/api/目录所有的用例
 * python3 -u run_api_test.py -k keyword 运行匹配关键字的用例，会匹配文件名、类名、方法名
 * python3 -u run_api_test.py -d dir     运行指定目录的用例，默认运行cases/api/目录
+* python3 -u run_api_test.py -m mark    运行指定标记的用例
 
 ### 2、web ui测试
 * cd AutomationTest/
 * python3 -u run_web_ui_test.py --help
 * python3 -u run_web_ui_test.py 运行cases/web_ui/目录所有的用例
-* python3 -u run_web_ui_test.py -tt phone -k keyword 运行匹配关键字的用例，会匹配文件名、类名、方法名
-* python3 -u run_web_ui_test.py -tt phone -d dir     运行指定目录的用例，默认运行cases/web_ui/目录
+* python3 -u run_web_ui_test.py -k keyword 运行匹配关键字的用例，会匹配文件名、类名、方法名
+* python3 -u run_web_ui_test.py -d dir     运行指定目录的用例，默认运行cases/web_ui/目录
+* python3 -u run_web_ui_test.py -m mark    运行指定标记的用例
 
 ### 3、app ui测试
 * cd AutomationTest/
 * python3 -u run_app_ui_test.py --help
 * python3 -u run_app_ui_test.py 运行cases/app_ui/目录所有的用例
-* python3 -u run_app_ui_test.py -k keyword 运行匹配关键字的用例，会匹配文件名、类名、方法名
-* python3 -u run_app_ui_test.py -d dir     运行指定目录的用例，默认运行cases/app_ui/目录
+* python3 -u run_app_ui_test.py -tt phone -k keyword 运行匹配关键字的用例，会匹配文件名、类名、方法名
+* python3 -u run_app_ui_test.py -tt phone -d dir     运行指定目录的用例，默认运行cases/app_ui/目录
+* python3 -u run_app_ui_test.py -m mark              运行指定标记的用例
 
 ### 4、性能测试
 * cd AutomationTest/
@@ -240,6 +243,7 @@
 * logs 日志目录
 * output 测试结果输出目录 
 * packages app ui测试的安装包
+* page_objects 页面映射对象
 * pojo 存放自定义类对象
 * test_data 测试所需的测试数据目录
 * run_api_test.py 运行api测试脚本
@@ -248,6 +252,8 @@
 * generate_api_test_report.py 生成api测试报告
 * generateReport_web_ui_test_report.py 生成web ui测试报告
 * generateReport_app_ui_test_report.py 生成app ui测试报告
+* start_locust_master.sh 启动locust主节点
+* start_locust_slave.sh 启动locust从节点
 
 # [编码规范]()
 * 统一使用python 3.6
