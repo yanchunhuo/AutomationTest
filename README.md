@@ -211,8 +211,7 @@
 ## 五、项目说明
 ### 1、API测试
 * 项目
-    * demoProject
-        * 例子项目
+    * demoProject 例子项目
         
 ### 2、web ui测试
 * 元素的显式等待时间默认为30s
@@ -222,16 +221,14 @@
 * 文件下载处理暂不支持ie浏览器
 * 无头浏览器暂不支持ie浏览器
 * 项目
-    * demoProject
-        * 例子项目
+    * demoProject 例子项目
         
 ### 3、app ui测试
 * 元素的显式等待时间默认为30s
 * 封装的显式等待类型支持:page_objects/app_ui/wait_type.py
 * 封装的定位类型支持:page_objects/app_ui/locator_type.py
 * 项目
-    * demoProject
-        * 例子项目
+    * demoProject 例子项目
 
 # [项目结构]()
 * base 基础请求类
