@@ -6,6 +6,8 @@ from base.read_app_ui_config import Read_APP_UI_Config
 from base.read_app_ui_devices_info import Read_APP_UI_Devices_Info
 from common.httpclient.doRequest import DoRequest
 from common.fileTool import FileTool
+from common.custom_multiprocessing import Custom_Pool
+from common.pytest import deal_pytest_ini_file
 from init.java.java_maven_init import java_maven_init
 import argparse
 import multiprocessing
@@ -13,6 +15,9 @@ import os
 import pytest
 import sys
 import ujson
+
+def pytest_main(pytest_execute_params):
+    exit_code = pytest.main(pytest_execute_params)
 
 def start_app_device_test(index,device_info,keyword,dir,markexpr,capture,reruns,lf):
     for path, dirs, files in os.walk('config/app_ui_tmp'):
@@ -32,36 +37,50 @@ def start_app_device_test(index,device_info,keyword,dir,markexpr,capture,reruns,
     except:
         sys.exit('appium server状态为不可用')
 
-    print('开始设备'+device_info['device_desc']+'测试......')
-    # 执行pytest前的参数准备
-    pytest_execute_params = ['-c', 'config/pytest.conf', '-v', '--alluredir', 'output/app_ui/'+device_info['device_desc']]
-    # 判断目录参数
-    if not dir:
-        dir = 'cases/app_ui/'
-    # 判断关键字参数
-    if keyword:
-        pytest_execute_params.append('-k')
-        pytest_execute_params.append(keyword)
-    # 判断markexpr参数
-    if markexpr:
-        pytest_execute_params.append('-m')
-        pytest_execute_params.append(markexpr)
-    # 判断是否输出日志
-    if capture:
-        if int(capture):
-            pytest_execute_params.append('-s')
-    # 判断是否失败重跑
-    if reruns:
-        if int(reruns):
-            pytest_execute_params.append('--reruns')
-            pytest_execute_params.append(reruns)
-    # 判断是否只运行上一次失败的用例
-    if lf:
-        if int(lf):
-            pytest_execute_params.append('--lf')
-    pytest_execute_params.append(dir)
-    exit_code = pytest.main(pytest_execute_params)
-    print('结束设备'+device_info['device_desc']+'测试......')
+    a_devices_desired_capabilities = device_info['capabilities']
+    print('开始设备' + device_info['device_desc'] + '测试......')
+    for desired_capabilities in a_devices_desired_capabilities:
+        FileTool.writeObjectIntoFile(desired_capabilities,
+                                     'config/app_ui_tmp/' + str(os.getpid()) + '_current_desired_capabilities')
+        if desired_capabilities['appPackage']:
+            desired_capabilities_desc = desired_capabilities['appPackage']
+        else:
+            desired_capabilities_desc = os.path.basename(desired_capabilities['app'])
+        print('当前设备开始测试的desired_capabilities为:%s' % desired_capabilities)
+        # 执行pytest前的参数准备
+        pytest_execute_params = ['-c', 'config/pytest.ini', '-v', '--alluredir',
+                                 'output/app_ui/' + device_info['device_desc'] + '/' + desired_capabilities_desc]
+        # 判断目录参数
+        if not dir:
+            dir = 'cases/app_ui/'
+        # 判断关键字参数
+        if keyword:
+            pytest_execute_params.append('-k')
+            pytest_execute_params.append(keyword)
+        # 判断markexpr参数
+        if markexpr:
+            pytest_execute_params.append('-m')
+            pytest_execute_params.append(markexpr)
+        # 判断是否输出日志
+        if capture:
+            if int(capture):
+                pytest_execute_params.append('-s')
+        # 判断是否失败重跑
+        if reruns:
+            if int(reruns):
+                pytest_execute_params.append('--reruns')
+                pytest_execute_params.append(reruns)
+        # 判断是否只运行上一次失败的用例
+        if lf:
+            if int(lf):
+                pytest_execute_params.append('--lf')
+        pytest_execute_params.append(dir)
+        # 构建孙进程
+        process = multiprocessing.Process(target=pytest_main, args=(pytest_execute_params,))
+        process.start()
+        process.join()
+        print('当前设备结束测试的desired_capabilities为:%s' % desired_capabilities)
+    print('结束设备' + device_info['device_desc'] + '测试......')
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser()
@@ -75,6 +94,10 @@ if __name__=='__main__':
     parser.add_argument('-dif', '--devices_info_file', help='多设备并行信息文件，当--test_type为android、ios、chrome时，此选项需提供')
     args=parser.parse_args()
 
+    # 处理pytest文件
+    deal_pytest_ini_file()
+
+    # 初始化java依赖的libs
     java_maven_init()
 
     if not args.test_type:
@@ -91,7 +114,7 @@ if __name__=='__main__':
         if not devices_info_file:
             sys.exit('请指定多设备并行信息文件,查看帮助:python run_app_ui_test.py --help')
         # 初始化进程池
-        p_pool = multiprocessing.Pool(int(Read_APP_UI_Config().app_ui_config.max_device_pool))
+        p_pool = Custom_Pool(int(Read_APP_UI_Config().app_ui_config.max_device_pool))
         devices_info=Read_APP_UI_Devices_Info(devices_info_file).devices_info
         if os.path.exists('config/app_ui_tmp'):
             FileTool.truncateDir('config/app_ui_tmp/')
@@ -105,7 +128,7 @@ if __name__=='__main__':
         p_pool.join()
     else:
         # 执行pytest前的参数准备
-        pytest_execute_params = ['-c', 'config/pytest.conf', '-v', '--alluredir', 'output/app_ui/windows']
+        pytest_execute_params = ['-c', 'config/pytest.ini', '-v', '--alluredir', 'output/app_ui/windows']
         # 判断目录参数
         if not dir:
             dir = 'cases/app_ui/'

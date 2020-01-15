@@ -5,6 +5,7 @@
 from base.read_web_ui_config import Read_WEB_UI_Config
 from common.fileTool import FileTool
 from common.httpclient.doRequest import DoRequest
+from common.pytest import deal_pytest_ini_file
 from init.web_ui.web_ui_init import web_ui_init
 from selenium.webdriver.remote.remote_connection import RemoteConnection
 from selenium.webdriver.remote.command import Command
@@ -36,6 +37,9 @@ if __name__=='__main__':
     except:
         sys.exit('selenium server状态为不可用')
 
+    # 处理pytest文件
+    deal_pytest_ini_file()
+
     print('初始化基础数据......')
     web_ui_init()
     print('初始化基础数据完成......')
@@ -50,7 +54,7 @@ if __name__=='__main__':
         FileTool.replaceFileContent('config/web_ui_config.conf','\r\n','\n')
         FileTool.replaceFileContentWithLBRB('config/web_ui_config.conf','='+current_browser,'current_browser','\n')
         # 执行pytest前的参数准备
-        pytest_execute_params=['-c', 'config/pytest.conf', '-v', '--alluredir', 'output/web_ui/'+current_browser+'/','-n',Read_WEB_UI_Config().web_ui_config.test_workers,'--dist','loadfile']
+        pytest_execute_params=['-c', 'config/pytest.ini', '-v', '--alluredir', 'output/web_ui/'+current_browser+'/','-n',Read_WEB_UI_Config().web_ui_config.test_workers,'--dist','loadfile']
         # 判断目录参数
         dir = 'cases/web_ui/'
         if args.dir:

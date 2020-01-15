@@ -2,6 +2,8 @@
 # 作者 yanchunhuo
 # 创建时间 2018/01/19 22:36
 # github https://github.com/yanchunhuo
+
+from common.pytest import deal_pytest_ini_file
 from init.api.api_init import api_init
 import argparse
 import pytest
@@ -17,13 +19,16 @@ if __name__=='__main__':
     parser.add_argument('-lf', '--lf', help='是否运行上一次失败的用例,1:是、0:否,默认为0')
     args=parser.parse_args()
 
+    # 处理pytest文件
+    deal_pytest_ini_file()
+
     # 初始化
     print('开始初始化......')
     api_init()
     print('初始化完成......')
 
     # 执行pytest前的参数准备
-    pytest_execute_params=['-c', 'config/pytest.conf', '-v', '--alluredir', 'output/api/']
+    pytest_execute_params=['-c', 'config/pytest.ini', '-v', '--alluredir', 'output/api/']
     # 判断目录参数
     dir = 'cases/api/'
     if args.dir:

@@ -8,6 +8,7 @@
 *nohup.out*
 *uwsgi.pid*
 *.pytest_cache*
+*pytest.ini*
 *common/java/lib/java/libs/*
 *config/app_ui_tmp/*
 *.vscode*

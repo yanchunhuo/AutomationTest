@@ -21,7 +21,7 @@ class WEB_UI_DemoProject_Read_Config(object):
 
     def _readConfig(self, configFile):
         config = ConfigParser.ConfigParser()
-        config.read(configFile)
+        config.read(configFile,encoding='utf-8')
         demoProjectConfig = DemoProjectConfig()
         demoProjectConfig.web_host = config.get('servers','web_host')
         demoProjectConfig.init=config.get('isInit','init')

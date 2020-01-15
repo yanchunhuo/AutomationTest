@@ -1,9 +1,8 @@
 # 作者 yanchunhuo
 # 创建时间 2019/12/26 11:15
-# github https://github.com/yanchunhuo
+
 from pojo.app_ui_devices_info import APP_UI_Devices_Info
 import configparser as ConfigParser
-import os
 
 class Read_APP_UI_Devices_Info(object):
     __instance=None
@@ -42,10 +41,7 @@ class Read_APP_UI_Devices_Info(object):
         devices_info.systemports=get_lambda(config.get('devices_info','systemports', fallback=''))
         devices_info.wdaLocalPorts = get_lambda(config.get('devices_info', 'wdaLocalPorts', fallback=''))
         devices_info.wdaLocalPorts = get_lambda(config.get('devices_info', 'wdaLocalPorts', fallback=''))
-        devices_info.appActivity = config.get('devices_info','appActivity')
-        devices_info.appPackage = config.get('devices_info','appPackage')
-        devices_info.app = config.get('devices_info','app')
-        # 将安装包所在位置转为绝对路径
-        if devices_info.app:
-            devices_info.app = os.path.abspath(devices_info.app)
+        devices_info.appActivitys = get_lambda(config.get('devices_info','appActivitys',fallback=''))
+        devices_info.appPackages = get_lambda(config.get('devices_info','appPackages',fallback=''))
+        devices_info.apps_dirs = get_lambda(config.get('devices_info','apps_dirs',fallback=''))
         return devices_info.get_devices_info()
