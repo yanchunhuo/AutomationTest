@@ -21,7 +21,11 @@ if __name__=='__main__':
         allure_process_ids = subprocess.check_output(get_allure_process_ids_command, shell=True)
         allure_process_ids = allure_process_ids.decode('utf-8')
         allure_process_ids = allure_process_ids.split('\n')
-        report_dirs=os.listdir('output/app_ui/')
+        report_dirs = []
+        devices_dirs = os.listdir('output/app_ui/')
+        for device_dir in devices_dirs:
+            for report_dir in os.listdir('output/app_ui/' + device_dir):
+                report_dirs.append('output/app_ui/' + device_dir + '/' + report_dir)
         for i in range(len(report_dirs)):
             port=str(int(start_port)+i)
             # 获得当前监听port端口的进程id
@@ -41,6 +45,6 @@ if __name__=='__main__':
                         subprocess.check_output("kill -9 " + allure_process_id.strip(), shell=True)
                         is_find = True
                         break
-            print('生成报告output/app_ui/'+report_dirs[i]+',使用端口' + port)
-            subprocess.check_output("nohup allure serve -p " + port + " output/app_ui/"+report_dirs[i]+" >>logs/generate_app_ui_test.log 2>&1 &",shell=True)
+            print('生成报告'+report_dirs[i]+',使用端口' + port)
+            subprocess.check_output("nohup allure serve -p " + port + " "+report_dirs[i]+" >>logs/generate_app_ui_test.log 2>&1 &",shell=True)
 
