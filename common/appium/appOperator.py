@@ -8,6 +8,7 @@ from appium.webdriver.webelement import WebElement
 from common.dateTimeTool import DateTimeTool
 from common.httpclient.doRequest import DoRequest
 from common.captchaRecognitionTool import CaptchaRecognitionTool
+from page_objects.createElement import CreateElement
 from page_objects.app_ui.locator_type import Locator_Type
 from page_objects.app_ui.wait_type import Wait_Type  as Wait_By
 from pojo.elementInfo import ElementInfo
@@ -368,6 +369,33 @@ class AppOperator:
             script_arg.update({'action':action_type})
         self._driver.execute_script(script,script_arg)
 
+    def is_toast_visible(self,text,platformName='android',automationName='UiAutomator2',isRegexp=False):
+        """
+        仅支持Android
+        :param text:
+        :param platformName: android、ios
+        :param automationName: 支持UiAutomator2、Espresso
+        :param isRegexp: 仅当automaitionName为Espresso时有效
+        :return:
+        """
+        if not text:
+            return False
+        if 'android'==platformName.lower():
+            if 'uiautomator2'==automationName.lower():
+                toast_element=CreateElement.create(Locator_Type.XPATH,".//*[contains(@text,'%s')]"%text,None,Wait_By.PRESENCE_OF_ELEMENT_LOCATED,wait_seconds=5)
+                try:
+                    self.getElement(toast_element)
+                    return True
+                except:
+                    return False
+            elif 'espresso'==platformName.lower():
+                script_arg={'text':text}
+                if isRegexp:
+                    script_arg.update({'isRegexp':True})
+                script = 'mobile:isToastVisible'
+                return self._driver.execute_script(script,script_arg)
+        elif 'ios'==platformName.lower():
+            return False
 
     def get_geolocation(self):
         """
