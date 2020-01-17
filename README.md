@@ -18,7 +18,7 @@
     * Pillow：用于图片处理,https://pillow.readthedocs.io/en/latest/
     * PyMySQL：用于操作MySQL数据库,https://github.com/PyMySQL/PyMySQL
     * redis：redis客户端,https://pypi.org/project/redis/
-    * tess4j：java的图片识别工具,http://tess4j.sourceforge.net/ 
+    * tess4j：java的图片识别工具,https://github.com/nguyenq/tess4j/
 
 # [使用]()
 ## 一、环境准备
@@ -86,7 +86,7 @@
     * 安装leptonica，下载leptonica-1.78.0.tar.gz，下载地址：https://github.com/DanBloomberg/leptonica/releases
         * 安装步骤同tesseract-ocr的安装
 * Windows
-    * 无需安装
+    * 安装Microsoft Visual C++ 2019 Redistributable，下载地址：https://visualstudio.microsoft.com/zh-hans/downloads/
 
 ### 2、selenium server运行环境准备
 #### 2.1、安装jdk1.8,并配置环境变量
