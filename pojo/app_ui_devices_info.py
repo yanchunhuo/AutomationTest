@@ -61,6 +61,9 @@ class APP_UI_Devices_Info:
                 if self.appActivitys and self.appPackages:
                     desired_capabilities.update({'appActivity': a_device_appActivitys[j].strip()})
                     desired_capabilities.update({'appPackage': a_device_appPackages[j].strip()})
+                else:
+                    desired_capabilities.update({'appActivity': ''})
+                    desired_capabilities.update({'appPackage': ''})
                 if self.apps_dirs:
                     desired_capabilities.update({'app': a_device_apps[j]})
                 a_devices_desired_capabilities.append(desired_capabilities)
