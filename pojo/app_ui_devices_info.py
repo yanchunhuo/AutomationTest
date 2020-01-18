@@ -27,7 +27,8 @@ class APP_UI_Devices_Info:
             device_info.update({'device_desc':self.devices_desc[i].strip()})
             device_info.update({'server_port':self.server_ports[i].strip()})
             device_info.update({'server_ip':self.server_ips[i].strip()})
-            device_info.update({'system_auth_alert_label': self.system_auth_alert_labels[i]})
+            if self.system_auth_alert_labels:
+                device_info.update({'system_auth_alert_label': self.system_auth_alert_labels[i]})
             # 构建desired_capabilities
             a_device_capabilities_num=0
             a_device_appActivitys=[]
@@ -40,8 +41,9 @@ class APP_UI_Devices_Info:
             if self.apps_dirs:
                 a_device_capabilities_num=len(self.apps_dirs)
                 paths=os.walk(self.apps_dirs[i])
-                for dirPath,dirName,fileName in paths:
-                    a_device_apps.append(os.path.join(dirPath,fileName))
+                for dirPath, dirName, fileNames in paths:
+                    for fileName in fileNames:
+                        a_device_apps.append(os.path.join(dirPath, fileName))
             a_devices_desired_capabilities=[]
             for j in range(a_device_capabilities_num):
                 desired_capabilities={}
