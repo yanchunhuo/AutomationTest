@@ -9,6 +9,7 @@ from common.fileTool import FileTool
 from common.custom_multiprocessing import Custom_Pool
 from common.pytest import deal_pytest_ini_file
 from init.java.java_maven_init import java_maven_init
+from init.httpserver.http_server_init import http_server_init
 import argparse
 import multiprocessing
 import os
@@ -45,7 +46,7 @@ def start_app_device_test(index,device_info,keyword,dir,markexpr,capture,reruns,
         if desired_capabilities['appPackage']:
             desired_capabilities_desc = desired_capabilities['appPackage']
         else:
-            desired_capabilities_desc = os.path.basename(desired_capabilities['app'])
+            desired_capabilities_desc=desired_capabilities['app'].split('/')[-1]
         print('当前设备开始测试的desired_capabilities为:%s' % desired_capabilities)
         # 执行pytest前的参数准备
         pytest_execute_params = ['-c', 'config/pytest.ini', '-v', '--alluredir',
@@ -99,6 +100,9 @@ if __name__=='__main__':
 
     # 初始化java依赖的libs
     java_maven_init()
+
+    # 初始化httpserver
+    http_server_init()
 
     if not args.test_type:
         sys.exit('请指定测试类型,查看帮助:python run_app_ui_test.py --help')

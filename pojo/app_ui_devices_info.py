@@ -1,5 +1,6 @@
 # 作者 yanchunhuo
 # 创建时间 2019/12/26 9:17
+from base.read_httpserver_config import Read_Http_Server_Config
 import os
 
 class APP_UI_Devices_Info:
@@ -22,6 +23,8 @@ class APP_UI_Devices_Info:
 
     def get_devices_info(self):
         devices_info = []
+        local_ip = Read_Http_Server_Config().httpserver_config.local_ip
+        httpserver_port = Read_Http_Server_Config().httpserver_config.httpserver_port
         for i in range(len(self.devices_desc)):
             device_info={}
             device_info.update({'device_desc':self.devices_desc[i].strip()})
@@ -40,10 +43,10 @@ class APP_UI_Devices_Info:
                 a_device_capabilities_num=len(a_device_appActivitys)
             if self.apps_dirs:
                 a_device_capabilities_num=len(self.apps_dirs)
-                paths=os.walk(self.apps_dirs[i])
-                for dirPath, dirName, fileNames in paths:
+                paths=os.walk(self.apps_dirs[i].strip())
+                for dirPath,dirName,fileNames in paths:
                     for fileName in fileNames:
-                        a_device_apps.append(os.path.join(dirPath, fileName))
+                        a_device_apps.append(('http://%s:%s/%s/%s')%(local_ip,httpserver_port,self.apps_dirs[i].strip(),fileName))
             a_devices_desired_capabilities=[]
             for j in range(a_device_capabilities_num):
                 desired_capabilities={}
