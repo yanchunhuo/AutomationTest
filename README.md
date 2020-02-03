@@ -77,6 +77,8 @@
 * 下载对应字库:https://github.com/tesseract-ocr/tessdata
 * 将下载的字库放到common/java/lib/tess4j/tessdata/
 * Linux
+    * 安装依赖
+        * sudo apt install pkg-config aclocal libtool automake libleptonica-dev
     * 安装tesseract-ocr，下载tesseract-4.1.1.tar.gz，下载地址：https://github.com/tesseract-ocr/tesseract/releases
         * ./autogen.sh
         * ./configure
