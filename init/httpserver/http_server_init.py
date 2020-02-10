@@ -15,7 +15,12 @@ def http_server_init():
     httpserver_config = Read_Http_Server_Config().httpserver_config
     port = httpserver_config.httpserver_port
     if "windows"==platform.system().lower():
-        pass
+        get_httpserver_process_id_command='netstat -ano|findstr "0.0.0.0:%s"'%port
+        try:
+            httpserver_process_id = subprocess.check_output(get_httpserver_process_id_command, shell=True)
+            return
+        except:
+            print('http.server未查找到监听端口%s的服务'%port)
     elif "linux"==platform.system().lower():
         get_httpserver_process_ids_command = "ps -ef|grep 'http.server %s'|grep -v grep|awk '{print $2}'"%port
         httpserver_process_ids = subprocess.check_output(get_httpserver_process_ids_command, shell=True)
