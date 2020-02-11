@@ -1,7 +1,7 @@
 #-*- coding:utf8 -*-
 # 作者 yanchunhuo
 # 创建时间 2018/01/19 22:36
-# github https://github.com/yanchunhuo
+
 from appium.webdriver.common.touch_action import TouchAction
 from appium.webdriver.common.multi_action import MultiAction
 from appium.webdriver.webelement import WebElement
@@ -369,7 +369,7 @@ class AppOperator:
             script_arg.update({'action':action_type})
         self._driver.execute_script(script,script_arg)
 
-    def is_toast_visible(self,text,platformName='android',automationName='UiAutomator2',isRegexp=False):
+    def is_toast_visible(self, text, platformName='android', automationName='UiAutomator2', isRegexp=False):
         """
         仅支持Android
         :param text:
@@ -380,21 +380,22 @@ class AppOperator:
         """
         if not text:
             return False
-        if 'android'==platformName.lower():
-            if 'uiautomator2'==automationName.lower():
-                toast_element=CreateElement.create(Locator_Type.XPATH,".//*[contains(@text,'%s')]"%text,None,Wait_By.PRESENCE_OF_ELEMENT_LOCATED,wait_seconds=5)
+        if 'android' == platformName.lower():
+            if 'uiautomator2' == automationName.lower():
+                toast_element = CreateElement.create(Locator_Type.XPATH, ".//*[contains(@text,'%s')]" % text, None,
+                                                     Wait_By.PRESENCE_OF_ELEMENT_LOCATED, wait_seconds=5)
                 try:
                     self.getElement(toast_element)
                     return True
                 except:
                     return False
-            elif 'espresso'==platformName.lower():
-                script_arg={'text':text}
+            elif 'espresso' == platformName.lower():
+                script_arg = {'text': text}
                 if isRegexp:
-                    script_arg.update({'isRegexp':True})
+                    script_arg.update({'isRegexp': True})
                 script = 'mobile:isToastVisible'
-                return self._driver.execute_script(script,script_arg)
-        elif 'ios'==platformName.lower():
+                return self._driver.execute_script(script, script_arg)
+        elif 'ios' == platformName.lower():
             return False
 
     def get_geolocation(self):
@@ -636,13 +637,106 @@ class AppOperator:
 
     def get_element_location(self,element):
         """
-        获得元素在屏幕的位置,x、y坐标
+        获得元素在屏幕的位置,x、y坐标为元素左上角
         :param element:
         :return:
         """
         webElement=self._change_element_to_webElement_type(element)
         if webElement:
             return webElement.location
+
+    def get_element_center_location(self,element):
+        """
+        获得元素中心的x、y坐标
+        :param element:
+        :return:
+        """
+        webElement=self._change_element_to_webElement_type(element)
+        if webElement:
+            rect=webElement.rect
+            height=rect['height']
+            width=rect['width']
+            x=rect['x']
+            y=rect['y']
+            result_x=x+width/2
+            result_y=y+height/2
+            return {'x':result_x,'y':result_y}
+
+    def touch_element_left_slide(self,element,duration=500):
+        """
+        从元素正中间点击滑动到元素的左边缘
+        :param element:
+        :return:
+        """
+        webElement=self._change_element_to_webElement_type(element)
+        if webElement:
+            rect=webElement.rect
+            height = rect['height']
+            width = rect['width']
+            x = rect['x']
+            y = rect['y']
+            center_x = x + width / 2
+            center_y = y + height / 2
+            lelf_x=x
+            lelf_y=center_y
+            self._driver.swipe(start_x=center_x,start_y=center_y,end_x=lelf_x,end_y=lelf_y,duration=duration)
+
+    def touch_element_right_slide(self,element,duration=500):
+        """
+        从元素正中间点击滑动到元素的右边缘
+        :param element:
+        :return:
+        """
+        webElement=self._change_element_to_webElement_type(element)
+        if webElement:
+            rect=webElement.rect
+            height = rect['height']
+            width = rect['width']
+            x = rect['x']
+            y = rect['y']
+            center_x = x + width / 2
+            center_y = y + height / 2
+            right_x=x+width
+            right_y=center_y
+            self._driver.swipe(start_x=center_x,start_y=center_y,end_x=right_x,end_y=right_y,duration=duration)
+
+    def touch_element_up_slide(self,element,duration=500):
+        """
+        从元素正中间点击滑动到元素的上边缘
+        :param element:
+        :return:
+        """
+        webElement=self._change_element_to_webElement_type(element)
+        if webElement:
+            rect=webElement.rect
+            height = rect['height']
+            width = rect['width']
+            x = rect['x']
+            y = rect['y']
+            center_x = x + width / 2
+            center_y = y + height / 2
+            right_x=center_x
+            right_y=y
+            self._driver.swipe(start_x=center_x,start_y=center_y,end_x=right_x,end_y=right_y,duration=duration)
+
+    def touch_element_down_slide(self,element,duration=500):
+        """
+        从元素正中间点击滑动到元素的下边缘
+        :param element:
+        :return:
+        """
+        webElement=self._change_element_to_webElement_type(element)
+        if webElement:
+            rect=webElement.rect
+            height = rect['height']
+            width = rect['width']
+            x = rect['x']
+            y = rect['y']
+            center_x = x + width / 2
+            center_y = y + height / 2
+            right_x=center_x
+            right_y=y+height
+            self._driver.swipe(start_x=center_x,start_y=center_y,end_x=right_x,end_y=right_y,duration=duration)
 
     def get_element_size_in_pixels(self,element):
         """
