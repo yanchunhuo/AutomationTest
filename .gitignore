@@ -11,4 +11,5 @@
 *pytest.ini*
 *common/java/lib/java/libs/*
 *config/app_ui_tmp/*
+*packages*
 *.vscode*
