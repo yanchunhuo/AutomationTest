@@ -237,7 +237,23 @@ class BrowserOperator:
     def get_page_source(self):
         return self._driver.page_source
 
-    def get_captcha(self,element,language='eng',highlight_seconds=0):
+    def save_element_image(self, element, image_file_name, highlight_seconds=0):
+        webElement = self._change_element_to_webElement_type(element, highlight_seconds)
+        left = webElement.location['x']
+        top = webElement.location['y']
+        right = webElement.location['x'] + webElement.size['width']
+        bottom = webElement.location['y'] + webElement.size['height']
+        # 进行屏幕截图
+        image_file_name = DateTimeTool.getNowTime('%Y%m%d%H%M%S%f_') + '%s.png' % image_file_name
+        image_file_name = os.path.abspath(
+            'output/web_ui/' + self._config.current_browser + '/' + image_file_name)
+        self._driver.get_screenshot_as_file(image_file_name)
+        img = Image.open(image_file_name)
+        # 验证码图片裁切并保存
+        img = img.crop((left, top, right, bottom))
+        img.save(image_file_name)
+
+    def get_captcha(self, element, language='eng'):
         """
         识别图片验证码
         :param element: 验证码图片元素
@@ -245,23 +261,11 @@ class BrowserOperator:
         :return:
         """
         # 为防止截图包含高亮影响识别，元素不进行高亮
-        captcha_webElement=self._change_element_to_webElement_type(element,highlight_seconds)
-        left = captcha_webElement.location['x']
-        top = captcha_webElement.location['y']
-        right = captcha_webElement.location['x'] + captcha_webElement.size['width']
-        bottom = captcha_webElement.location['y'] + captcha_webElement.size['height']
-        # 首先进行屏幕截图
-        captcha_image_file_name=DateTimeTool.getNowTime('%Y%m%d%H%M%S%f_')+'captcha.png'
-        captcha_image_file_name=os.path.abspath('output/web_ui/' + self._config.current_browser + '/' + captcha_image_file_name)
-        self._driver.get_screenshot_as_file(captcha_image_file_name)
-        img=Image.open(captcha_image_file_name)
-        # 验证码图片裁切并保存
-        img=img.crop((left,top,right,bottom))
-        img.save(captcha_image_file_name)
         # 识别图片验证码
-        captcha=CaptchaRecognitionTool.captchaRecognition(captcha_image_file_name,language)
-        captcha=captcha.strip()
-        captcha=captcha.replace(' ','')
+        captcha_image_file_name = self.save_element_image(element, 'captcha')
+        captcha = CaptchaRecognitionTool.captchaRecognition(captcha_image_file_name, language)
+        captcha = captcha.strip()
+        captcha = captcha.replace(' ', '')
         return captcha
 
     def get_table_data(self,element,data_type='text'):
