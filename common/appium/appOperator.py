@@ -275,6 +275,19 @@ class AppOperator:
         """
         return self._driver.page_source
 
+    def get_element_rgb(self,element,x_percent=0,y_percent=0):
+        """
+        获得元素上的rgb值,默认返回元素左上角坐标轴
+        :param element
+        :param x_percent x轴百分比位置,范围0~1
+        :param y_percent y轴百分比位置,范围0~1
+        """
+        img = Image.open(self.save_element_image(element,'element_rgb'))
+        pix = img.load()
+        width = img.size[0]
+        height = img.size[1]
+        return pix[width * x_percent, height * y_percent]
+
     def save_element_image(self,element,image_file_name):
         """
         截取元素图片
@@ -288,7 +301,9 @@ class AppOperator:
         bottom = webElement.location['y'] + webElement.size['height']
         # 进行屏幕截图
         image_file_name = DateTimeTool.getNowTime('%Y%m%d%H%M%S%f_') + '%s.png'%image_file_name
-        image_file_name = os.path.abspath('output/app_ui/' + image_file_name)
+        if not os.path.exists('output/tmp/'):
+            os.mkdir('output/tmp/')
+        image_file_name = os.path.abspath('output/tmp/' + image_file_name)
         self._driver.get_screenshot_as_file(image_file_name)
         img = Image.open(image_file_name)
         # 验证码图片裁切并保存
