@@ -931,8 +931,8 @@ class AppOperator:
         从屏幕正中间进行左滑
         :return:
         """
-        start_x=self._windows_size['width']*0.45
-        start_y=self._windows_size['height']*0.45
+        start_x=self._windows_size['width']*0.5
+        start_y=self._windows_size['height']*0.5
         end_x=0
         end_y=start_y
         self._driver.swipe(start_x,start_y,end_x,end_y,duration)
@@ -942,8 +942,8 @@ class AppOperator:
         从屏幕正中间进行右滑
         :return:
         """
-        start_x=self._windows_size['width']*0.45
-        start_y=self._windows_size['height']*0.45
+        start_x=self._windows_size['width']*0.5
+        start_y=self._windows_size['height']*0.5
         end_x=self._windows_size['width']*0.9
         end_y=start_y
         self._driver.swipe(start_x,start_y,end_x,end_y,duration)
@@ -953,8 +953,8 @@ class AppOperator:
         从屏幕正中间进行上滑
         :return:
         """
-        start_x=self._windows_size['width']*0.45
-        start_y=self._windows_size['height']*0.45
+        start_x=self._windows_size['width']*0.5
+        start_y=self._windows_size['height']*0.5
         end_x=start_x
         end_y=0
         self._driver.swipe(start_x,start_y,end_x,end_y,duration)
@@ -964,8 +964,8 @@ class AppOperator:
         从屏幕正中间进行下滑
         :return:
         """
-        start_x=self._windows_size['width']*0.45
-        start_y=self._windows_size['height']*0.45
+        start_x=self._windows_size['width']*0.5
+        start_y=self._windows_size['height']*0.5
         end_x=start_x
         end_y=self._windows_size['height']*0.9
         self._driver.swipe(start_x,start_y,end_x,end_y,duration)
