@@ -286,7 +286,9 @@ class AppOperator:
         pix = img.load()
         width = img.size[0]
         height = img.size[1]
-        return pix[width * x_percent, height * y_percent]
+        point_rgb = pix[width * x_percent, height * y_percent]
+        point_rgb = point_rgb[:3]
+        return point_rgb
 
     def save_element_image(self,element,image_file_name):
         """
