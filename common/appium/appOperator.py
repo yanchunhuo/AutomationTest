@@ -687,13 +687,14 @@ class AppOperator:
             result_y=y+height/2
             return {'x':result_x,'y':result_y}
 
-    def touch_element_left_slide(self,element,start_x_percent=0.5,start_y_percent=0.5,duration=500):
+    def touch_element_left_slide(self,element,start_x_percent=0.5,start_y_percent=0.5,duration=500,edge_type='element'):
         """
-        通过元素宽度、高度的百分比值的位置点击滑动到元素的左边缘
+        通过元素宽度、高度的百分比值的位置点击滑动到元素或者屏幕的左边缘
         :param element:
         :param start_x_percent: 相对元素宽度的百分比
         :param start_y_percent: 相对元素高度的百分比
         :param duration:
+        :param edge_type: element:滑动到元素边缘,screen:滑动到屏幕边缘
         :return:
         """
         webElement=self._change_element_to_webElement_type(element)
@@ -705,17 +706,25 @@ class AppOperator:
             y = rect['y']
             start_x = x + width * start_x_percent
             start_y = y + height * start_y_percent
-            end_x=x
-            end_y=y+height*0.5
+            if edge_type.lower()=='element':
+                end_x=x
+                end_y=y+height*0.5
+            elif edge_type.lower()=='screen':
+                end_x = 0
+                end_y = self._windows_size['height'] * 0.5
+            else:
+                end_x=start_x
+                end_y=end_x
             self._driver.swipe(start_x=start_x,start_y=start_y,end_x=end_x,end_y=end_y,duration=duration)
 
-    def touch_element_right_slide(self,element,start_x_percent=0.5,start_y_percent=0.5,duration=500):
+    def touch_element_right_slide(self,element,start_x_percent=0.5,start_y_percent=0.5,duration=500,edge_type='element'):
         """
-        通过元素宽度、高度的百分比值的位置点击滑动到元素的右边缘
+        通过元素宽度、高度的百分比值的位置点击滑动到元素或者屏幕的右边缘
         :param element:
         :param start_x_percent: 相对元素宽度的百分比
         :param start_y_percent: 相对元素高度的百分比
         :param duration:
+        :param edge_type: element:滑动到元素边缘,screen:滑动到屏幕边缘
         :return:
         """
         webElement=self._change_element_to_webElement_type(element)
@@ -727,17 +736,25 @@ class AppOperator:
             y = rect['y']
             start_x = x + width*start_x_percent
             start_y = y + height*start_y_percent
-            end_x=x+width
-            end_y=y+height*0.5
+            if edge_type.lower()=='element':
+                end_x = x + width
+                end_y = y + height * 0.5
+            elif edge_type.lower()=='screen':
+                end_x = self._windows_size['width'] * 0.99
+                end_y = self._windows_size['height'] * 0.5
+            else:
+                end_x=start_x
+                end_y=end_x
             self._driver.swipe(start_x=start_x,start_y=start_y,end_x=end_x,end_y=end_y,duration=duration)
 
-    def touch_element_up_slide(self,element,start_x_percent=0.5,start_y_percent=0.5,duration=500):
+    def touch_element_up_slide(self,element,start_x_percent=0.5,start_y_percent=0.5,duration=500,edge_type='element'):
         """
-        通过元素宽度、高度的百分比值的位置点击滑动到元素的上边缘
+        通过元素宽度、高度的百分比值的位置点击滑动到元素或者屏幕的上边缘
         :param element:
         :param start_x_percent: 相对元素宽度的百分比
         :param start_y_percent: 相对元素高度的百分比
         :param duration:
+        :param edge_type: element:滑动到元素边缘,screen:滑动到屏幕边缘
         :return:
         """
         webElement=self._change_element_to_webElement_type(element)
@@ -749,17 +766,25 @@ class AppOperator:
             y = rect['y']
             start_x = x + width*start_x_percent
             start_y = y + height*start_y_percent
-            end_x=x+width*0.5
-            end_y=y
+            if edge_type.lower()=='element':
+                end_x = x + width * 0.5
+                end_y = y
+            elif edge_type.lower()=='screen':
+                end_x = self._windows_size['width'] * 0.5
+                end_y = 0
+            else:
+                end_x=start_x
+                end_y=end_x
             self._driver.swipe(start_x=start_x,start_y=start_y,end_x=end_x,end_y=end_y,duration=duration)
 
-    def touch_element_down_slide(self,element,start_x_percent=0.5,start_y_percent=0.5,duration=500):
+    def touch_element_down_slide(self,element,start_x_percent=0.5,start_y_percent=0.5,duration=500,edge_type='element'):
         """
-        通过元素宽度、高度的百分比值的位置点击滑动到元素的下边缘
+        通过元素宽度、高度的百分比值的位置点击滑动到元素或者屏幕的下边缘
         :param element:
         :param start_x_percent: 相对元素宽度的百分比
         :param start_y_percent: 相对元素高度的百分比
         :param duration:
+        :param edge_type: element:滑动到元素边缘,screen:滑动到屏幕边缘
         :return:
         """
         webElement=self._change_element_to_webElement_type(element)
@@ -771,8 +796,15 @@ class AppOperator:
             y = rect['y']
             start_x = x + width*start_x_percent
             start_y = y + height*start_y_percent
-            end_x=x+width*0.5
-            end_y=y+height
+            if edge_type.lower()=='element':
+                end_x = x + width * 0.5
+                end_y = y + height
+            elif edge_type.lower()=='screen':
+                end_x = self._windows_size['width'] * 0.5
+                end_y = self._windows_size['height'] * 0.99
+            else:
+                end_x=start_x
+                end_y=end_x
             self._driver.swipe(start_x=start_x,start_y=start_y,end_x=end_x,end_y=end_y,duration=duration)
 
     def get_element_size_in_pixels(self,element):
