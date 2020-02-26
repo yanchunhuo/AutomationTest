@@ -807,6 +807,61 @@ class AppOperator:
                 end_y=end_x
             self._driver.swipe(start_x=start_x,start_y=start_y,end_x=end_x,end_y=end_y,duration=duration)
 
+    def touch_a_element_to_another_element_slide(self,src_element,dst_element,src_element_start_type='center',dst_element_end_type='center',duration=500):
+        """
+        从一个元素的中心或左边缘或右边缘或上边缘或下边缘，移动到另一个元素的中心或左边缘或右边缘或上边缘或下边缘
+        :param src_element: 开始的元素
+        :param dst_element: 结束的元素
+        :param src_element_start_type: center:中心开始、up:上边缘开始、down:下边缘开始、left:左边缘开始、right:右边缘开始
+        :param dst_element_end_type: center:中心结束、up:上边缘结束、down:下边缘结束、left:左边缘结束、right:右边缘结束
+        :param duration:
+        :return:
+        """
+        src_webElement=self._change_element_to_webElement_type(src_element)
+        dst_webElement = self._change_element_to_webElement_type(dst_element)
+        if src_webElement and dst_webElement:
+            src_rect=src_webElement.rect
+            src_height = src_rect['height']
+            src_width = src_rect['width']
+            src_x = src_rect['x']
+            src_y = src_rect['y']
+            dst_rect=dst_webElement.rect
+            dst_height = dst_rect['height']
+            dst_width = dst_rect['width']
+            dst_x = dst_rect['x']
+            dst_y = dst_rect['y']
+            if src_element_start_type.lower()=='left':
+                start_x=src_x
+                start_y=src_y+src_height*0.5
+            elif src_element_start_type.lower()=='right':
+                start_x = src_x+src_width
+                start_y = src_y+src_height*0.5
+            elif src_element_start_type.lower()=='up':
+                start_x = src_x + src_width * 0.5
+                start_y = src_y
+            elif src_element_start_type.lower()=='down':
+                start_x = src_x + src_width * 0.5
+                start_y = src_y + src_height
+            else:
+                start_x = src_x + src_width * 0.5
+                start_y = src_y + src_height * 0.5
+            if dst_element_end_type.lower()=='left':
+                end_x=dst_x
+                end_y=dst_y+dst_height*0.5
+            elif dst_element_end_type.lower()=='right':
+                end_x = dst_x + dst_width
+                end_y = dst_y + dst_height * 0.5
+            elif dst_element_end_type.lower()=='up':
+                end_x = dst_x + dst_width * 0.5
+                end_y = dst_y
+            elif dst_element_end_type.lower()=='down':
+                end_x = dst_x + dst_width * 0.5
+                end_y = dst_y + dst_height
+            else:
+                end_x = dst_x + dst_width * 0.5
+                end_y = dst_y + dst_height * 0.5
+            self._driver.swipe(start_x=start_x, start_y=start_y, end_x=end_x, end_y=end_y, duration=duration)
+
     def get_element_size_in_pixels(self,element):
         """
         返回元素的像素大小

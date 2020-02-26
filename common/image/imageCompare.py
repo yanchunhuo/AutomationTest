@@ -18,7 +18,7 @@ class ImageCompare:
         image2=cv2.imread(image2_path)
         height1,width1,channel1=image1.shape
         height2,width2,channel2=image2.shape
-        if not height1==height2 and not width1==width2:
+        if not height1==height2 or not width1==width2:
             height=0
             width=0
             if zoom_type.lower()=='in':
