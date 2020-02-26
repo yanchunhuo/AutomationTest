@@ -23,6 +23,14 @@ class DateTimeTool:
         return int(round(time.time()*1000))
 
     @classmethod
+    def getWeekDay(cls):
+        """
+        获得今天星期几，从1开始
+        :return:
+        """
+        return datetime.datetime.now().weekday()+1
+
+    @classmethod
     def getHowDaysAgo(cls,nowDateTime,nowDateTime_format='%Y-%m-%d %H:%M:%S',howDaysAgo=0):
         nowDateTime = datetime.datetime.strptime(nowDateTime, nowDateTime_format)
         resultDateTime=nowDateTime-datetime.timedelta(days=howDaysAgo)
