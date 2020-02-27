@@ -36,7 +36,8 @@ def start_app_device_test(index,device_info,keyword,dir,markexpr,capture,reruns,
         else:
             sys.exit('appium server状态为不可用')
     except:
-        sys.exit('appium server状态为不可用')
+        print('appium server状态为不可用')
+        raise Exception('appium server状态为不可用')
 
     a_devices_desired_capabilities = device_info['capabilities']
     print('开始设备' + device_info['device_desc'] + '测试......')
