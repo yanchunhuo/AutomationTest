@@ -1005,19 +1005,22 @@ class AppOperator:
         actions.release()
         actions.perform()
 
-    def touch_move_to(self,start_x,start_y,end_x,end_y):
+    def touch_move_to(self,start_x,start_y,end_x,end_y,duration=0):
         """
         点击从一个点移动到另外一个点
         :param start_x:
         :param start_y:
         :param end_x:
         :param end_y:
+        :param duration: 为0时不会出现惯性滑动
         :return:
         """
-        actions = TouchAction(self._driver)
-        actions.press(x=start_x, y=start_y)
-        actions.move_to(x=end_x, y=end_y)
-        actions.perform()
+        # actions = TouchAction(self._driver)
+        # actions.press(x=start_x, y=start_y)
+        # actions.move_to(x=end_x, y=end_y)
+        # actions.perform()
+        action = TouchAction(self._driver)
+        action.long_press(x=start_x,y=start_y,duration=duration).move_to(x=end_x,y=end_y).release().perform()
 
     def touch_tap(self,element,xoffset=None,yoffset=None,count=1,is_perfrom=True):
         """
