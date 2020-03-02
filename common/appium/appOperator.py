@@ -1,6 +1,7 @@
 #-*- coding:utf8 -*-
 # 作者 yanchunhuo
 # 创建时间 2018/01/19 22:36
+# github https://github.com/yanchunhuo
 
 from appium.webdriver.common.touch_action import TouchAction
 from appium.webdriver.common.multi_action import MultiAction
@@ -286,8 +287,8 @@ class AppOperator:
         pix = img.load()
         width = img.size[0]
         height = img.size[1]
-        point_rgb = pix[width * x_percent, height * y_percent]
-        point_rgb = point_rgb[:3]
+        point_rgb=pix[width * x_percent, height * y_percent]
+        point_rgb=point_rgb[:3]
         return point_rgb
 
     def save_element_image(self,element,image_file_name):
@@ -707,10 +708,10 @@ class AppOperator:
             start_x = x + width * start_x_percent
             start_y = y + height * start_y_percent
             if edge_type.lower()=='element':
-                end_x=x
+                end_x=x+0.01
                 end_y=y+height*0.5
             elif edge_type.lower()=='screen':
-                end_x = 0
+                end_x = 0+0.01
                 end_y = self._windows_size['height'] * 0.5
             else:
                 end_x=start_x
@@ -737,7 +738,7 @@ class AppOperator:
             start_x = x + width*start_x_percent
             start_y = y + height*start_y_percent
             if edge_type.lower()=='element':
-                end_x = x + width
+                end_x = x + width*0.99
                 end_y = y + height * 0.5
             elif edge_type.lower()=='screen':
                 end_x = self._windows_size['width'] * 0.99
@@ -768,10 +769,10 @@ class AppOperator:
             start_y = y + height*start_y_percent
             if edge_type.lower()=='element':
                 end_x = x + width * 0.5
-                end_y = y
+                end_y = y+0.01
             elif edge_type.lower()=='screen':
                 end_x = self._windows_size['width'] * 0.5
-                end_y = 0
+                end_y = 0+0.01
             else:
                 end_x=start_x
                 end_y=end_x
@@ -798,7 +799,7 @@ class AppOperator:
             start_y = y + height*start_y_percent
             if edge_type.lower()=='element':
                 end_x = x + width * 0.5
-                end_y = y + height
+                end_y = y + height*0.99
             elif edge_type.lower()=='screen':
                 end_x = self._windows_size['width'] * 0.5
                 end_y = self._windows_size['height'] * 0.99
@@ -846,17 +847,17 @@ class AppOperator:
                 start_x = src_x + src_width * 0.5
                 start_y = src_y + src_height * 0.5
             if dst_element_end_type.lower()=='left':
-                end_x=dst_x
+                end_x=dst_x+0.01
                 end_y=dst_y+dst_height*0.5
             elif dst_element_end_type.lower()=='right':
-                end_x = dst_x + dst_width
+                end_x = dst_x + dst_width-0.01
                 end_y = dst_y + dst_height * 0.5
             elif dst_element_end_type.lower()=='up':
                 end_x = dst_x + dst_width * 0.5
-                end_y = dst_y
+                end_y = dst_y+0.01
             elif dst_element_end_type.lower()=='down':
                 end_x = dst_x + dst_width * 0.5
-                end_y = dst_y + dst_height
+                end_y = dst_y + dst_height-0.01
             else:
                 end_x = dst_x + dst_width * 0.5
                 end_y = dst_y + dst_height * 0.5
@@ -901,17 +902,17 @@ class AppOperator:
                 start_x = src_x + src_width * 0.5
                 start_y = src_y + src_height * 0.5
             if dst_element_end_type.lower()=='left':
-                end_x=dst_x
+                end_x=dst_x+0.01
                 end_y=dst_y+dst_height*0.5
             elif dst_element_end_type.lower()=='right':
-                end_x = dst_x + dst_width
+                end_x = dst_x + dst_width-0.01
                 end_y = dst_y + dst_height * 0.5
             elif dst_element_end_type.lower()=='up':
                 end_x = dst_x + dst_width * 0.5
-                end_y = dst_y
+                end_y = dst_y+0.01
             elif dst_element_end_type.lower()=='down':
                 end_x = dst_x + dst_width * 0.5
-                end_y = dst_y + dst_height
+                end_y = dst_y + dst_height-0.01
             else:
                 end_x = dst_x + dst_width * 0.5
                 end_y = dst_y + dst_height * 0.5
@@ -1099,7 +1100,7 @@ class AppOperator:
             end_y=end_webElement_location['y']
         self._driver.swipe(start_x,start_y,end_x,end_y,duration)
 
-    def touch_left_slide(self, start_x_percent=0.5, start_y_percent=0.5, duration=500):
+    def touch_left_slide(self,start_x_percent=0.5,start_y_percent=0.5,duration=500):
         """
         通过屏幕宽度、高度的百分比值的位置点击滑动到元素的左边缘
         :param element:
@@ -1107,17 +1108,17 @@ class AppOperator:
         :param start_y_percent: 相对屏幕高度的百分比
         :return:
         """
-        if start_x_percent >= 1:
-            start_x_percent = 0.99
-        if start_y_percent >= 1:
-            start_y_percent = 0.99
-        start_x = self._windows_size['width'] * start_x_percent
-        start_y = self._windows_size['height'] * start_y_percent
-        end_x = 0
-        end_y = self._windows_size['height'] * 0.5
-        self._driver.swipe(start_x, start_y, end_x, end_y, duration)
+        if start_x_percent>=1:
+            start_x_percent=0.99
+        if start_y_percent>=1:
+            start_y_percent=0.99
+        start_x=self._windows_size['width']*start_x_percent
+        start_y=self._windows_size['height']*start_y_percent
+        end_x=0
+        end_y=self._windows_size['height']*0.5
+        self._driver.swipe(start_x,start_y,end_x,end_y,duration)
 
-    def touch_right_slide(self, start_x_percent=0.5, start_y_percent=0.5, duration=500):
+    def touch_right_slide(self,start_x_percent=0.5,start_y_percent=0.5,duration=500):
         """
         通过屏幕宽度、高度的百分比值的位置点击滑动到元素的右边缘
         :param element:
@@ -1125,17 +1126,17 @@ class AppOperator:
         :param start_y_percent: 相对屏幕高度的百分比
         :return:
         """
-        if start_x_percent >= 1:
-            start_x_percent = 0.99
-        if start_y_percent >= 1:
-            start_y_percent = 0.99
-        start_x = self._windows_size['width'] * start_x_percent
-        start_y = self._windows_size['height'] * start_y_percent
-        end_x = self._windows_size['width'] * 0.99
-        end_y = self._windows_size['height'] * 0.5
-        self._driver.swipe(start_x, start_y, end_x, end_y, duration)
+        if start_x_percent>=1:
+            start_x_percent=0.99
+        if start_y_percent>=1:
+            start_y_percent=0.99
+        start_x=self._windows_size['width']*start_x_percent
+        start_y=self._windows_size['height']*start_y_percent
+        end_x=self._windows_size['width']*0.99
+        end_y=self._windows_size['height']*0.5
+        self._driver.swipe(start_x,start_y,end_x,end_y,duration)
 
-    def touch_up_slide(self, start_x_percent=0.5, start_y_percent=0.5, duration=500):
+    def touch_up_slide(self,start_x_percent=0.5,start_y_percent=0.5,duration=500):
         """
         通过屏幕宽度、高度的百分比值的位置点击滑动到元素的上边缘
         :param element:
@@ -1144,17 +1145,17 @@ class AppOperator:
         :return:
         :return:
         """
-        if start_x_percent >= 1:
-            start_x_percent = 0.99
-        if start_y_percent >= 1:
-            start_y_percent = 0.99
-        start_x = self._windows_size['width'] * start_x_percent
-        start_y = self._windows_size['height'] * start_y_percent
-        end_x = self._windows_size['width'] * 0.5
-        end_y = 0
-        self._driver.swipe(start_x, start_y, end_x, end_y, duration)
+        if start_x_percent>=1:
+            start_x_percent=0.99
+        if start_y_percent>=1:
+            start_y_percent=0.99
+        start_x=self._windows_size['width']*start_x_percent
+        start_y=self._windows_size['height']*start_y_percent
+        end_x=self._windows_size['width']*0.5
+        end_y=0
+        self._driver.swipe(start_x,start_y,end_x,end_y,duration)
 
-    def touch_down_slide(self, start_x_percent=0.5, start_y_percent=0.5, duration=500):
+    def touch_down_slide(self,start_x_percent=0.5,start_y_percent=0.5,duration=500):
         """
         通过屏幕宽度、高度的百分比值的位置点击滑动到元素的下边缘
         :param element:
@@ -1163,15 +1164,15 @@ class AppOperator:
         :return:
         :return:
         """
-        if start_x_percent >= 1:
-            start_x_percent = 0.99
-        if start_y_percent >= 1:
-            start_y_percent = 0.99
-        start_x = self._windows_size['width'] * start_x_percent
-        start_y = self._windows_size['height'] * start_y_percent
-        end_x = self._windows_size['width'] * 0.5
-        end_y = self._windows_size['height'] * 0.99
-        self._driver.swipe(start_x, start_y, end_x, end_y, duration)
+        if start_x_percent>=1:
+            start_x_percent=0.99
+        if start_y_percent>=1:
+            start_y_percent=0.99
+        start_x=self._windows_size['width']*start_x_percent
+        start_y=self._windows_size['height']*start_y_percent
+        end_x=self._windows_size['width']*0.5
+        end_y=self._windows_size['height']*0.99
+        self._driver.swipe(start_x,start_y,end_x,end_y,duration)
 
     def getElement(self,elementInfo):
         """
@@ -1411,5 +1412,3 @@ class AppOperator:
 
     def getDriver(self):
         return self._driver
-
-
