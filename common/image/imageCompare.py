@@ -6,7 +6,7 @@ import cv2
 
 class ImageCompare:
     @classmethod
-    def compareTwoImage(cls,image1_path,image2_path,zoom_type='in'):
+    def compareTwoImage(cls,image1_path,image2_path,zoom_type='out'):
         """
         比较两张图片相识度,返回值范围为0~1,提供比较的两张图片尺寸应该一致,如果不一致会进行缩放
         :param image1_path:
