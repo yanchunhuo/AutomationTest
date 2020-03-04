@@ -7,7 +7,7 @@ from page_objects.app_ui.android.demoProject.pages.startPage import StartPage
 import pytest
 class TestStartPage:
     def setup_class(self):
-        self.demoProjectClient = APP_UI_Android_demoProject_Client()
+        self.demoProjectClient = APP_UI_Android_demoProject_Client(is_need_reset_app=True)
         self.startPage=StartPage(self.demoProjectClient.appOperator)
 
     @pytest.fixture(autouse=True)

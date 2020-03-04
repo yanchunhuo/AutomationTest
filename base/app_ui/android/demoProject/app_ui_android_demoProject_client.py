@@ -19,7 +19,7 @@ class APP_UI_Android_demoProject_Client(object):
             cls.__instance=object.__new__(cls)
         return cls.__instance
 
-    def __init__(self):
+    def __init__(self,is_need_reset_app=False):
         if self.__inited is None:
             self._init()
             self.config = Read_APP_UI_Config().app_ui_config
@@ -30,6 +30,8 @@ class APP_UI_Android_demoProject_Client(object):
             self.appOperator = AppOperator(self.driver,self._appium_hub)
 
             self.__inited=True
+        if is_need_reset_app:
+            self.appOperator.reset_app()
 
     def _init(self):
         print('初始化android基础数据......')
