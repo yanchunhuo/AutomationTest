@@ -41,6 +41,11 @@ class DateTimeTool:
         return theDateTime.strftime(format)
 
     @classmethod
+    def strToDateTime(cls,str,str_format):
+        dst_dateTime=datetime.datetime.strptime(str,str_format)
+        return dst_dateTime
+
+    @classmethod
     def getHowYearsAgo(cls,nowDate,howYearsAgo=0,nowDate_format='%Y-%m-%d'):
         resultDate = cls.getHowDaysAgo(nowDate,nowDate_format,howYearsAgo*366)
         return resultDate
