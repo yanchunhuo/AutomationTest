@@ -152,6 +152,10 @@
     * 驱动支持的手机浏览器版本：https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/web/chromedriver.md
     * 在appium desktop上设置驱动的路径
 
+* 混合应用环境准备
+    * webview中chromedriver对应的版本：http://appium.io/docs/en/writing-running-appium/web/chromedriver/#chromedriverchrome-compatibility
+    * 配置appium的Chromedriver Binary Path
+
 * Windows环境准备
     * 支持Windows10及以上版本
     * 设置Windows处于开发者模式
