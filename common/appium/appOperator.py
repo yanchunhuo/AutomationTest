@@ -808,16 +808,26 @@ class AppOperator:
                 end_y=end_x
             self._driver.swipe(start_x=start_x,start_y=start_y,end_x=end_x,end_y=end_y,duration=duration)
 
-    def touch_a_element_to_another_element_slide(self,src_element,dst_element,src_element_start_type='center',dst_element_end_type='center',duration=500):
+    def touch_a_element_to_another_element_slide(self,src_element,dst_element,src_start_x_percent=0.5,src_start_y_percent=0.5,
+                                                dst_end_x_percent=0.5,dst_end_y_percent=0.5,duration=500):
         """
-        从一个元素的中心或左边缘或右边缘或上边缘或下边缘，移动到另一个元素的中心或左边缘或右边缘或上边缘或下边缘
+        通过一个元素宽度、高度的百分比值的位置点击滑动到另一个元素宽度、高度的百分比值的位置
         :param src_element: 开始的元素
         :param dst_element: 结束的元素
-        :param src_element_start_type: center:中心开始、up:上边缘开始、down:下边缘开始、left:左边缘开始、right:右边缘开始
-        :param dst_element_end_type: center:中心结束、up:上边缘结束、down:下边缘结束、left:左边缘结束、right:右边缘结束
-        :param duration:
+        :param src_start_x_percent: 相对元素宽度的百分比
+        :param src_start_y_percent: 相对元素高度的百分比
+        :param dst_end_x_percent: 相对元素宽度的百分比
+        :param dst_end_y_percent: 相对元素高度的百分比
         :return:
         """
+        if src_start_x_percent>=1:
+            src_start_x_percent=0.99
+        if src_start_y_percent>=1:
+            src_start_y_percent=0.99
+        if dst_end_x_percent>=1:
+            dst_end_x_percent=0.99
+        if dst_end_y_percent>=1:
+            dst_end_y_percent=0.99
         src_webElement=self._change_element_to_webElement_type(src_element)
         dst_webElement = self._change_element_to_webElement_type(dst_element)
         if src_webElement and dst_webElement:
@@ -831,48 +841,33 @@ class AppOperator:
             dst_width = dst_rect['width']
             dst_x = dst_rect['x']
             dst_y = dst_rect['y']
-            if src_element_start_type.lower()=='left':
-                start_x=src_x
-                start_y=src_y+src_height*0.5
-            elif src_element_start_type.lower()=='right':
-                start_x = src_x+src_width
-                start_y = src_y+src_height*0.5
-            elif src_element_start_type.lower()=='up':
-                start_x = src_x + src_width * 0.5
-                start_y = src_y
-            elif src_element_start_type.lower()=='down':
-                start_x = src_x + src_width * 0.5
-                start_y = src_y + src_height
-            else:
-                start_x = src_x + src_width * 0.5
-                start_y = src_y + src_height * 0.5
-            if dst_element_end_type.lower()=='left':
-                end_x=dst_x+0.01
-                end_y=dst_y+dst_height*0.5
-            elif dst_element_end_type.lower()=='right':
-                end_x = dst_x + dst_width-0.01
-                end_y = dst_y + dst_height * 0.5
-            elif dst_element_end_type.lower()=='up':
-                end_x = dst_x + dst_width * 0.5
-                end_y = dst_y+0.01
-            elif dst_element_end_type.lower()=='down':
-                end_x = dst_x + dst_width * 0.5
-                end_y = dst_y + dst_height-0.01
-            else:
-                end_x = dst_x + dst_width * 0.5
-                end_y = dst_y + dst_height * 0.5
+            # 计算位置
+            start_x=src_x+src_width*src_start_x_percent
+            start_y=src_y+src_height*src_start_y_percent
+            end_x=dst_x+dst_width*dst_end_x_percent
+            end_y=dst_y+dst_height*dst_end_y_percent
             self._driver.swipe(start_x=start_x, start_y=start_y, end_x=end_x, end_y=end_y, duration=duration)
 
-    def touch_a_element_move_to_another_element(self,src_element,dst_element,src_element_start_type='center',dst_element_end_type='center'):
+    def touch_a_element_move_to_another_element(self,src_element,dst_element,src_start_x_percent=0.5,src_start_y_percent=0.5,
+                                                dst_end_x_percent=0.5,dst_end_y_percent=0.5):
         """
-        从一个元素的中心或左边缘或右边缘或上边缘或下边缘，移动到另一个元素的中心或左边缘或右边缘或上边缘或下边缘
+        通过一个元素宽度、高度的百分比值的位置点击移动到另一个元素宽度、高度的百分比值的位置
         :param src_element: 开始的元素
         :param dst_element: 结束的元素
-        :param src_element_start_type: center:中心开始、up:上边缘开始、down:下边缘开始、left:左边缘开始、right:右边缘开始
-        :param dst_element_end_type: center:中心结束、up:上边缘结束、down:下边缘结束、left:左边缘结束、right:右边缘结束
-        :param duration:
+        :param src_start_x_percent: 相对元素宽度的百分比
+        :param src_start_y_percent: 相对元素高度的百分比
+        :param dst_end_x_percent: 相对元素宽度的百分比
+        :param dst_end_y_percent: 相对元素高度的百分比
         :return:
         """
+        if src_start_x_percent>=1:
+            src_start_x_percent=0.99
+        if src_start_y_percent>=1:
+            src_start_y_percent=0.99
+        if dst_end_x_percent>=1:
+            dst_end_x_percent=0.99
+        if dst_end_y_percent>=1:
+            dst_end_y_percent=0.99
         src_webElement=self._change_element_to_webElement_type(src_element)
         dst_webElement = self._change_element_to_webElement_type(dst_element)
         if src_webElement and dst_webElement:
@@ -886,36 +881,11 @@ class AppOperator:
             dst_width = dst_rect['width']
             dst_x = dst_rect['x']
             dst_y = dst_rect['y']
-            if src_element_start_type.lower()=='left':
-                start_x=src_x
-                start_y=src_y+src_height*0.5
-            elif src_element_start_type.lower()=='right':
-                start_x = src_x+src_width
-                start_y = src_y+src_height*0.5
-            elif src_element_start_type.lower()=='up':
-                start_x = src_x + src_width * 0.5
-                start_y = src_y
-            elif src_element_start_type.lower()=='down':
-                start_x = src_x + src_width * 0.5
-                start_y = src_y + src_height
-            else:
-                start_x = src_x + src_width * 0.5
-                start_y = src_y + src_height * 0.5
-            if dst_element_end_type.lower()=='left':
-                end_x=dst_x+0.01
-                end_y=dst_y+dst_height*0.5
-            elif dst_element_end_type.lower()=='right':
-                end_x = dst_x + dst_width-0.01
-                end_y = dst_y + dst_height * 0.5
-            elif dst_element_end_type.lower()=='up':
-                end_x = dst_x + dst_width * 0.5
-                end_y = dst_y+0.01
-            elif dst_element_end_type.lower()=='down':
-                end_x = dst_x + dst_width * 0.5
-                end_y = dst_y + dst_height-0.01
-            else:
-                end_x = dst_x + dst_width * 0.5
-                end_y = dst_y + dst_height * 0.5
+            # 计算位置
+            start_x=src_x+src_width*src_start_x_percent
+            start_y=src_y+src_height*src_start_y_percent
+            end_x=dst_x+dst_width*dst_end_x_percent
+            end_y=dst_y+dst_height*dst_end_y_percent
             self.touch_move_to(start_x,start_y,end_x,end_y)
 
     def get_element_size_in_pixels(self,element):
