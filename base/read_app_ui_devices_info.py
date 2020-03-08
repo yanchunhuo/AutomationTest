@@ -44,4 +44,5 @@ class Read_APP_UI_Devices_Info(object):
         devices_info.appActivitys = get_lambda(config.get('devices_info','appActivitys',fallback=''))
         devices_info.appPackages = get_lambda(config.get('devices_info','appPackages',fallback=''))
         devices_info.apps_dirs = get_lambda(config.get('devices_info','apps_dirs',fallback=''))
+        devices_info.noSigns = get_lambda(config.get('devices_info', 'noSigns', fallback=''))
         return devices_info.get_devices_info()

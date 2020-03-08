@@ -20,6 +20,7 @@ class APP_UI_Devices_Info:
         self.appPackages = []
         self.appActivitys = []
         self.apps_dirs = []
+        self.noSigns=[]
 
     def get_devices_info(self):
         devices_info = []
@@ -69,6 +70,11 @@ class APP_UI_Devices_Info:
                     desired_capabilities.update({'appPackage': ''})
                 if self.apps_dirs:
                     desired_capabilities.update({'app': a_device_apps[j]})
+                if len(self.noSigns):
+                    noSign=False
+                    if 'true'==self.noSigns[i].strip().lower():
+                        noSign=True
+                    desired_capabilities.update({'noSign':noSign})
                 a_devices_desired_capabilities.append(desired_capabilities)
             device_info.update({'capabilities': a_devices_desired_capabilities})
             # 完成一台设备构建
