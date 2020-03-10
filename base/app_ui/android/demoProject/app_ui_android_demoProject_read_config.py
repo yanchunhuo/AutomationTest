@@ -15,9 +15,9 @@ class APP_UI_Android_DemoProject_Read_Config(object):
             cls.__instance=object.__new__(cls)
         return cls.__instance
 
-    def __init__(self):
+    def __init__(self,config_file_name):
         if self.__inited is None:
-            self.config=self._readConfig('config/demoProject/app_ui_android_demoProject.conf')
+            self.config=self._readConfig('config/demoProject/%s'%config_file_name)
             self.__inited=True
 
     def _readConfig(self, configFile):

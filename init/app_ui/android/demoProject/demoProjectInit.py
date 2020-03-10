@@ -2,14 +2,10 @@
 # 作者 yanchunhuo
 # 创建时间 2018/01/19 22:36
 # github https://github.com/yanchunhuo
-from base.app_ui.android.demoProject.app_ui_android_demoProject_read_config import APP_UI_Android_DemoProject_Read_Config
 
 class DemoProjectInit:
-    def __init__(self):
-        self._app_ui_android_demoProject_read_config=APP_UI_Android_DemoProject_Read_Config().config
-
-    def init(self):
-        if int(self._app_ui_android_demoProject_read_config.init)==0:
+    def init(self,is_init=False):
+        if not is_init:
             return
         #每次测试前先清除上次构造的数据
         self._deinit()

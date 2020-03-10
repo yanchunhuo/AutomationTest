@@ -6,6 +6,7 @@ import os
 class APP_UI_Devices_Info:
     def __init__(self):
         self.devices_desc = []
+        self.app_ui_configs=[]
         self.server_ports = []
         self.server_ips = []
         self.system_auth_alert_labels = []
@@ -30,6 +31,7 @@ class APP_UI_Devices_Info:
         for i in range(len(self.devices_desc)):
             device_info={}
             device_info.update({'device_desc':self.devices_desc[i].strip()})
+            device_info.update({'app_ui_config': self.app_ui_configs[i].strip()})
             device_info.update({'server_port':self.server_ports[i].strip()})
             device_info.update({'server_ip':self.server_ips[i].strip()})
             if self.system_auth_alert_labels:

@@ -24,6 +24,7 @@ class Read_APP_UI_Devices_Info(object):
         devices_info = APP_UI_Devices_Info()
         get_lambda=lambda info:list(filter(None,info.split('||'))) if info else []
         devices_info.devices_desc=get_lambda(config.get('devices_info','devices_desc',fallback=''))
+        devices_info.app_ui_configs = get_lambda(config.get('devices_info', 'app_ui_configs', fallback=''))
         devices_info.server_ports=get_lambda(config.get('devices_info','server_ports',fallback=''))
         devices_info.server_ips = get_lambda(config.get('devices_info', 'server_ips', fallback=''))
         system_auth_alert_labels=[]
