@@ -31,5 +31,5 @@ class ImageCompare:
             image2 = cv2.resize(image2, (height, width))
         image1_gray=cv2.cvtColor(image1,cv2.COLOR_BGR2GRAY)
         image2_gray=cv2.cvtColor(image2,cv2.COLOR_BGR2GRAY)
-        score,diff=structural_similarity(image1_gray,image2_gray,full=True)
+        score,diff=structural_similarity(image1_gray,image2_gray,full=True,multichannel=True)
         return score
