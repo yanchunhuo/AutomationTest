@@ -78,15 +78,16 @@
 * 将下载的字库放到common/java/lib/tess4j/tessdata/
 * Linux
     * 安装依赖
-        * sudo apt install pkg-config aclocal libtool automake libleptonica-dev
+        * ubuntu:sudo apt install pkg-config aclocal libtool automake libleptonica-dev
+        * centos:yum install autoconf automake libtool libjpeg-devel libpng-devel libtiff-devel zlib-devel
+    * 安装leptonica，下载leptonica-1.78.0.tar.gz，下载地址：https://github.com/DanBloomberg/leptonica/releases
+        * 安装步骤同tesseract-ocr的安装
     * 安装tesseract-ocr，下载tesseract-4.1.1.tar.gz，下载地址：https://github.com/tesseract-ocr/tesseract/releases
         * ./autogen.sh
         * ./configure
         * sudo make
         * sudo make install
         * sudo ldconfig
-    * 安装leptonica，下载leptonica-1.78.0.tar.gz，下载地址：https://github.com/DanBloomberg/leptonica/releases
-        * 安装步骤同tesseract-ocr的安装
 * Windows
     * 安装Microsoft Visual C++ 2019 Redistributable，下载地址：https://visualstudio.microsoft.com/zh-hans/downloads/
 
