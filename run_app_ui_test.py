@@ -44,10 +44,13 @@ def start_app_device_test(index,device_info,keyword,dir,markexpr,capture,reruns,
     for desired_capabilities in a_devices_desired_capabilities:
         FileTool.writeObjectIntoFile(desired_capabilities,
                                      'config/app_ui_tmp/' + str(os.getpid()) + '_current_desired_capabilities')
-        if desired_capabilities['appPackage']:
+        desired_capabilities_desc = None
+        if 'appPackage' in desired_capabilities.keys():
             desired_capabilities_desc = desired_capabilities['appPackage']
-        else:
-            desired_capabilities_desc=desired_capabilities['app'].split('/')[-1]
+        elif 'app' in desired_capabilities.keys():
+            desired_capabilities_desc = desired_capabilities['app'].split('/')[-1]
+        elif 'bundleId' in desired_capabilities.keys():
+            desired_capabilities_desc = desired_capabilities['bundleId']
         print('当前设备开始测试的desired_capabilities为:%s' % desired_capabilities)
         # 执行pytest前的参数准备
         pytest_execute_params = ['-c', 'config/pytest.ini', '-v', '--alluredir',

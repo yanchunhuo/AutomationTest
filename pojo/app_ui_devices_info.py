@@ -20,6 +20,7 @@ class APP_UI_Devices_Info:
         self.wdaLocalPorts = []
         self.appPackages = []
         self.appActivitys = []
+        self.bundleIds = []
         self.apps_dirs = []
         self.noSigns=[]
         self.fullResets=[]
@@ -37,20 +38,25 @@ class APP_UI_Devices_Info:
             if self.system_auth_alert_labels:
                 device_info.update({'system_auth_alert_label': self.system_auth_alert_labels[i]})
             # 构建desired_capabilities
-            a_device_capabilities_num=0
-            a_device_appActivitys=[]
-            a_device_appPackages=[]
-            a_device_apps=[]
-            if self.appActivitys and self.appPackages:
-                a_device_appActivitys=self.appActivitys[i].split('&&')
-                a_device_appPackages=self.appPackages[i].split('&&')
-                a_device_capabilities_num=len(a_device_appActivitys)
-            if self.apps_dirs:
-                a_device_capabilities_num=len(self.apps_dirs)
-                paths=os.walk(self.apps_dirs[i].strip())
-                for dirPath,dirName,fileNames in paths:
+            a_device_capabilities_num = 0
+            a_device_appActivitys = []
+            a_device_appPackages = []
+            a_device_bundleIds = []
+            a_device_apps = []
+            if len(self.appActivitys) and len(self.appPackages):
+                a_device_appActivitys = self.appActivitys[i].split('&&')
+                a_device_appPackages = self.appPackages[i].split('&&')
+                a_device_capabilities_num = len(a_device_appActivitys)
+            if len(self.bundleIds):
+                a_device_bundleIds = self.bundleIds[i].split('&&')
+                a_device_capabilities_num = len(a_device_bundleIds)
+            if len(self.apps_dirs):
+                a_device_capabilities_num = len(self.apps_dirs)
+                paths = os.walk(self.apps_dirs[i].strip())
+                for dirPath, dirName, fileNames in paths:
                     for fileName in fileNames:
-                        a_device_apps.append(('http://%s:%s/%s/%s')%(local_ip,httpserver_port,self.apps_dirs[i].strip(),fileName))
+                        a_device_apps.append(
+                            ('http://%s:%s/%s/%s') % (local_ip, httpserver_port, self.apps_dirs[i].strip(), fileName))
             a_devices_desired_capabilities=[]
             for j in range(a_device_capabilities_num):
                 desired_capabilities={}
@@ -65,13 +71,12 @@ class APP_UI_Devices_Info:
                 desired_capabilities.update({'systemport': self.systemports[i].strip()})
                 if len(self.wdaLocalPorts):
                     desired_capabilities.update({'wdaLocalPort': self.wdaLocalPorts[i].strip()})
-                if self.appActivitys and self.appPackages:
+                if len(self.appActivitys) and len(self.appPackages):
                     desired_capabilities.update({'appActivity': a_device_appActivitys[j].strip()})
                     desired_capabilities.update({'appPackage': a_device_appPackages[j].strip()})
-                else:
-                    desired_capabilities.update({'appActivity': ''})
-                    desired_capabilities.update({'appPackage': ''})
-                if self.apps_dirs:
+                if len(self.bundleIds):
+                    desired_capabilities.update({'bundleId':a_device_bundleIds[j].strip()})
+                if len(self.apps_dirs):
                     desired_capabilities.update({'app': a_device_apps[j]})
                 if len(self.noSigns):
                     noSign=False
