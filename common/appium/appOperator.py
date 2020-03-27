@@ -298,10 +298,17 @@ class AppOperator:
         :return: 图片存储的路径
         """
         webElement = self._change_element_to_webElement_type(element)
-        left = webElement.location['x']
-        top = webElement.location['y']
-        right = webElement.location['x'] + webElement.size['width']
-        bottom = webElement.location['y'] + webElement.size['height']
+        webElement_x=webElement.location['x']
+        webElement_y = webElement.location['y']
+        webElement_width=webElement.size['width']
+        webElement_height=webElement.size['height']
+        screen_size=self.get_window_size()
+        screen_width=screen_size['width']
+        screen_height=screen_size['height']
+        left_percent=webElement_x/screen_width
+        top_percent=webElement_y/screen_height
+        right_percent=(webElement_x+webElement_width)/screen_width
+        bottom_percent=(webElement_y+webElement_height)/screen_height
         # 进行屏幕截图
         image_file_name = DateTimeTool.getNowTime('%Y%m%d%H%M%S%f_') + '%s.png'%image_file_name
         if not os.path.exists('output/tmp/'):
@@ -309,8 +316,11 @@ class AppOperator:
         image_file_name = os.path.abspath('output/tmp/' + image_file_name)
         self._driver.get_screenshot_as_file(image_file_name)
         img = Image.open(image_file_name)
+        img_size=img.size
+        img_width=img_size[0]
+        img_height=img_size[1]
         # 验证码图片裁切并保存
-        img = img.crop((left, top, right, bottom))
+        img = img.crop((left_percent*img_width, top_percent*img_height, right_percent*img_width, bottom_percent*img_height))
         img.save(image_file_name)
         return image_file_name
 
