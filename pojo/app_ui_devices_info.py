@@ -22,6 +22,7 @@ class APP_UI_Devices_Info:
         self.appActivitys = []
         self.bundleIds = []
         self.apps_dirs = []
+        self.apps_urls = []
         self.noSigns=[]
         self.fullResets=[]
 
@@ -51,12 +52,15 @@ class APP_UI_Devices_Info:
                 a_device_bundleIds = self.bundleIds[i].split('&&')
                 a_device_capabilities_num = len(a_device_bundleIds)
             if len(self.apps_dirs):
-                a_device_capabilities_num = len(self.apps_dirs)
                 paths = os.walk(self.apps_dirs[i].strip())
                 for dirPath, dirName, fileNames in paths:
                     for fileName in fileNames:
                         a_device_apps.append(
                             ('http://%s:%s/%s/%s') % (local_ip, httpserver_port, self.apps_dirs[i].strip(), fileName))
+                a_device_capabilities_num = len(a_device_apps)
+            if len(self.apps_urls):
+                a_device_apps = self.apps_urls[i].split('&&')
+                a_device_capabilities_num = len(a_device_apps)
             a_devices_desired_capabilities=[]
             for j in range(a_device_capabilities_num):
                 desired_capabilities={}

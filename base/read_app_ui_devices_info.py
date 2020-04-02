@@ -28,7 +28,7 @@ class Read_APP_UI_Devices_Info(object):
         devices_info.server_ports=get_lambda(config.get('devices_info','server_ports',fallback=''))
         devices_info.server_ips = get_lambda(config.get('devices_info', 'server_ips', fallback=''))
         system_auth_alert_labels=[]
-        get_system_auth_alert_label=lambda tmp_system_auth_alert_label:list(filter(None,tmp_system_auth_alert_label.split('##'))) if tmp_system_auth_alert_label else []
+        get_system_auth_alert_label=lambda tmp_system_auth_alert_label:list(filter(None,tmp_system_auth_alert_label.split('&&'))) if tmp_system_auth_alert_label else []
         for tmp_system_auth_alert_label in get_lambda(config.get('devices_info','system_auth_alert_labels',fallback='')):
             system_auth_alert_labels.append((get_system_auth_alert_label(tmp_system_auth_alert_label)))
         devices_info.system_auth_alert_labels=system_auth_alert_labels
@@ -46,6 +46,7 @@ class Read_APP_UI_Devices_Info(object):
         devices_info.appPackages = get_lambda(config.get('devices_info','appPackages',fallback=''))
         devices_info.bundleIds = get_lambda(config.get('devices_info','bundleIds',fallback=''))
         devices_info.apps_dirs = get_lambda(config.get('devices_info','apps_dirs',fallback=''))
+        devices_info.apps_urls = get_lambda(config.get('devices_info', 'apps_urls', fallback=''))
         devices_info.noSigns = get_lambda(config.get('devices_info','noSigns',fallback=''))
         devices_info.fullResets = get_lambda(config.get('devices_info', 'fullResets', fallback=''))
         return devices_info.get_devices_info()
