@@ -80,8 +80,8 @@ class APP_UI_Devices_Info:
                     desired_capabilities.update({'appPackage': a_device_appPackages[j].strip()})
                 if len(self.bundleIds):
                     desired_capabilities.update({'bundleId':a_device_bundleIds[j].strip()})
-                if len(self.apps_dirs):
-                    desired_capabilities.update({'app': a_device_apps[j]})
+                if len(self.apps_dirs) or len(self.apps_urls):
+                    desired_capabilities.update({'app': a_device_apps[j].strip()})
                 if len(self.noSigns):
                     noSign=False
                     if 'true'==self.noSigns[i].strip().lower():
