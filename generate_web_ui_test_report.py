@@ -2,8 +2,9 @@
 # 作者 yanchunhuo
 # 创建时间 2018/01/19 22:36
 
-from common.strTool import StrTool
 from common.custom_multiprocessing import Custom_Pool
+from common.network import Network
+from common.strTool import StrTool
 import argparse
 import platform
 import subprocess
@@ -43,6 +44,7 @@ if __name__=='__main__':
                 except:
                     print('allure未查找到监听端口%s的服务' % ieport)
                 print('生成ie报告,使用端口' + ieport)
+                print('ie报告地址:http://%s:%s/' % (Network.get_local_ip(), ieport))
                 p = p_pool.apply_async(generate_windows_reports,('output/web_ui/ie',ieport))
             if chromeport:
                 # 获得当前监听chrome端口的进程id
@@ -59,6 +61,7 @@ if __name__=='__main__':
                 except:
                     print('allure未查找到监听端口%s的服务' % chromeport)
                 print('生成chrome报告,使用端口' + chromeport)
+                print('chrome报告地址:http://%s:%s/' % (Network.get_local_ip(), chromeport))
                 p = p_pool.apply_async(generate_windows_reports,('output/web_ui/chrome',chromeport))
             if firefoxport:
                 # 获得当前监听ie端口的进程id
@@ -75,6 +78,7 @@ if __name__=='__main__':
                 except:
                     print('allure未查找到监听端口%s的服务' % firefoxport)
                 print('生成firefox报告,使用端口' + firefoxport)
+                print('firefox报告地址:http://%s:%s/' % (Network.get_local_ip(), firefoxport))
                 p = p_pool.apply_async(generate_windows_reports,('output/web_ui/firefox',firefoxport))
             p_pool.close()
             p_pool.join()
@@ -103,6 +107,7 @@ if __name__=='__main__':
                             is_find =True
                             break
                 print('生成ie报告,使用端口'+ieport)
+                print('ie报告地址:http://%s:%s/' % (Network.get_local_ip(), ieport))
                 subprocess.check_output("nohup allure serve -p " + ieport + " output/web_ui/ie >logs/ie_generate_web_ui_test_report.log 2>&1 &",shell=True)
             if chromeport:
                 # 获得当前监听chrome端口的进程id
@@ -123,6 +128,7 @@ if __name__=='__main__':
                             is_find = True
                             break
                 print('生成chrome报告,使用端口' + chromeport)
+                print('chromeport报告地址:http://%s:%s/' % (Network.get_local_ip(), chromeport))
                 subprocess.check_output("nohup allure serve -p " + chromeport + " output/web_ui/chrome >logs/chrome_generate_web_ui_test_report.log 2>&1 &",shell=True)
             if firefoxport:
                 # 获得当前监听firefox端口的进程id
@@ -143,4 +149,5 @@ if __name__=='__main__':
                             is_find = True
                             break
                 print('生成firefox报告,使用端口' + firefoxport)
+                print('firefoxport报告地址:http://%s:%s/' % (Network.get_local_ip(), firefoxport))
                 subprocess.check_output("nohup allure serve -p " + firefoxport + " output/web_ui/firefox >logs/firefox_generate_web_ui_test_report.log 2>&1 &",shell=True)

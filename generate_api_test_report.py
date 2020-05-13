@@ -1,6 +1,7 @@
 ﻿# 作者 yanchunhuo
 # 创建时间 2018/01/19 22:36
 from common.strTool import StrTool
+from common.network import Network
 import argparse
 import multiprocessing
 import subprocess
@@ -33,6 +34,7 @@ if __name__=='__main__':
             except:
                 print('allure未查找到监听端口%s的服务' % port)
             print('生成报告,使用端口' + port)
+            print('报告地址:http://%s:%s/' % (Network.get_local_ip(), port))
             process=multiprocessing.Process(target=generate_windows_reports,args=('output/api/',port))
             process.start()
             process.join()
@@ -61,5 +63,6 @@ if __name__=='__main__':
                         is_find = True
                         break
             print('生成报告,使用端口' + port)
+            print('报告地址:http://%s:%s/' % (Network.get_local_ip(), port))
             subprocess.check_output("nohup allure serve -p " + port + " output/api/ >logs/generate_api_test_report.log 2>&1 &",shell=True)
 

@@ -2,6 +2,7 @@
 # 作者 yanchunhuo
 # 创建时间 2018/01/19 22:36
 from common.custom_multiprocessing import Custom_Pool
+from common.network import Network
 from common.strTool import StrTool
 import argparse
 import os
@@ -45,6 +46,7 @@ if __name__=='__main__':
                 except:
                     print('allure未查找到监听端口%s的服务' % port)
                 print('生成报告' + report_dirs[i] + ',使用端口' + port)
+                print('报告地址:http://%s:%s/' % (Network.get_local_ip(), port))
                 p = p_pool.apply_async(generate_windows_reports,(report_dirs[i],port))
             p_pool.close()
             p_pool.join()
@@ -75,5 +77,6 @@ if __name__=='__main__':
                             is_find = True
                             break
                 print('生成报告'+report_dirs[i]+',使用端口' + port)
+                print('报告地址:http://%s:%s/' % (Network.get_local_ip(), port))
                 subprocess.check_output("nohup allure serve -p " + port + " "+report_dirs[i]+" >>logs/generate_app_ui_test.log 2>&1 &",shell=True)
 
