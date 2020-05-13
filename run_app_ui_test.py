@@ -163,7 +163,6 @@ if __name__=='__main__':
                 pytest_execute_params.append('--lf')
         pytest_execute_params.append(dir)
         exit_code = pytest.main(pytest_execute_params)
-        sys.exit(exit_code)
 
     # 当Python线程中执行jpype相关代码时会出现无法关闭jvm卡死的情况，故不进行主动关闭jvm，Python主进程结束自动关闭
     # print '关闭jvm......'

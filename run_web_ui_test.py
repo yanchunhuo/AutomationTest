@@ -99,4 +99,3 @@ if __name__=='__main__':
     print('清除未被关闭的浏览器完成......')
 
     print('结束测试......')
-    sys.exit(exit_code)

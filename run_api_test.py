@@ -58,4 +58,3 @@ if __name__=='__main__':
 
     print('开始测试......')
     exit_code=pytest.main(pytest_execute_params)
-    sys.exit(exit_code)
