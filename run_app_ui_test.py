@@ -20,7 +20,7 @@ import ujson
 def pytest_main(pytest_execute_params):
     exit_code = pytest.main(pytest_execute_params)
 
-def start_app_device_test(index,device_info,keyword,dir,markexpr,capture,reruns,lf):
+def start_app_device_test(index,device_info,keyword,dir,markexpr,capture,reruns,lf,clr):
     for path, dirs, files in os.walk('config/app_ui_tmp'):
         for file in files:
             if(int(file)==index):
@@ -79,6 +79,10 @@ def start_app_device_test(index,device_info,keyword,dir,markexpr,capture,reruns,
         if lf:
             if int(lf):
                 pytest_execute_params.append('--lf')
+        # 判断是否清空已有测试结果
+        if clr:
+            if int(clr):
+                pytest_execute_params.append('--clean-alluredir')
         pytest_execute_params.append(dir)
         # 构建孙进程
         process = multiprocessing.Process(target=pytest_main, args=(pytest_execute_params,))
@@ -89,14 +93,15 @@ def start_app_device_test(index,device_info,keyword,dir,markexpr,capture,reruns,
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser()
-    parser.add_argument('-k','--keyword',help='只执行匹配关键字的用例，会匹配文件名、类名、方法名',type=str)
-    parser.add_argument('-d','--dir',help='指定要测试的目录',type=str)
-    parser.add_argument('-m', '--markexpr', help='只运行符合给定的mark表达式的测试')
-    parser.add_argument('-s', '--capture', help='是否在标准输出流中输出日志,1:是、0:否,默认为0')
-    parser.add_argument('-r', '--reruns', help='失败重跑次数,默认为0')
-    parser.add_argument('-lf', '--lf', help='是否运行上一次失败的用例,1:是、0:否,默认为0')
-    parser.add_argument('-tt', '--test_type', help='【必填】测试类型,phone、windows')
-    parser.add_argument('-dif', '--devices_info_file', help='多设备并行信息文件，当--test_type为android、ios、chrome时，此选项需提供')
+    parser.add_argument('-k', '--keyword', help='只执行匹配关键字的用例，会匹配文件名、类名、方法名', type=str)
+    parser.add_argument('-d', '--dir', help='指定要测试的目录', type=str)
+    parser.add_argument('-m', '--markexpr', help='只运行符合给定的mark表达式的测试', type=str)
+    parser.add_argument('-s', '--capture', help='是否在标准输出流中输出日志,1:是、0:否,默认为0', type=str)
+    parser.add_argument('-r', '--reruns', help='失败重跑次数,默认为0', type=str)
+    parser.add_argument('-lf', '--lf', help='是否运行上一次失败的用例,1:是、0:否,默认为0', type=str)
+    parser.add_argument('-tt', '--test_type', help='【必填】测试类型,phone、windows', type=str)
+    parser.add_argument('-dif', '--devices_info_file', help='多设备并行信息文件，当--test_type为android、ios、chrome时，此选项需提供',type=str)
+    parser.add_argument('-clr', '--clr', help='是否清空已有测试结果,1:是、0:否,默认为0', type=str)
     args=parser.parse_args()
 
     # 处理pytest文件
@@ -116,6 +121,7 @@ if __name__=='__main__':
     capture=args.capture
     reruns=args.reruns
     lf=args.lf
+    clr=args.clr
     test_type=args.test_type.lower()
     devices_info_file=args.devices_info_file
     if test_type=='phone':
@@ -131,7 +137,7 @@ if __name__=='__main__':
         for i in range(len(devices_info)):
             device_info=devices_info[i]
             FileTool.writeObjectIntoFile(device_info,'config/app_ui_tmp/'+str(i))
-            p=p_pool.apply_async(start_app_device_test,(i,device_info,keyword,dir,markexpr,capture,reruns,lf))
+            p=p_pool.apply_async(start_app_device_test,(i,device_info,keyword,dir,markexpr,capture,reruns,lf,clr))
         p_pool.close()
         p_pool.join()
     else:
@@ -161,6 +167,10 @@ if __name__=='__main__':
         if lf:
             if int(lf):
                 pytest_execute_params.append('--lf')
+        # 判断是否清空已有测试结果
+        if clr:
+            if int(clr):
+                pytest_execute_params.append('--clean-alluredir')
         pytest_execute_params.append(dir)
         exit_code = pytest.main(pytest_execute_params)
 
