@@ -17,22 +17,27 @@ class DubboClient:
         """
         # 启动jvm......'
         StartJpypeJVM()
-        self._DubboClient=jpype.JClass("com.tools.DubboClient")
+        self. _DubboClient=jpype.JClass("com.tools.DubboClient")
         self._dubboClient=self._DubboClient(registryAddresses,protocol,group)
 
     def request(self,requestInterfaceClassName,requestMethod,params):
         """
         :param requestInterfaceClassName 请求接口类名,需完整包路径
         :param requestMethod 请求方法
-        :param params 格式:
+        :param params 所有参数放在一个数组内，格式:
                       无参数填写[]
-                      基本数据类型参数：[{"type":"java.lang.String","data":"value"}]
-                      数组、集合类型参数：[{"type":"java.util.Set","data":[{"type":"java.lang.Long","data":"value"},{"type":"java.lang.Long","data":"value"}]}]
-                      MAP类型参数：[{"type":"java.util.Map","data":[[{"type":"key_type","data":"key_value"},{"type":"value_type","data":"value_value"}]]"}]
-                      自定义对象类型参数：[{"type":"com.company.xxxDTO","data":{"username":"username","age":344}}]
-                      注：type当前支持：java.lang.*、java.util.List、java.util.Set、java.util.Collection、java.util.Map
+                      一个基本数据类型参数(byte、short、int、long、double、float)：[{"type":"int","data":"value"}]
+                      一个基本数据类型数组参数：[{"type":"int[]","data":[{"type":"int","data":"value"},{"type":"int","data":"value"}]}]
+                      一个java.lang数据类型参数：[{"type":"java.lang.String","data":"1"}]
+                      一个java.lang数据类型数组参数：[{"type":"java.lang.String[]","data":[{"type":"java.lang.String","data":"value"},{"type":"java.lang.String","data":"value"}]}]
+                      一个集合类型参数：[{"type":"java.util.Set","data":[{"type":"java.lang.Long","data":"value"},{"type":"java.lang.Long","data":"value"}]}]
+                      一个MAP类型参数：[{"type":"java.util.Map","data":[[{"type":"key_type","data":"key_value"},{"type":"value_type","data":"value_value"}]]"}]
+                      一个枚举类类型：[{"type":"com.ztjy.authority.constants.SystemTypeEnum","data":"value"}]  其中value填写枚举类中的一个枚举值
+                      一个自定义对象类型参数：[{"type":"com.company.xxxDTO","data":{"username":"username","age":344}}]
         :return
         """
+        if not isinstance(params,str):
+            params=ujson.dumps(params)
         result=self._dubboClient.request(requestInterfaceClassName,requestMethod,params)
         if result:
             return ujson.loads(result)

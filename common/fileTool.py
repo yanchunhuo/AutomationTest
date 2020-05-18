@@ -5,8 +5,21 @@
 import ujson
 import os
 import re
+import chardet
 
 class FileTool:
+
+    @classmethod
+    def getChardet(cls,filePath):
+        """
+        获取文件编码格式，比如utf-8、GB2312
+        :param filePath:
+        :return:
+        """
+        with open(filePath, 'rb') as f:
+            cur_encoding = chardet.detect(f.read())['encoding']
+            f.close()
+        return cur_encoding
 
     @classmethod
     def writeObjectIntoFile(cls,obj,filePath,encoding='utf-8'):

@@ -19,7 +19,12 @@ class DictTool:
 
     @classmethod
     def sorted_dict(cls,data):
-        new_data = {}
-        for key in sorted(data):
-            new_data.update({key: data[key]})
-        return new_data
+        list = []
+        for key in data:
+            list.append(key)
+        data_result = {}
+        list.sort()
+        for i in list:
+            data_result[i] = data[i]
+        return data_result
+
