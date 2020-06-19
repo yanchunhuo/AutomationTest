@@ -33,6 +33,8 @@ class DubboClient:
                       一个集合类型参数：[{"type":"java.util.Set","data":[{"type":"java.lang.Long","data":"value"},{"type":"java.lang.Long","data":"value"}]}]
                       一个MAP类型参数：[{"type":"java.util.Map","data":[[{"type":"key_type","data":"key_value"},{"type":"value_type","data":"value_value"}]]"}]
                       一个枚举类类型：[{"type":"com.ztjy.authority.constants.SystemTypeEnum","data":"value"}]  其中value填写枚举类中的一个枚举值
+                      一个时间类型：[{"type":"java.util.Date","data":{"format":"yyyy-MM-dd HH:mm:ss","datetime":"value"}}]
+                                  当前支持java.util.Date、java.time.LocalDate、java.sql.Timestamp、java.sql.Date
                       一个自定义对象类型参数：[{"type":"com.company.xxxDTO","data":{"username":"username","age":344}}]
         :return
         """
