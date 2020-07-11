@@ -36,8 +36,8 @@ class Rotbot:
         params=ujson.dumps(params)
         # 构造path
         path='/'
-        timestamp=DateTimeTool.getNowTimeStampWithMillisecond()
         if self.secret_key:
+            timestamp = DateTimeTool.getNowTimeStampWithMillisecond()
             path='&timestamp={}&sign={}'.format(timestamp,self._generator_sign(timestamp,self.secret_key))
         # 发送文本
         httpResponseResult=self.doRequest.post_with_form(path,params)
@@ -55,8 +55,8 @@ class Rotbot:
         params = ujson.dumps(params)
         # 构造path
         path = '/'
-        timestamp = DateTimeTool.getNowTimeStampWithMillisecond()
         if self.secret_key:
+            timestamp = DateTimeTool.getNowTimeStampWithMillisecond()
             path = '&timestamp={}&sign={}'.format(timestamp, self._generator_sign(timestamp, self.secret_key))
         # 发送文本
         httpResponseResult = self.doRequest.post_with_form(path, params)
