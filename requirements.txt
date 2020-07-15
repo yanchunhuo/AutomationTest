@@ -16,3 +16,4 @@ PyMySQL==0.8.0
 redis==2.10.6
 ujson==1.35
 locustio==0.13.5
+mitmproxy==5.0.1
