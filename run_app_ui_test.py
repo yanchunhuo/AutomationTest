@@ -10,6 +10,7 @@ from common.custom_multiprocessing import Custom_Pool
 from common.pytest import deal_pytest_ini_file
 from init.java.java_maven_init import java_maven_init
 from init.httpserver.http_server_init import http_server_init
+from init.mitmproxy.mitmproxy_init import mitmproxy_init
 import argparse
 import multiprocessing
 import os
@@ -112,6 +113,9 @@ if __name__=='__main__':
 
     # 初始化httpserver
     http_server_init()
+
+    # 初始化mitmproxy
+    mitmproxy_init()
 
     if not args.test_type:
         sys.exit('请指定测试类型,查看帮助:python run_app_ui_test.py --help')
