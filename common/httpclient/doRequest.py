@@ -51,6 +51,11 @@ class DoRequest(object):
                           timeout=self._timeout,proxies=self._proxies,**kwargs)
         return self._dealResponseResult(r)
 
+    def put(self,path,params=None,**kwargs):
+        r=self._session.put(self._url+path,data=params,headers=self._headers,cookies=self._cookies,timeout=self._timeout,
+                        proxies=self._proxies,**kwargs)
+        return self._dealResponseResult(r)
+
     def get(self,path,params=None,**kwargs):
         r = self._session.get(self._url+path, params=params, headers=self._headers, cookies=self._cookies, timeout=self._timeout,
                           proxies=self._proxies,**kwargs)
