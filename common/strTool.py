@@ -194,3 +194,21 @@ class StrTool:
             elif info == 'whitespace_percent':
                 result += random.choice(cls.whitespace)
         return result
+
+    @classmethod
+    def contentToDict(cls, content:str):
+        """
+        将包含换行符的字符串内容转为字典，目前仅支持格式:key=value，会去除#开头、空行数据
+        @param filePath:
+        @param encoding:
+        @return:
+        """
+        break_split_lambda = lambda content: list(filter(None, content.split('\n'))) if content else []
+        content=content.replace('\r\n','\n')
+        lines=break_split_lambda(content)
+        result_dict={}
+        for line in lines:
+            if not line.startswith('#'):
+                tmp_line=line.split('=')
+                result_dict.update({tmp_line[0].strip():tmp_line[1].strip()})
+        return result_dict
