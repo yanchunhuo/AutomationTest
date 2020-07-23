@@ -10,7 +10,7 @@ import base64
 import urllib.parse
 import ujson
 
-class Rotbot:
+class Robot:
     def __init__(self,webhook:str,secret_key:str=None):
         self.webhook=webhook
         self.secret_key=secret_key
