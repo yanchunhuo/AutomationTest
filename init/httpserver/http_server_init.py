@@ -8,10 +8,10 @@ import platform
 import subprocess
 
 def start_http_server(port):
-    try:
-        subprocess.check_output('python3 -m http.server '+port,shell=True)
-    except:
-        subprocess.check_output('python -m http.server ' + port, shell=True)
+    if 'Windows' == platform.system():
+        subprocess.check_output("start cmd.exe @cmd /c python -m http.server %s" % (port), shell=True)
+    else:
+        subprocess.check_output('nohup python3 -m http.server %s %s' % (port, '>>logs/httpserver.log 2>&1 &'),shell=True)
 
 def http_server_init():
     httpserver_config = Read_Http_Server_Config().httpserver_config
@@ -23,7 +23,6 @@ def http_server_init():
             httpserver_process_id = httpserver_process_id.decode('utf-8')
             httpserver_process_id = StrTool.getStringWithLBRB(httpserver_process_id, 'LISTENING', '\r\n').strip()
             kill_httpserver_process_command = 'taskkill /F /pid %s' % httpserver_process_id
-            print('###%s###1' % httpserver_process_id)
             try:
                 print('关闭http.server进程,进程id:' + httpserver_process_id + ',该进程监听已监听端口:' + port)
                 subprocess.check_call(kill_httpserver_process_command, shell=True)

@@ -8,7 +8,10 @@ import platform
 import subprocess
 
 def start_mitmproxy(port):
-    subprocess.check_output('mitmdump -p %s -s %s'%(port,'init/mitmproxy/addons.py'),shell=True)
+    if 'Windows' == platform.system():
+        subprocess.check_output("start cmd.exe @cmd /c mitmdump -p %s -s %s " % (port, 'init/mitmproxy/addons.py'),shell=True)
+    else:
+        subprocess.check_output('nohup mitmdump -p %s -s %s' % (port, 'init/mitmproxy/addons.py >>logs/mitmproxy.log 2>&1 &'), shell=True)
 
 def mitmproxy_init():
     mitmproxy_config = Read_Mitmproxy_Config().mitmproxy_config
