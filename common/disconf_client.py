@@ -1,7 +1,7 @@
 # @Author  : yanchunhuo
 # @Time    : 2020/7/21 10:24
+# github https://github.com/yanchunhuo
 from common.httpclient.doRequest import DoRequest
-from urllib.parse import urljoin
 import ujson
 
 class Disconf_Client:
@@ -48,18 +48,23 @@ class Disconf_Client:
         version_list=version_list['page']['result']
         return version_list
 
-    def get_config_list(self,app_id:int,env_id:int,version:str):
-        params={'appId':app_id,'envId':env_id,'version':version}
+    def get_config_list(self, app_id: int, env_id: int, version: str, pageSize: int = 50, pageNo: int = 1):
+        params = {'appId': app_id, 'envId': env_id, 'version': version, "page.pageSize": pageSize,"page.pageNo": pageNo}
         httpResponseResult = self.doRequest.get('/api/web/config/list',params)
         config_list=ujson.loads(httpResponseResult.body)
         config_list=config_list['page']['result']
         return config_list
 
     def get_config_id(self,app_name:str,env_name:str,version:str,config_name:str):
-        config_list=self.get_config_list(self.get_app_id(app_name),self.get_env_id(env_name),version)
-        for config_info in config_list:
-            if config_info['key']==config_name:
-                return config_info['configId']
+        now_page=1
+        # 最多从500个文件获取
+        while(not now_page>10):
+            config_list = self.get_config_list(self.get_app_id(app_name), self.get_env_id(env_name), version,
+                                               pageSize=50, pageNo=now_page)
+            for config_info in config_list:
+                if config_info['key']==config_name:
+                    return config_info['configId']
+            now_page+=1
 
     def get_config_info(self,config_id:int):
         httpResponseResult = self.doRequest.get('/api/web/config/%s'%config_id)

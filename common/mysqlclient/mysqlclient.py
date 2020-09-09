@@ -5,17 +5,18 @@
 import pymysql
 
 class MysqlClient:
-    def __init__(self,host,port,username,password,dbname,charset='utf8'):
-        self._conn=pymysql.connect(host=host,port=int(port),user=username,passwd=password,db=dbname,charset=charset)
-        self._cursor=self._conn.cursor()
+    def __init__(self,host,port,username,password,dbname,charset='utf8',cursorclass=pymysql.cursors.DictCursor):
+        self.conn=pymysql.connect(host=host,port=int(port),user=username,password=password,db=dbname,charset=charset,
+                                  cursorclass=cursorclass)
 
     def executeSQL(self,sql):
         # try:
         # 为了避免连接被服务器关闭,检测进行重连
-        self._conn.ping(reconnect=True)
-        self._cursor.execute(sql)
-        result=self._cursor.fetchall()
-        self._conn.commit()
+        self.conn.ping(reconnect=True)
+        with self.conn.cursor() as cursor:
+            cursor.execute(sql)
+            result=cursor.fetchall()
+        self.conn.commit()
         # except:
         #     self._conn.rollback()
         return result
@@ -28,16 +29,16 @@ class MysqlClient:
         """
         # try:
         # 为了避免连接被服务器关闭,检测进行重连
-        self._conn.ping(reconnect=True)
+        self.conn.ping(reconnect=True)
         num=len(values)
         n=0
-        while n<num:
-            self._cursor.executemany(query, values[n:n+1000])
-            self._conn.commit()
-            n+=1000
+        with self.conn.cursor() as cursor:
+            while n<num:
+                cursor.executemany(query, values[n:n+1000])
+                self.conn.commit()
+                n+=1000
         # except:
         #     self._conn.rollback()
 
     def closeAll(self):
-        self._cursor.close()
-        self._conn.close()
+        self.conn.close()
