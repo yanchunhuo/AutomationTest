@@ -7,7 +7,7 @@ from requests.adapters import HTTPAdapter
 import requests
 
 class DoRequest(object):
-    def __init__(self,url,encoding='utf-8',pool_connections=10,pool_maxsize=10, max_retries=1):
+    def __init__(self,url,encoding='utf-8',pool_connections=10,pool_maxsize=10, max_retries=2):
         self._url=url
         self._encoding=encoding
         self._headers = {}
