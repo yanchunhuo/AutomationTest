@@ -2,11 +2,12 @@
 # 作者 yanchunhuo
 # 创建时间 2018/01/19 22:36
 # github https://github.com/yanchunhuo
-import requests
 from pojo.httpResponseResult import HttpResponseResult
+from requests.adapters import HTTPAdapter
+import requests
 
 class DoRequest(object):
-    def __init__(self,url,encoding='utf-8'):
+    def __init__(self,url,encoding='utf-8',pool_connections=10,pool_maxsize=10, max_retries=1):
         self._url=url
         self._encoding=encoding
         self._headers = {}
@@ -14,6 +15,9 @@ class DoRequest(object):
         self._proxies={}
         self._timeout=120
         self._session=requests.session()
+        httpAdapter=HTTPAdapter(pool_connections=pool_connections,pool_maxsize=pool_maxsize,max_retries=max_retries)
+        self._session.mount('http://',httpAdapter)
+        self._session.mount('https://', httpAdapter)
 
     def setHeaders(self, headers):
         self._headers = headers
