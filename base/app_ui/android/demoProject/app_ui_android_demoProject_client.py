@@ -6,6 +6,7 @@ from appium import webdriver
 from base.read_app_ui_config import Read_APP_UI_Config
 from common.appium.appOperator import AppOperator
 from common.fileTool import FileTool
+from common.httpclient.doRequest import DoRequest
 from init.app_ui.android.demoProject.demoProjectInit import DemoProjectInit
 import os
 
@@ -28,7 +29,9 @@ class APP_UI_Android_demoProject_Client(object):
             self.current_desired_capabilities = FileTool.readJsonFromFile('config/app_ui_tmp/' + str(os.getppid()) + '_current_desired_capabilities')
             self._appium_hub='http://'+self.device_info['server_ip']+':%s/wd/hub'%self.device_info['server_port']
             self._init(self.demoProject_config.init)
-            self.driver = webdriver.Remote(self._appium_hub,desired_capabilities=self.current_desired_capabilities)
+            self._delete_last_device_session(self.device_info['device_desc'])
+            self.driver = webdriver.Remote(self._appium_hub, desired_capabilities=self.current_desired_capabilities)
+            self._save_last_device_session(self.driver.session_id, self.device_info['device_desc'])
             self.appOperator = AppOperator(self.driver,self._appium_hub)
 
             self.__inited=True
@@ -39,3 +42,20 @@ class APP_UI_Android_demoProject_Client(object):
         print('初始化android基础数据......')
         DemoProjectInit().init(is_init)
         print('初始化android基础数据完成......')
+
+    def _save_last_device_session(self,session, device_desc):
+        if not os.path.exists('config/app_ui_tmp'):
+            os.mkdir('config/app_ui_tmp')
+            with open('config/app_ui_tmp/%s_session' % device_desc, 'w') as f:
+                f.write(session)
+                f.close()
+
+    def _delete_last_device_session(self,device_desc):
+        if os.path.exists('config/app_ui_tmp/%s_session' % device_desc):
+            with open('config/app_ui_tmp/%s_session' % device_desc, 'r') as f:
+                last_session = f.read()
+                last_session = last_session.strip()
+                if last_session:
+                    doRequest = DoRequest(self._appium_hub)
+                    doRequest.setHeaders({'Content-Type': 'application/json'})
+                    httpResponseResult = doRequest.delete('/session/' + last_session)
