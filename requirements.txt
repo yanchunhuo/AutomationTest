@@ -17,3 +17,4 @@ redis==3.5.3
 ujson==1.35
 locustio==0.13.5
 mitmproxy==5.0.1
+pycryptodome==3.9.8
