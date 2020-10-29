@@ -283,7 +283,7 @@
 # [pytest常用]()
 * @pytest.mark.skip(reason='该功能已废弃')
 * @pytest.mark.parametrize('key1,key2',[(key1_value1,key2_value2),(key1_value2,key2_value2)])
-* @pytest.mark.usefixture('func_name')
+* @pytest.mark.usefixtures('func_name')
 
 # [注意点]()
 * 运行pytest时指定的目录内应当有conftest.py，方能在其他模块中使用。@allure.step会影响fixture，故在脚本中不使用@allure.step
