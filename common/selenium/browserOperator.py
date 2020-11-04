@@ -257,9 +257,9 @@ class BrowserOperator:
         right = webElement.location['x'] + webElement.size['width']
         bottom = webElement.location['y'] + webElement.size['height']
         # 进行屏幕截图
-        image_file_name = DateTimeTool.getNowTime('%Y%m%d%H%M%S%f_') + '%s.png' % image_file_name
-        if not os.path.exists('output/tmp/'):
-            os.mkdir('output/tmp/')
+        image_file_name = DateTimeTool.getNowTime('%Y%m%d%H%M%S%f_') + '%s.png'%image_file_name
+        if not os.path.exists('output/tmp/'+self._config.current_browser):
+            os.mkdir('output/tmp/'+self._config.current_browser)
         image_file_name = os.path.abspath(
             'output/tmp/' + self._config.current_browser + '/' + image_file_name)
         self._driver.get_screenshot_as_file(image_file_name)
@@ -267,6 +267,7 @@ class BrowserOperator:
         # 验证码图片裁切并保存
         img = img.crop((left, top, right, bottom))
         img.save(image_file_name)
+        return image_file_name
 
     def get_captcha(self, element, language='eng'):
         """
