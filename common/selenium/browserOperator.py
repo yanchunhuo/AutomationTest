@@ -321,6 +321,21 @@ class BrowserOperator:
             print('获取表格内容异常:'+e.msg)
         return table_data
 
+    def scroll_to_show(self,element,highlight_seconds=5,is_top_align=True):
+        """
+        滚动页面直至元素可见
+        :param element:
+        :param highlight_seconds:
+        :param is_top_align: 是否元素与窗口顶部对齐，否则与窗口底部对齐
+        :return:
+        """
+        webElement = self._change_element_to_webElement_type(element,highlight_seconds)
+        if webElement:
+            if is_top_align:
+                self._driver.execute_script("arguments[0].scrollIntoView();", webElement)
+            else:
+                self._driver.execute_script("arguments[0].scrollIntoView(false);", webElement)
+
     def getElement(self,elementInfo,highlight_seconds=5):
         """
         定位单个元素
