@@ -13,7 +13,7 @@ class DoRequest(object):
         self._headers = {}
         self._cookies = {}
         self._proxies={}
-        self._timeout=10
+        self._timeout=30
         self._session=requests.session()
         httpAdapter=HTTPAdapter(pool_connections=pool_connections,pool_maxsize=pool_maxsize,max_retries=max_retries)
         self._session.mount('http://',httpAdapter)
