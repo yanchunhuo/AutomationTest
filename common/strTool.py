@@ -7,8 +7,8 @@ import re
 import random
 import string
 import uuid
-class StrTool:
 
+class StrTool:
     letters = list(string.ascii_letters)
     whitespace = list(string.whitespace)
     punctuation = list(string.punctuation)
@@ -18,7 +18,7 @@ class StrTool:
     ch_end = 0x9FA5
 
     @classmethod
-    def getStringWithLBRB(cls,sourceStr,lbStr,rbStr,offset=0):
+    def getStringWithLBRB(cls, sourceStr, lbStr, rbStr, offset=0):
         """
         根据字符串左右边界获取内容
         offset:要获得匹配的第几个数据,默认第一个
@@ -28,28 +28,28 @@ class StrTool:
         :param offset:
         :return:
         """
-        regex='([\\s\\S]*?)'
-        r=re.compile(lbStr+regex+rbStr)
-        result=r.findall(sourceStr)
+        regex = '([\\s\\S]*?)'
+        r = re.compile(lbStr + regex + rbStr)
+        result = r.findall(sourceStr)
         if str(offset) == 'all':
             return result
         else:
-            if len(result)>=offset and len(result)!=0:
+            if len(result) >= offset and len(result) != 0:
                 return result[offset]
             else:
                 return None
 
     @classmethod
-    def addUUID(cls,source):
+    def addUUID(cls, source):
         """
         字符串加上uuid
         :param source:
         :return:
         """
-        return source+'_'+str(uuid.uuid4())
+        return source + '_' + str(uuid.uuid4())
 
     @classmethod
-    def objectToJsonStr(cls,object):
+    def objectToJsonStr(cls, object):
         """
         将类对象转为json字符串
         :param object:
@@ -58,7 +58,7 @@ class StrTool:
         return ujson.dumps(object)
 
     @classmethod
-    def objectToJson(cls,object):
+    def objectToJson(cls, object):
         """
         将类对象转为json
         :param object:
@@ -67,16 +67,16 @@ class StrTool:
         return ujson.loads(ujson.dumps(object))
 
     @classmethod
-    def getSpecifiedStr(cls,length,char):
+    def getSpecifiedStr(cls, length, char):
         """
         根据字符获取指定长度的字符串
         :param length:
         :param char:
         :return:
         """
-        result=''
+        result = ''
         for i in range(int(length)):
-            result=result+str(char)
+            result = result + str(char)
         return result
 
     @classmethod
@@ -90,14 +90,14 @@ class StrTool:
         :param suffixStr:
         :return:
         """
-        preStr=str(preStr).strip()
-        suffixStr=str(suffixStr).strip()
+        preStr = str(preStr).strip()
+        suffixStr = str(suffixStr).strip()
         if isPre and isSuffix:
-            return '{}{}{}'.format(preStr,sourceStr,suffixStr)
+            return '{}{}{}'.format(preStr, sourceStr, suffixStr)
         elif isSuffix:
-            return '{}{}'.format(sourceStr,suffixStr)
+            return '{}{}'.format(sourceStr, suffixStr)
         elif isPre:
-            return '{}{}'.format(preStr,sourceStr)
+            return '{}{}'.format(preStr, sourceStr)
         else:
             return sourceStr
 
@@ -107,7 +107,7 @@ class StrTool:
         随机获取a-zA-Z的单个字符
         :return:
         """
-        str=string.ascii_letters
+        str = string.ascii_letters
         return random.choice(str)
 
     @classmethod
@@ -150,7 +150,7 @@ class StrTool:
         return content
 
     @classmethod
-    def random_index(cls,percents):
+    def random_index(cls, percents):
         """
         随机变量的概率函数,返回概率事件的下标索引
         :return:
@@ -166,7 +166,8 @@ class StrTool:
         return index
 
     @classmethod
-    def getRandomText(cls,length,ch_percent=90,en_percent=5,digits_percent=3,punctuation_percent=2,whitespace_percent=0):
+    def getRandomText(cls, length, ch_percent=90, en_percent=5, digits_percent=3, punctuation_percent=2,
+                      whitespace_percent=0):
         """
         获取指定长度文本内容，可设置中文、英文、数字、标点符号、空白字符现的概率
         如果字符串包含中文，返回的内容为Unicode
@@ -178,13 +179,13 @@ class StrTool:
         :param whitespace_percent: 出现空白字符的概率
         :return:
         """
-        percents=[ch_percent,en_percent,digits_percent,punctuation_percent,whitespace_percent]
-        percents_info=['ch_percent','en_percent','digits_percent','punctuation_percent','whitespace_percent']
-        result=''
+        percents = [ch_percent, en_percent, digits_percent, punctuation_percent, whitespace_percent]
+        percents_info = ['ch_percent', 'en_percent', 'digits_percent', 'punctuation_percent', 'whitespace_percent']
+        result = ''
         for i in range(length):
-            info=percents_info[cls.random_index(percents)]
+            info = percents_info[cls.random_index(percents)]
             if info == 'ch_percent':
-                result += chr(random.randint(int(cls.ch_start),int(cls.ch_end)))
+                result += chr(random.randint(int(cls.ch_start), int(cls.ch_end)))
             elif info == 'en_percent':
                 result += random.choice(cls.letters)
             elif info == 'digits_percent':
@@ -196,19 +197,42 @@ class StrTool:
         return result
 
     @classmethod
-    def contentToDict(cls, content:str):
+    def contentToDict(cls, content: str,result_enter_type:str='\r\n'):
         """
-        将包含换行符的字符串内容转为字典，目前仅支持格式:key=value，会去除#开头、空行数据
-        @param filePath:
-        @param encoding:
+        将包含换行符的字符串内容转为字典，目前仅支持格式:key=value
+        @param content:
+        @param result_enter_type:存储的换行类型，包括\r\n、\n、\r
+        @return: {‘key’:{'value':value,'desc':desc}}
+        """
+        content = content.replace('\r\n', '\n')
+        lines = content.split('\n')
+        result_dict = {}
+        tmp_key_desc=''
+        for i,line in enumerate(lines):
+            if not line.startswith('#') and not line.startswith('//') and '=' in line:
+                tmp_line = line.split('=')
+                result_dict.update({tmp_line[0].strip(): {'value':tmp_line[1].strip(),'desc':tmp_key_desc}})
+                tmp_key_desc=''
+            else:
+                tmp_key_desc+=line
+                if not i==len(lines)-1:
+                    tmp_key_desc+=result_enter_type
+        return result_dict
+
+    @classmethod
+    def dictToContent(cls, content_dict:dict,result_enter_type:str='\r\n'):
+        """
+        将def contentToDict(cls, content: str,result_enter_type:str='\r\n')返回的结果拼接为content
+        key和value使用=拼接
+        @param content_dict:
+        @param result_enter_type:存储的换行类型，包括\r\n、\n、\r
         @return:
         """
-        break_split_lambda = lambda content: list(filter(None, content.split('\n'))) if content else []
-        content=content.replace('\r\n','\n')
-        lines=break_split_lambda(content)
-        result_dict={}
-        for line in lines:
-            if not line.startswith('#'):
-                tmp_line=line.split('=')
-                result_dict.update({tmp_line[0].strip():tmp_line[1].strip()})
-        return result_dict
+        result_content = ''
+        for key in content_dict.keys():
+            result_content += content_dict[key]['desc']
+            result_content += key
+            result_content += '='
+            result_content += content_dict[key]['value']
+            result_content += result_enter_type
+        return result_content
