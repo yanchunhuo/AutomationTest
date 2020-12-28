@@ -26,7 +26,7 @@ class DubboClient:
         :param requestMethod 请求方法
         :param params 所有参数放在一个数组内，格式:
                       无参数填写[]
-                      一个基本数据类型参数(byte、short、int、long、double、float)：[{"type":"int","data":"value"}]
+                      一个基本数据类型参数(byte、short、int、long、double、float、boolean)：[{"type":"int","data":"value"}]
                       一个基本数据类型数组参数：[{"type":"int[]","data":[{"type":"int","data":"value"},{"type":"int","data":"value"}]}]
                       一个java.lang数据类型参数：[{"type":"java.lang.String","data":"1"}]
                       一个java.lang数据类型数组参数：[{"type":"java.lang.String[]","data":[{"type":"java.lang.String","data":"value"},{"type":"java.lang.String","data":"value"}]}]
