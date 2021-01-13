@@ -68,6 +68,17 @@ class AppOperator:
         webElement=self._change_element_to_webElement_type(element)
         if webElement:
             webElement.click()
+        
+    def click_web_element(self,element):
+        """由于混合应用存在点击无效的情况，故混合应用的点击采用selenium的tab操作确保能够正常点击
+
+        Args:
+            element (ElementInfo): [description]
+        """
+        webElement=self._change_element_to_webElement_type(element)
+        if webElement:
+            actions=TouchActions(self._driver)
+            actions.tap(webElement).perform()
 
     def submit(self,element):
         webElement=self._change_element_to_webElement_type(element)

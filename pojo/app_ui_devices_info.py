@@ -16,6 +16,7 @@ class APP_UI_Devices_Info:
         self.platformVersions = []
         self.deviceNames = []
         self.chromeDriverPorts = []
+        self.chromeDriverPaths = []
         self.systemports = []
         self.wdaLocalPorts = []
         self.appPackages = []
@@ -71,7 +72,10 @@ class APP_UI_Devices_Info:
                 desired_capabilities.update({'platformVersion': self.platformVersions[i].strip()})
                 if len(self.deviceNames):
                     desired_capabilities.update({'deviceName': self.deviceNames[i].strip()})
-                desired_capabilities.update({'chromeDriverPort':self.chromeDriverPorts[i].strip()})
+                if len(self.chromeDriverPorts):
+                    desired_capabilities.update({'chromedriverPort': self.chromeDriverPorts[i].strip()})
+                if len(self.chromeDriverPaths):
+                    desired_capabilities.update({'chromedriverExecutable':self.chromeDriverPaths[i].strip()})
                 desired_capabilities.update({'systemport': self.systemports[i].strip()})
                 if len(self.wdaLocalPorts):
                     desired_capabilities.update({'wdaLocalPort': self.wdaLocalPorts[i].strip()})

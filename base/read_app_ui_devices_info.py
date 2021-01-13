@@ -38,7 +38,7 @@ class Read_APP_UI_Devices_Info(object):
         devices_info.platformVersions = get_lambda(config.get('devices_info', 'platformVersions', fallback=''))
         devices_info.deviceNames = get_lambda(config.get('devices_info', 'deviceNames', fallback=''))
         devices_info.chromeDriverPorts = get_lambda(config.get('devices_info', 'chromeDriverPorts', fallback=''))
-        devices_info.chromeDriverPorts = get_lambda(config.get('devices_info', 'chromeDriverPorts', fallback=''))
+        devices_info.chromeDriverPaths = get_lambda(config.get('devices_info', 'chromeDriverPaths', fallback=''))
         devices_info.systemports=get_lambda(config.get('devices_info','systemports', fallback=''))
         devices_info.wdaLocalPorts = get_lambda(config.get('devices_info', 'wdaLocalPorts', fallback=''))
         devices_info.wdaLocalPorts = get_lambda(config.get('devices_info', 'wdaLocalPorts', fallback=''))
