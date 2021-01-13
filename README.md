@@ -154,10 +154,11 @@
     * 在appium desktop上设置驱动的路径
 
 * 混合应用环境准备
-    * 打开地址（该地址在uc开发工具中可查到）查看webview内核版本：https://liulanmi.com/labs/core.html
+    * 方法一：安装TBS Studio工具查看webview内核版本：https://x5.tencent.com/tbs/guide/debug/season1.html
+    * 方法二：打开地址（该地址在uc开发工具中可查到）查看webview内核版本：https://liulanmi.com/labs/core.html
     * 下载webview内核对应的chromedriver版本：https://chromedriver.storage.googleapis.com/index.html
-    * 配置appium的Chromedriver Binary Path的内容为驱动所在路径:/home/john/chromedriver.exe
-    * 注：部分webview需要开启debug模式
+    * 配置文件进行驱动路径的配置
+    * 注：webview需要开启debug模式
 
 * Windows环境准备
     * 支持Windows10及以上版本
