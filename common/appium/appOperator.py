@@ -239,9 +239,14 @@ class AppOperator:
         alert=self._driver.switch_to.alert
         return alert.text
 
-    def get_screenshot(self,fileName):
+    def get_screenshot(self,fileName,native_context='NATIVE_APP'):
+        current_context=self.get_current_context()
+        if not current_context==native_context:
+            self.switch_context(native_context)
         fileName=DateTimeTool.getNowTime('%Y%m%d%H%M%S%f_')+fileName
         allure.attach(name=fileName,body=self._driver.get_screenshot_as_png(),attachment_type=allure.attachment_type.PNG)
+        if not current_context==native_context:
+            self.switch_context(current_context)
 
     def refresh(self):
         self._driver.refresh()
