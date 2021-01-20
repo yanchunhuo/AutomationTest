@@ -1084,7 +1084,7 @@ class AppOperator:
         webElement=self._change_element_to_webElement_type(element)
         if webElement:
             actions=TouchAction(self._driver)
-            actions.tap(element,xoffset,yoffset,count)
+            actions.tap(webElement,xoffset,yoffset,count)
             if is_perfrom:
                 actions.perform()
             return actions
