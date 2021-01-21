@@ -101,7 +101,7 @@ if __name__=='__main__':
     parser.add_argument('-r', '--reruns', help='失败重跑次数,默认为0', type=str)
     parser.add_argument('-lf', '--lf', help='是否运行上一次失败的用例,1:是、0:否,默认为0', type=str)
     parser.add_argument('-tt', '--test_type', help='【必填】测试类型,phone、windows', type=str)
-    parser.add_argument('-dif', '--devices_info_file', help='多设备并行信息文件，当--test_type为android、ios、chrome时，此选项需提供',type=str)
+    parser.add_argument('-dif', '--devices_info_file', help='【必填】多设备并行信息文件，当--test_type为android、ios、chrome时，此选项需提供',type=str)
     parser.add_argument('-clr', '--clr', help='是否清空已有测试结果,1:是、0:否,默认为0', type=str)
     args=parser.parse_args()
 
