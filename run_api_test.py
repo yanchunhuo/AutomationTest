@@ -2,9 +2,11 @@
 # 作者 yanchunhuo
 # 创建时间 2018/01/19 22:36
 # github https://github.com/yanchunhuo
-
+from common.dateTimeTool import DateTimeTool
 from common.pytest import deal_pytest_ini_file
 from init.api.api_init import api_init
+from init.java.java_maven_init import java_maven_init
+from init.httpserver.http_server_init import http_server_init
 import argparse
 import pytest
 import sys
@@ -23,10 +25,13 @@ if __name__=='__main__':
     # 处理pytest文件
     deal_pytest_ini_file()
 
+    # 初始化java依赖的libs
+    java_maven_init()
+
     # 初始化
-    print('开始初始化......')
+    print('%s开始初始化......'%DateTimeTool.getNowTime())
     api_init()
-    print('初始化完成......')
+    print('%s初始化完成......'%DateTimeTool.getNowTime())
 
     # 执行pytest前的参数准备
     pytest_execute_params=['-c', 'config/pytest.ini', '-v', '--alluredir', 'output/api/']
@@ -61,5 +66,5 @@ if __name__=='__main__':
             pytest_execute_params.append('--clean-alluredir')
     pytest_execute_params.append(dir)
 
-    print('开始测试......')
+    print('%s开始测试......'%DateTimeTool.getNowTime())
     exit_code=pytest.main(pytest_execute_params)
