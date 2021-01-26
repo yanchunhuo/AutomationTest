@@ -724,6 +724,10 @@ class AppOperator:
         :param edge_type: element:滑动到元素边缘,screen:滑动到屏幕边缘
         :return:
         """
+        if start_x_percent>=1:
+            start_x_percent=0.99
+        if start_y_percent>=1:
+            start_y_percent=0.99
         webElement=self._change_element_to_webElement_type(element)
         if webElement:
             rect=webElement.rect
@@ -754,6 +758,10 @@ class AppOperator:
         :param edge_type: element:滑动到元素边缘,screen:滑动到屏幕边缘
         :return:
         """
+        if start_x_percent>=1:
+            start_x_percent=0.99
+        if start_y_percent>=1:
+            start_y_percent=0.99
         webElement=self._change_element_to_webElement_type(element)
         if webElement:
             rect=webElement.rect
@@ -784,6 +792,10 @@ class AppOperator:
         :param edge_type: element:滑动到元素边缘,screen:滑动到屏幕边缘
         :return:
         """
+        if start_x_percent>=1:
+            start_x_percent=0.99
+        if start_y_percent>=1:
+            start_y_percent=0.99
         webElement=self._change_element_to_webElement_type(element)
         if webElement:
             rect=webElement.rect
@@ -814,6 +826,10 @@ class AppOperator:
         :param edge_type: element:滑动到元素边缘,screen:滑动到屏幕边缘
         :return:
         """
+        if start_x_percent>=1:
+            start_x_percent=0.99
+        if start_y_percent>=1:
+            start_y_percent=0.99
         webElement=self._change_element_to_webElement_type(element)
         if webElement:
             rect=webElement.rect
@@ -1068,6 +1084,16 @@ class AppOperator:
             actions.press(x=start_x, y=start_y).wait(duration)
             actions.move_to(x=end_x, y=end_y)
             actions.perform()
+            
+    def tap(self,x:float,y:float,duration=None):
+        """点击坐标
+
+        Args:
+            x (float): 
+            y (float): 
+            duration ([type], optional): [description]. Defaults to None.
+        """
+        self._driver.tap([(x,y)],duration)
 
     def touch_tap(self,element,xoffset=None,yoffset=None,count=1,is_perfrom=True):
         """
