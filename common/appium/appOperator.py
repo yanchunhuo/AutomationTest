@@ -421,7 +421,7 @@ class AppOperator:
             script_arg.update({'action':action_type})
         self._driver.execute_script(script,script_arg)
 
-    def is_toast_visible(self, text, platformName='android', automationName='UiAutomator2', isRegexp=False):
+    def is_toast_visible(self, text, platformName='android', automationName='UiAutomator2', isRegexp=False, wait_seconds=5):
         """
         仅支持Android
         :param text:
@@ -435,7 +435,7 @@ class AppOperator:
         if 'android' == platformName.lower():
             if 'uiautomator2' == automationName.lower():
                 toast_element = CreateElement.create(Locator_Type.XPATH, ".//*[contains(@text,'%s')]" % text, None,
-                                                     Wait_By.PRESENCE_OF_ELEMENT_LOCATED, wait_seconds=5)
+                                                     Wait_By.PRESENCE_OF_ELEMENT_LOCATED, wait_seconds=wait_seconds)
                 try:
                     self.getElement(toast_element)
                     return True
