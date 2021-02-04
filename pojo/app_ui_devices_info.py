@@ -1,5 +1,6 @@
 # 作者 yanchunhuo
 # 创建时间 2019/12/26 9:17
+# github https://github.com/yanchunhuo
 from base.read_httpserver_config import Read_Http_Server_Config
 import os
 
@@ -17,6 +18,8 @@ class APP_UI_Devices_Info:
         self.deviceNames = []
         self.chromeDriverPorts = []
         self.chromeDriverPaths = []
+        self.recreateChromeDriverSessions = []
+        self.nativeWebScreenshots = []
         self.systemports = []
         self.wdaLocalPorts = []
         self.appPackages = []
@@ -76,6 +79,16 @@ class APP_UI_Devices_Info:
                     desired_capabilities.update({'chromedriverPort': self.chromeDriverPorts[i].strip()})
                 if len(self.chromeDriverPaths):
                     desired_capabilities.update({'chromedriverExecutable':self.chromeDriverPaths[i].strip()})
+                if len(self.recreateChromeDriverSessions):
+                    recreateChromeDriverSessions_value=False
+                    if 'true' == self.recreateChromeDriverSessions[i].strip().lower():
+                        recreateChromeDriverSessions_value=True
+                    desired_capabilities.update({'recreateChromeDriverSessions':recreateChromeDriverSessions_value})
+                if len(self.nativeWebScreenshots):
+                    nativeWebScreenshot=False
+                    if 'true' == self.nativeWebScreenshots[i].strip().lower():
+                        nativeWebScreenshot=True
+                    desired_capabilities.update({'nativeWebScreenshot':nativeWebScreenshot})
                 desired_capabilities.update({'systemport': self.systemports[i].strip()})
                 if len(self.wdaLocalPorts):
                     desired_capabilities.update({'wdaLocalPort': self.wdaLocalPorts[i].strip()})
