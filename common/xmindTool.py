@@ -12,14 +12,14 @@ import os
 class XmindTool:
 
     def __init__(self,filePath):
-        self._filePath=filePath
-        self._xfile=xmind.load(filePath)
-        self._xmindData=XmindData()
+        self.filePath=filePath
+        self.xfile=xmind.load(filePath)
+        self.xmindData=XmindData()
         self._init()
 
     def _init(self):
-        self._xmindData.fileName=os.path.basename(self._filePath)
-        sheets=self._xfile.getSheets()
+        self.xmindData.fileName=os.path.basename(self.filePath)
+        sheets=self.xfile.getSheets()
         for sheet in sheets:
             new_sheet=Sheet()
             new_rootTopic=RootTopic()
@@ -34,12 +34,14 @@ class XmindTool:
                 new_secondTopic.data=data
                 new_rootTopic.secondTopics.append(new_secondTopic)
             new_sheet.rootTopic=new_rootTopic
-            self._xmindData.sheets.append(new_sheet)
+            self.xmindData.sheets.append(new_sheet)
 
     def _dumpTopic(self, topic, tmp_result='', results=None):
         if results is None or not isinstance(results, list):
             results = []
-        tmp_result += topic.getTitle()
+        topic_title=topic.getTitle()
+        if not topic_title is None:
+            tmp_result += topic_title
         tmp_result += '--->'
         if topic.getMarkers():
             markerId=topic.getMarkers()[0].getMarkerId()
@@ -54,7 +56,7 @@ class XmindTool:
         return results
 
     def getXmindData(self):
-        return StrTool.objectToJson(self._xmindData)
+        return StrTool.objectToJson(self.xmindData)
 
     def count(self):
         """
