@@ -8,15 +8,22 @@ import multiprocessing
 import platform
 import subprocess
 
-def start_mitmproxy(port):
+def start_mitmproxy(port,ssl_insecure):
     if 'Windows' == platform.system():
-        subprocess.check_output("start cmd.exe @cmd /c mitmdump -p %s -s %s "%(port,'init/mitmproxy/addons.py'), shell=True)
+        if ssl_insecure:
+            subprocess.check_output("start cmd.exe @cmd /c mitmdump -k -p %s -s %s "%(port,'init/mitmproxy/addons.py'), shell=True)
+        else:
+            subprocess.check_output("start cmd.exe @cmd /c mitmdump -p %s -s %s "%(port,'init/mitmproxy/addons.py'), shell=True)
     else:
-        subprocess.check_output('nohup mitmdump -p %s -s %s'%(port,'init/mitmproxy/addons.py >>logs/mitmproxy.log 2>&1 &'),shell=True)
+        if ssl_insecure:
+            subprocess.check_output('nohup mitmdump -k -p %s -s %s'%(port,'init/mitmproxy/addons.py >>logs/mitmproxy.log 2>&1 &'),shell=True)
+        else:
+            subprocess.check_output('nohup mitmdump -p %s -s %s'%(port,'init/mitmproxy/addons.py >>logs/mitmproxy.log 2>&1 &'),shell=True)
 
 def mitmproxy_init():
     mitmproxy_config = Read_Mitmproxy_Config().mitmproxy_config
     port = mitmproxy_config.proxy_port
+    ssl_insecure=mitmproxy_config.ssl_insecure
     if "windows"==platform.system().lower():
         get_mitmproxy_process_id_command='netstat -ano|findstr "0.0.0.0:%s"'%port
         try:
@@ -52,6 +59,6 @@ def mitmproxy_init():
     elif "darwin"==platform.system().lower():
         pass
     print('%s启动mitmproxy,使用端口%s'%(DateTimeTool.getNowTime(),port))
-    p = multiprocessing.Process(target=start_mitmproxy,args=(port,))
+    p = multiprocessing.Process(target=start_mitmproxy,args=(port,ssl_insecure,))
     p.daemon = True
     p.start()

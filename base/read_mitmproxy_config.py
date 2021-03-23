@@ -24,6 +24,12 @@ class Read_Mitmproxy_Config(object):
         configParser.read(configFile,encoding='utf-8')
         mitmproxy_config = Mitmproxy_Config()
         mitmproxy_config.proxy_port=configParser.get('baseInfo','proxy_port').strip()
+        ssl_insecure=configParser.get('baseInfo','ssl_insecure').strip()
+        if 'true' == ssl_insecure.lower():
+            ssl_insecure=True
+        else:
+            ssl_insecure=False
+        mitmproxy_config.ssl_insecure=ssl_insecure
         if not mitmproxy_config.proxy_port:
             mitmproxy_config.proxy_port=str(8080)
         return mitmproxy_config
