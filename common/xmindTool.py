@@ -1,6 +1,11 @@
-# 作者 yanchunhuo
-# 创建时间 2018/01/19 22:36
-# github https://github.com/yanchunhuo
+#
+# xmindTool.py
+# @author yanchunhuo
+# @description 
+# @created 2020-03-26T10:34:23.914Z+08:00
+# @last-modified 2021-03-24T09:42:14.543Z+08:00
+# @github https://github.com/yanchunhuo
+
 from pojo.xmind.xmindData import XmindData
 from pojo.xmind.sheet import Sheet
 from pojo.xmind.rootTopic import RootTopic
@@ -27,13 +32,14 @@ class XmindTool:
             rootTopic=sheet.getRootTopic()
             new_rootTopic.rootTopicName=rootTopic.getTitle()
             secondTopics=rootTopic.getSubTopics()
-            for secondTopic in secondTopics:
-                new_secondTopic = SecondTopic()
-                new_secondTopic.secondTopicName=secondTopic.getTitle()
-                data=self._dumpTopic(secondTopic)
-                new_secondTopic.data=data
-                new_rootTopic.secondTopics.append(new_secondTopic)
-            new_sheet.rootTopic=new_rootTopic
+            if secondTopics:
+                for secondTopic in secondTopics:
+                    new_secondTopic = SecondTopic()
+                    new_secondTopic.secondTopicName=secondTopic.getTitle()
+                    data=self._dumpTopic(secondTopic)
+                    new_secondTopic.data=data
+                    new_rootTopic.secondTopics.append(new_secondTopic)
+                new_sheet.rootTopic=new_rootTopic
             self.xmindData.sheets.append(new_sheet)
 
     def _dumpTopic(self, topic, tmp_result='', results=None):
@@ -61,39 +67,40 @@ class XmindTool:
     def count(self):
         """
         统计有多少个末尾节点
-        :return: [['fileName',num]]
+        :return: {'fileName':'fileName','num':'num','right_num':'right_num','wrong_num':'wrong_num'}
         """
-        result=[]
+        result={}
         xmindData=self.getXmindData()
         sheets=xmindData['sheets']
         tmp_sum = 0
         wrong_num = 0
         right_num = 0
         for sheet in sheets:
-            for secondTopic in sheet['rootTopic']['secondTopics']:
-                tmp_sum+=len(secondTopic['data'])
-                for tmp_data in secondTopic['data']:
-                    if 'symbol-wr' in tmp_data:
-                        wrong_num += 1
-                    if 'symbol-ri' in tmp_data:
-                        right_num += 1
-        result.append(xmindData['fileName'])
-        result.append(tmp_sum)
-        result.append(right_num)
-        result.append(wrong_num)
+            rootTopic=sheet['rootTopic']
+            if rootTopic:
+                for secondTopic in rootTopic['secondTopics']:
+                    tmp_sum+=len(secondTopic['data'])
+                    for tmp_data in secondTopic['data']:
+                        if 'symbol-wr' in tmp_data:
+                            wrong_num += 1
+                        if 'symbol-ri' in tmp_data:
+                            right_num += 1
+        result.update({'fileName':xmindData['fileName']})
+        result.update({'num':tmp_sum})
+        result.update({'right_num':right_num})
+        result.update({'wrong_num':wrong_num})
         return result
 
     def countBySheet(self):
         """
         按sheet统计有多少个末尾节点
-        :return: [['sheetName',num]]
+        :return: [{'sheetName':'sheetName','num':'num','right_num':'right_num','wrong_num':'wrong_num'}]
         """
         result=[]
         xmindData=self.getXmindData()
         sheets=xmindData['sheets']
         for sheet in sheets:
-            tmp_result=[]
-            tmp_result.append(sheet['sheetName'])
+            tmp_result={}
             tmp_sum=0
             wrong_num = 0
             right_num = 0
@@ -104,26 +111,24 @@ class XmindTool:
                         wrong_num += 1
                     if 'symbol-ri' in tmp_data:
                         right_num += 1
-            tmp_result.append(tmp_sum)
-            tmp_result.append(right_num)
-            tmp_result.append(wrong_num)
+            tmp_result.update({'sheetName':sheet['sheetName']})
+            tmp_result.update({'num':tmp_sum})
+            tmp_result.update({'right_num':right_num})
+            tmp_result.update({'wrong_num':wrong_num})
             result.append(tmp_result)
         return result
 
     def countBySecondTopic(self):
         """
         按SecondTopic统计有多少个末尾节点
-        :return: [['sheetName','secondTopicName',num,succss,fail]]
+        :return: [{'sheetName':'sheetName','secondTopicName':'secondTopicName','num':'secondTopicName','right_num':'right_num','wrong_num':'wrong_num'}]
         """
         result=[]
         xmindData=self.getXmindData()
         sheets=xmindData['sheets']
         for sheet in sheets:
             for secondTopic in sheet['rootTopic']['secondTopics']:
-                tmp_result = []
-                tmp_result.append(sheet['sheetName'])
-                tmp_result.append(secondTopic['secondTopicName'])
-                tmp_result.append(len(secondTopic['data']))
+                tmp_result = {}
                 wrong_num = 0
                 right_num = 0
                 for tmp_data in secondTopic['data']:
@@ -131,7 +136,10 @@ class XmindTool:
                         wrong_num+=1
                     if 'symbol-ri' in tmp_data:
                         right_num+=1
-                tmp_result.append(right_num)
-                tmp_result.append(wrong_num)
+                tmp_result.update({'sheetName':sheet['sheetName']})
+                tmp_result.update({'secondTopicName':secondTopic['secondTopicName']})
+                tmp_result.update({'num':len(secondTopic['data'])})
+                tmp_result.update({'right_num':right_num})
+                tmp_result.update({'wrong_num':wrong_num})
                 result.append(tmp_result)
         return result
