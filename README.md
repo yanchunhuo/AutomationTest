@@ -105,6 +105,7 @@
     * 以管理员身份启动服务:java -jar selenium-server-standalone-3.141.0.jar -log selenium.log
 * 下载浏览器驱动
     * 谷歌浏览器：https://chromedriver.storage.googleapis.com/index.html
+        * 驱动支持的最低浏览器版本：https://raw.githubusercontent.com/appium/appium-chromedriver/master/config/mapping.json
     * 火狐浏览器：https://github.com/mozilla/geckodriver/
         * 驱动支持的浏览器版本：https://firefox-source-docs.mozilla.org/testing/geckodriver/geckodriver/Support.html
     * IE浏览器(建议使用32位,64位操作极慢)：http://selenium-release.storage.googleapis.com/index.html
@@ -150,7 +151,7 @@
 * 手机chrome环境准备
     * 确保手机已安装chrome浏览器
     * 下载chrome浏览器驱动：https://chromedriver.storage.googleapis.com/index.html
-    * 驱动支持的手机浏览器版本：https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/web/chromedriver.md
+    * 驱动支持的最低浏览器版本：https://raw.githubusercontent.com/appium/appium-chromedriver/master/config/mapping.json
     * 在appium desktop上设置驱动的路径
 
 * 混合应用环境准备
