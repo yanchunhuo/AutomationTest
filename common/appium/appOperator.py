@@ -246,6 +246,20 @@ class AppOperator:
         """
         alert=self._driver.switch_to.alert
         return alert.text
+    
+    def scroll_to_show(self,element,is_top_align=True):
+        """
+        仅适用于web,滚动页面直至元素可见
+        :param element:
+        :param is_top_align: 是否元素与窗口顶部对齐，否则与窗口底部对齐
+        :return:
+        """
+        webElement = self._change_element_to_webElement_type(element,highlight_seconds)
+        if webElement:
+            if is_top_align:
+                self._driver.execute_script("arguments[0].scrollIntoView();", webElement)
+            else:
+                self._driver.execute_script("arguments[0].scrollIntoView(false);", webElement)
 
     def get_screenshot(self,fileName):
         fileName=DateTimeTool.getNowTime('%Y%m%d%H%M%S%f_')+fileName
