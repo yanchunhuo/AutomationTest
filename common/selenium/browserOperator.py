@@ -184,7 +184,6 @@ class BrowserOperator:
 
     def web_alert(self, action_type='accept'):
         """
-        仅使用web
         :action_type accept、dismiss
         :return:
         """
