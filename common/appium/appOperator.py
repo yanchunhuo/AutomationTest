@@ -187,9 +187,17 @@ class AppOperator:
             for index in indexs:
                 webElement.select_by_index(index)
 
+    def get_window_handles(self):
+        """获得窗口句柄，仅适用于web
+
+        Returns:
+            [type]: [description]
+        """
+        return self._driver.window_handles
+
     def switch_to_window(self,window_name):
         """
-        仅使用web
+        仅适用于web
         :param window_name:
         :return:
         """
@@ -197,7 +205,7 @@ class AppOperator:
 
     def switch_to_frame(self,frame_name):
         """
-        仅使用web
+        仅适用于web
         :param frame_name:
         :return:
         """
@@ -205,21 +213,21 @@ class AppOperator:
 
     def page_forward(self):
         """
-        仅使用web
+        仅适用于web
         :return:
         """
         self._driver.forward()
 
     def pag_back(self):
         """
-        仅使用web
+        仅适用于web
         :return:
         """
         self._driver.back()
 
     def web_alert(self,action_type='accept'):
         """
-        仅使用web
+        仅适用于web
         :action_type accept、dismiss
         :return:
         """
@@ -233,7 +241,7 @@ class AppOperator:
 
     def get_alert_text(self):
         """
-        仅使用web
+        仅适用于web
         :return:
         """
         alert=self._driver.switch_to.alert
@@ -260,7 +268,7 @@ class AppOperator:
 
     def switch_to_parent_frame(self):
         """
-        切换到父frame(仅使用web)
+        切换到父frame(仅适用于web)
         :return:
         """
         self._driver.switch_to.parent_frame()
@@ -390,7 +398,7 @@ class AppOperator:
 
     def app_alert(self, platformName,action_type='accept',buttonLabel=None):
         """
-        仅使用app
+        仅适用于app
         :platformName android、ios
         :action_type accept、dismiss
         :buttonLabel
