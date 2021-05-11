@@ -2,6 +2,7 @@
 # 作者 yanchunhuo
 # 创建时间 2018/01/19 22:36
 # github https://github.com/yanchunhuo
+import calendar
 import datetime
 import time
 
@@ -49,3 +50,24 @@ class DateTimeTool:
     def getHowYearsAgo(cls,nowDate,howYearsAgo=0,nowDate_format='%Y-%m-%d'):
         resultDate = cls.getHowDaysAgo(nowDate,nowDate_format,howYearsAgo*366)
         return resultDate
+    
+    @classmethod
+    def getCurrentMonthFirstDayOrLastDay(cls,type=1):
+        """获取当前月第一天或者最后一天日期
+
+        Args:
+            type (int, optional): 第一天:1，最后一天:-1
+
+        Returns:
+            [type]: [description]
+        """
+        now = datetime.datetime.now()
+        year=now.year
+        month=now.month
+        last_day = calendar.monthrange(year,month)[1]
+        if type==1:
+            start = datetime.date(year,month,1)
+            return start
+        if type==-1: 
+            end = datetime.date(year,month,last_day)
+            return end
