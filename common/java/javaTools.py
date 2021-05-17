@@ -37,5 +37,5 @@ class StartJpypeJVM(object):
 
     def __init__(self):
         if self.__inited is None:
-            jpype.startJVM(jpype.get_default_jvm_path(), "-ea", "-Djava.class.path=" + JavaTool.getAllJar())
+            jpype.startJVM(jpype.getDefaultJVMPath(), "-ea", "-Djava.class.path=" + JavaTool.getAllJar())
             self.__inited = True

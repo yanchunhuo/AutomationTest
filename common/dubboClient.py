@@ -25,7 +25,8 @@ class DubboClient:
         :param requestInterfaceClassName 请求接口类名,需完整包路径
         :param requestMethod 请求方法
         :param params 所有参数放在一个数组内，格式:
-                      无参数填写[]
+                      无参数填写：[]
+                      参数值为null：填写null字符串即可，当前支持String、自定义对象类型
                       一个基本数据类型参数(byte、short、int、long、double、float、boolean)：[{"type":"int","data":"value"}]
                       一个基本数据类型数组参数：[{"type":"int[]","data":[{"type":"int","data":"value"},{"type":"int","data":"value"}]}]
                       一个java.lang数据类型参数：[{"type":"java.lang.String","data":"1"}]
@@ -42,7 +43,7 @@ class DubboClient:
             params=ujson.dumps(params)
         result=self._dubboClient.request(requestInterfaceClassName,requestMethod,params)
         if result:
-            return ujson.loads(result)
+            return ujson.loads(str(result))
 
     def object2Json(self,className):
         """
@@ -50,4 +51,4 @@ class DubboClient:
         :param className: 需要转换的类名，需填写完整路径
         :return:
         """
-        return self._DubboClient.object2Json(className)
+        return str(self._DubboClient.object2Json(className))
