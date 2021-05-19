@@ -23,13 +23,19 @@
 # [使用]()
 ## 一、环境准备
 ### 1、脚本运行环境准备
-#### 1.1、安装python依赖模块
-* pip3 install -r requirements.txt
+#### 1.1、安装系统依赖
+* Linux:
+    * apt-get install g++ libgraphicsmagick++1-dev libboost-python-dev 【用于pgmagick所需依赖】
+    * apt-get install python-pgmagick 【pgmagick所需依赖】
+* Windows:
+    * 安装Microsoft Visual C++ 2019 Redistributable，下载地址：https://visualstudio.microsoft.com/zh-hans/downloads/ 【jpype1、图像识别字库所需依赖】
 
-##### 1.1.1、安装xmind-sdk-python
+#### 1.2、安装python依赖模块
+* pip3 install -r requirements.txt
+##### 1.2.1、安装xmind-sdk-python
 * 地址:https://github.com/xmindltd/xmind-sdk-python
 
-#### 1.2、安装allure
+#### 1.3、安装allure
 * 源安装
     * sudo apt-add-repository ppa:qameta/allure
     * sudo apt-get update 
@@ -40,15 +46,15 @@
     * 解压allure-2.7.0.zip
     * 加入系统环境变量:export PATH=/home/john/allure-2.7.0/bin:$PATH
 
-#### 1.3、安装openjdk8或jdk8
+#### 1.4、安装openjdk8或jdk8
 * sudo add-apt-repository ppa:openjdk-r/ppa
 * sudo apt-get update
 * sudo apt-get install openjdk-8-jdk
 
-#### 1.4、安装maven
+#### 1.5、安装maven
 * 完成maven的安装配置
 
-#### 1.5、安装Oracle Instant Client
+#### 1.6、安装Oracle Instant Client
 * Linux
     * 安装libaio包
         * centos:yum install libaio
@@ -73,7 +79,7 @@
         * 配置中文编码,环境变量创建NLS_LANG=SIMPLIFIED CHINESE_CHINA.UTF8  
     * 注意:如果使用64位,python和instantclient都需要使用64位
 
-#### 1.6、图像识别字库准备
+#### 1.7、图像识别字库准备
 * 下载对应字库:https://github.com/tesseract-ocr/tessdata
 * 将下载的字库放到common/java/lib/tess4j/tessdata/
 * Linux
