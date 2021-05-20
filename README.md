@@ -32,8 +32,13 @@
 
 #### 1.2、安装python依赖模块
 * pip3 install -r requirements.txt
-##### 1.2.1、安装xmind-sdk-python
-* 地址:https://github.com/xmindltd/xmind-sdk-python
+* 安装pgmagick
+    * Linux:
+        * pip3 install pgmagick==0.7.6
+    * Windows:
+        * 下载安装对应版本：https://www.lfd.uci.edu/~gohlke/pythonlibs/#pgmagick
+* 安装xmind-sdk-python
+    * 下载地址:https://github.com/xmindltd/xmind-sdk-python
 
 #### 1.3、安装allure
 * 源安装
