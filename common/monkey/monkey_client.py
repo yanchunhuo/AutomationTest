@@ -3,7 +3,7 @@
 # @author yanchunhuo
 # @description 
 # @created 2021-05-18T21:08:38.694Z+08:00
-# @last-modified 2021-05-20T18:03:50.993Z+08:00
+# @last-modified 2021-05-21T16:08:45.248Z+08:00
 # github https://github.com/yanchunhuo
 from common.dateTimeTool import DateTimeTool
 import platform
@@ -11,7 +11,7 @@ import subprocess
 
 class Monkey_Client:
     
-    def start_android_monkey(self,udid:str,package:str,log_file_path:str,error_log_file_path,throttle:int=100,event_times:int=100000,):
+    def start_android_monkey(self,udid:str,package:str,log_file_path:str,throttle:int=100,event_times:int=100000,):
         start_command = 'adb -s %s shell monkey -p %s --throttle %s --ignore-crashes --ignore-timeouts --ignore-security-exceptions --ignore-native-crashes --monitor-native-crashes -v -v -v %s >%s'\
                 %(udid,package,int(throttle),int(event_times),log_file_path)
         sub_p = subprocess.Popen(start_command,shell=True)
