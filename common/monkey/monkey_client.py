@@ -3,7 +3,7 @@
 # @author yanchunhuo
 # @description 
 # @created 2021-05-18T21:08:38.694Z+08:00
-# @last-modified 2021-05-21T16:08:45.248Z+08:00
+# @last-modified 2021-06-08T20:23:10.370Z+08:00
 # github https://github.com/yanchunhuo
 from common.dateTimeTool import DateTimeTool
 import platform
@@ -26,7 +26,6 @@ class Monkey_Client:
             get_monkey_process_id_command='adb -s %s shell ps|findstr monkey'%udid
             try:
                 monkey_process_id=subprocess.check_output(get_monkey_process_id_command,shell=True)
-                monkey_process_id=monkey_process_id.decode('utf-8')
             except:
                 print('%s未查找到%s的monkey服务' %(DateTimeTool.getNowTime(),udid))
         else:
@@ -35,6 +34,7 @@ class Monkey_Client:
                 monkey_process_id=subprocess.check_output(get_monkey_process_id_command,shell=True)
             except:
                 print('%s未查找到%s的monkey服务' %(DateTimeTool.getNowTime(),udid))
+        monkey_process_id=monkey_process_id.decode('utf-8')
         if monkey_process_id:
             get_lambda=lambda info:list(filter(None,info.split(' '))) if info else []
             monkey_process_id=get_lambda(monkey_process_id)
