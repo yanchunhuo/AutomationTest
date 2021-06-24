@@ -10,6 +10,7 @@ from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.remote.webelement import WebElement
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import StaleElementReferenceException
 from page_objects.web_ui.wait_type import Wait_Type  as Wait_By
@@ -167,8 +168,27 @@ class BrowserOperator:
             for index in indexs:
                 webElement.select_by_index(index)
 
+    def get_window_handles(self):
+        """获得窗口句柄
+        Returns:
+            [type]: [description]
+        """
+        return self._driver.window_handles
+
+    def get_current_window_handle(self):
+        """获得当前的窗口句柄
+        Returns:
+            [type]: [description]
+        """
+        return  self._driver.current_window_handle
+
     def switch_to_window(self,window_name):
         self._driver.switch_to.window(window_name)
+
+    def maximize_window(self):
+        """放大窗口
+        """
+        self._driver.maximize_window()
 
     def switch_to_frame(self,frame_name):
         self._driver.switch_to.frame(frame_name)
@@ -334,6 +354,17 @@ class BrowserOperator:
                 self._driver.execute_script("arguments[0].scrollIntoView();", webElement)
             else:
                 self._driver.execute_script("arguments[0].scrollIntoView(false);", webElement)
+    
+            
+    def move_by_offset(self,x,y):
+        """鼠标左键点击，x为横坐标，y为纵坐标
+
+        Args:
+            x ([type]): [description]
+            y ([type]): [description]
+        """
+        ActionChains(self._driver).move_by_offset(x,y).click().perform()
+
 
     def getElement(self,elementInfo,highlight_seconds=5):
         """
