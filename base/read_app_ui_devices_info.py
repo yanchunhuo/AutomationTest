@@ -1,6 +1,6 @@
 # 作者 yanchunhuo
 # 创建时间 2019/12/26 11:15
-
+# github https://github.com/yanchunhuo
 from pojo.app_ui_devices_info import APP_UI_Devices_Info
 import configparser as ConfigParser
 
@@ -25,6 +25,11 @@ class Read_APP_UI_Devices_Info(object):
         get_lambda=lambda info:list(filter(None,info.split('||'))) if info else []
         devices_info.devices_desc=get_lambda(config.get('devices_info','devices_desc',fallback=''))
         devices_info.app_ui_configs = get_lambda(config.get('devices_info', 'app_ui_configs', fallback=''))
+        api_configs=[]
+        get_api_config=lambda tmp_api_config:list(filter(None,tmp_api_config.split('&&'))) if tmp_api_config else []
+        for tmp_api_config in get_lambda(config.get('devices_info','api_configs',fallback='')):
+            api_configs.append(get_api_config(tmp_api_config))
+        devices_info.api_configs = api_configs
         devices_info.server_ports=get_lambda(config.get('devices_info','server_ports',fallback=''))
         devices_info.server_ips = get_lambda(config.get('devices_info', 'server_ips', fallback=''))
         system_auth_alert_labels=[]
