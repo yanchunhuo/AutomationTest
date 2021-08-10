@@ -7,13 +7,14 @@ from requests.adapters import HTTPAdapter
 import requests
 
 class DoRequest(object):
-    def __init__(self,url,encoding='utf-8',pool_connections=10,pool_maxsize=10, max_retries=2):
+    def __init__(self,url,encoding='utf-8',pool_connections=10,pool_maxsize=10, max_retries=2,verify=True):
         self._url=url
         self._encoding=encoding
         self._headers = {}
         self._cookies = {}
         self._proxies={}
         self._timeout=30
+        self._verify=verify
         self._session=requests.session()
         httpAdapter=HTTPAdapter(pool_connections=pool_connections,pool_maxsize=pool_maxsize,max_retries=max_retries)
         self._session.mount('http://',httpAdapter)
@@ -42,32 +43,34 @@ class DoRequest(object):
 
     def setProxies(self,proxies):
         self._proxies=proxies
+        
+    def setVerify(self,verify:bool=True):
+        self._verify=verify
 
     def post_with_form(self,path,params=None,**kwargs):
         r=self._session.post(self._url+path,data=params,headers=self._headers,cookies=self._cookies,timeout=self._timeout,
-                        proxies=self._proxies,**kwargs)
+                        proxies=self._proxies,verify=self._verify,**kwargs)
         return self._dealResponseResult(r)
-
 
     def post_with_file(self,path,filePath,params=None,fileKey='file',**kwargs):
         files = {fileKey: open(filePath, 'rb')}
         r = self._session.post(self._url+path, data=params, files=files,headers=self._headers, cookies=self._cookies,
-                          timeout=self._timeout,proxies=self._proxies,**kwargs)
+                          timeout=self._timeout,proxies=self._proxies,verify=self._verify,**kwargs)
         return self._dealResponseResult(r)
 
     def put(self,path,params=None,**kwargs):
         r=self._session.put(self._url+path,data=params,headers=self._headers,cookies=self._cookies,timeout=self._timeout,
-                        proxies=self._proxies,**kwargs)
+                        proxies=self._proxies,verify=self._verify,**kwargs)
         return self._dealResponseResult(r)
 
     def get(self,path,params=None,**kwargs):
         r = self._session.get(self._url+path, params=params, headers=self._headers, cookies=self._cookies, timeout=self._timeout,
-                          proxies=self._proxies,**kwargs)
+                          proxies=self._proxies,verify=self._verify,**kwargs)
         return self._dealResponseResult(r)
 
     def delete(self,path,**kwargs):
         r = self._session.delete(self._url+path,headers=self._headers, cookies=self._cookies, timeout=self._timeout,
-                          proxies=self._proxies,**kwargs)
+                          proxies=self._proxies,verify=self._verify,**kwargs)
         return self._dealResponseResult(r)
 
     def getFile(self,path,storeFilePath,params=None,**kwargs):
@@ -79,7 +82,7 @@ class DoRequest(object):
         :return:
         """
         r=requests.get(self._url+path,params=params,headers=self._headers, cookies=self._cookies, timeout=self._timeout,
-                       proxies=self._proxies,**kwargs)
+                       proxies=self._proxies,verify=self._verify,**kwargs)
         httpResponseResult=HttpResponseResult()
         httpResponseResult.status_code=r.status_code
         httpResponseResult.headers=self._session.headers.__str__()
