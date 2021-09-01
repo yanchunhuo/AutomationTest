@@ -22,6 +22,13 @@ class DateTimeTool:
     @classmethod
     def getNowTimeStampWithMillisecond(cls):
         return int(round(time.time()*1000))
+    
+    @classmethod
+    def timeStampToDateTime(cls,timeStamp:int,is_with_millisecond=False):
+        if is_with_millisecond:
+            timeStamp=timeStamp/1000
+        resultDateTime=datetime.datetime.fromtimestamp(timeStamp)
+        return resultDateTime
 
     @classmethod
     def getWeekDay(cls):
