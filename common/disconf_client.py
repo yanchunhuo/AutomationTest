@@ -5,11 +5,12 @@ from common.httpclient.doRequest import DoRequest
 import ujson
 
 class Disconf_Client:
-    def __init__(self,url:str,username:str,password:str):
+    def __init__(self,url:str,username:str,password:str,is_verify_ssl_cer=True):
         self.url=url
         self.username=username
         self.password=password
         self.doRequest=DoRequest(self.url)
+        self.doRequest.setVerify(is_verify_ssl_cer)
         self._login()
 
     def _login(self):
