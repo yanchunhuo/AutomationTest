@@ -16,5 +16,5 @@ PyMySQL==1.0.2
 redis==3.5.3
 ujson==4.0.2
 locust==1.6.0
-mitmproxy==5.0.1
+mitmproxy==7.0.3
 pycryptodome==3.9.8
