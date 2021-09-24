@@ -312,5 +312,5 @@
             * 确认手机是否能进行视频录制执行命令adb shell screenrecord /sdcard/test.mp4，能正常执行即可
     * 设备屏幕坐标系原点都在最左上角，往右x轴递增，往下y轴递增
 
-# [打赏]()
-![avatar](https://github.com/yanchunhuo/resources/blob/master/Alipay.jpg)
+# [交流]()
+![avatar](https://github.com/yanchunhuo/resources/blob/master/wechat.png)
