@@ -1,21 +1,29 @@
 #-*- coding:utf8 -*-
 # 作者 yanchunhuo
 # 创建时间 2018/01/19 22:36
+# github https://github.com/yanchunhuo
 from base.read_report_config import Read_Report_Config
-from common.custom_multiprocessing import Custom_Pool
-from common.network import Network
 from common.strTool import StrTool
+from common.custom_multiprocessing import Custom_Pool
+from common.dateTimeTool import DateTimeTool
+from common.network import Network
 import platform
 import subprocess
 
-def generate_windows_reports(report_dir,port):
-    subprocess.check_output("start cmd.exe @cmd /c allure serve -p " + port + " " + report_dir, shell=True)
+def generate_windows_reports(report_dir,test_time,port):
+    generate_report_command='allure generate %s/report_data -o %s/report/web_ui_report_%s'%(report_dir,report_dir,test_time)
+    subprocess.check_output(generate_report_command,shell=True)
+    open_report_command='start cmd.exe @cmd /c "allure open -p %s %s/report/web_ui_report_%s"'%(port,report_dir,test_time)
+    subprocess.check_output(open_report_command,shell=True)
 
 if __name__=='__main__':
     report_config = Read_Report_Config().report_config
     ieport=report_config.web_ui_ie_port
     chromeport=report_config.web_ui_chrome_port
     firefoxport=report_config.web_ui_firefox_port
+    notice_title='WEB UI自动化测试报告'
+    test_time=DateTimeTool.getNowTime('%Y_%m_%d_%H_%M_%S_%f')
+    notice_markdown_text='* WEB UI生成时间：%s \n'%test_time
     if 'Windows' == platform.system():
         # 初始化进程池
         p_pool = Custom_Pool(3)
@@ -30,12 +38,12 @@ if __name__=='__main__':
                 try:
                     subprocess.check_call(kill_allure_process_command,shell=True)
                 except:
-                    print('关闭allure进程,进程id:' + get_allure_process_id + ',该进程监听已监听端口:' + ieport)
+                    print('%s关闭allure进程,进程id:%s,该进程监听已监听端口:%s'%(DateTimeTool.getNowTime(),get_allure_process_id,ieport))
             except:
-                print('allure未查找到监听端口%s的服务' % ieport)
-            print('生成ie报告,使用端口' + ieport)
-            print('ie报告地址:http://%s:%s/' % (Network.get_local_ip(), ieport))
-            p = p_pool.apply_async(generate_windows_reports,('output/web_ui/ie',ieport))
+                print('%sallure未查找到监听端口%s的服务' % (DateTimeTool.getNowTime(),ieport))
+            print('%s生成ie报告,使用端口%s'%(DateTimeTool.getNowTime(),ieport))
+            print('%sie报告地址:http://%s:%s/' % (DateTimeTool.getNowTime(),Network.get_local_ip(), ieport))
+            p = p_pool.apply_async(generate_windows_reports,('output/web_ui/ie',test_time,ieport))
         if chromeport:
             # 获得当前监听chrome端口的进程id
             get_chromeport_process_id_command = 'netstat -ano|findstr "0.0.0.0:%s"' % chromeport
@@ -47,12 +55,12 @@ if __name__=='__main__':
                 try:
                     subprocess.check_call(kill_allure_process_command,shell=True)
                 except:
-                    print('关闭allure进程,进程id:' + get_allure_process_id + ',该进程监听已监听端口:' + chromeport)
+                    print('%s关闭allure进程,进程id:%s,该进程监听已监听端口:%s'%(DateTimeTool.getNowTime(),get_allure_process_id,chromeport))
             except:
-                print('allure未查找到监听端口%s的服务' % chromeport)
-            print('生成chrome报告,使用端口' + chromeport)
-            print('chrome报告地址:http://%s:%s/' % (Network.get_local_ip(), chromeport))
-            p = p_pool.apply_async(generate_windows_reports,('output/web_ui/chrome',chromeport))
+                print('%sallure未查找到监听端口%s的服务' % (DateTimeTool.getNowTime(),chromeport))
+            print('%s生成chrome报告,使用端口%s'%(DateTimeTool.getNowTime(),chromeport))
+            print('%schrome报告地址:http://%s:%s/' % (DateTimeTool.getNowTime(),Network.get_local_ip(), chromeport))
+            p = p_pool.apply_async(generate_windows_reports,('output/web_ui/chrome',test_time,chromeport))
         if firefoxport:
             # 获得当前监听ie端口的进程id
             get_firefoxport_process_id_command = 'netstat -ano|findstr "0.0.0.0:%s"' % firefoxport
@@ -64,12 +72,12 @@ if __name__=='__main__':
                 try:
                     subprocess.check_call(kill_allure_process_command,shell=True)
                 except:
-                    print('关闭allure进程,进程id:' + get_allure_process_id + ',该进程监听已监听端口:' + firefoxport)
+                    print('%s关闭allure进程,进程id:%s,该进程监听已监听端口:%s'%(DateTimeTool.getNowTime(),get_allure_process_id,firefoxport))
             except:
-                print('allure未查找到监听端口%s的服务' % firefoxport)
-            print('生成firefox报告,使用端口' + firefoxport)
-            print('firefox报告地址:http://%s:%s/' % (Network.get_local_ip(), firefoxport))
-            p = p_pool.apply_async(generate_windows_reports,('output/web_ui/firefox',firefoxport))
+                print('%sallure未查找到监听端口%s的服务' % (DateTimeTool.getNowTime(),firefoxport))
+            print('%s生成firefox报告,使用端口%s'%(DateTimeTool.getNowTime(),firefoxport))
+            print('%sfirefox报告地址:http://%s:%s/' % (DateTimeTool.getNowTime(),Network.get_local_ip(), firefoxport))
+            p = p_pool.apply_async(generate_windows_reports,('output/web_ui/firefox',test_time,firefoxport))
         p_pool.close()
         p_pool.join()
     else:
@@ -92,13 +100,16 @@ if __name__=='__main__':
                     allure_process_id = allure_process_id.strip()
                     ieport_process_id = ieport_process_id.strip()
                     if allure_process_id == ieport_process_id and not is_find and allure_process_id and ieport_process_id:
-                        print('关闭allure进程,进程id:' + allure_process_id.strip() + ',该进程监听已监听端口:' + ieport)
+                        print('%s关闭allure进程,进程id:%s,该进程监听已监听端口:%s'%(DateTimeTool.getNowTime(),allure_process_id.strip(),ieport))
                         subprocess.check_output("kill -9 " + allure_process_id.strip(), shell=True)
                         is_find =True
                         break
-            print('生成ie报告,使用端口'+ieport)
-            print('ie报告地址:http://%s:%s/' % (Network.get_local_ip(), ieport))
-            subprocess.check_output("nohup allure serve -p " + ieport + " output/web_ui/ie >logs/ie_generate_web_ui_test_report.log 2>&1 &",shell=True)
+            print('%s生成ie报告,使用端口%s'%(DateTimeTool.getNowTime(),ieport))
+            print('%sie报告地址:http://%s:%s/' % (DateTimeTool.getNowTime(),Network.get_local_ip(), ieport))
+            generate_report_command='allure generate output/web_ui/ie/report_data -o output/web_ui/ie/report/web_ui_report_%s'%(test_time)
+            subprocess.check_output(generate_report_command,shell=True)
+            open_report_command='nohup allure open -p %s output/web_ui/ie/report/web_ui_report_%s 2>&1 &'%(ieport,test_time)
+            subprocess.check_output(open_report_command,shell=True)
         if chromeport:
             # 获得当前监听chrome端口的进程id
             get_chromeport_process_ids_command = "netstat -anp|grep -i " + chromeport + "|grep -v grep|awk '{print $7}'|awk -F '/' '{print $1}'"
@@ -113,13 +124,16 @@ if __name__=='__main__':
                     allure_process_id = allure_process_id.strip()
                     chromeport_process_id =  chromeport_process_id.strip()
                     if allure_process_id == chromeport_process_id and not is_find and allure_process_id and chromeport_process_id:
-                        print('关闭allure进程,进程id:' + allure_process_id.strip() + ',该进程监听已监听端口:' + chromeport)
+                        print('%s关闭allure进程,进程id:%s,该进程监听已监听端口:%s'%(DateTimeTool.getNowTime(),allure_process_id.strip(),chromeport))
                         subprocess.check_output("kill -9 " + allure_process_id.strip(), shell=True)
                         is_find = True
                         break
-            print('生成chrome报告,使用端口' + chromeport)
-            print('chromeport报告地址:http://%s:%s/' % (Network.get_local_ip(), chromeport))
-            subprocess.check_output("nohup allure serve -p " + chromeport + " output/web_ui/chrome >logs/chrome_generate_web_ui_test_report.log 2>&1 &",shell=True)
+            print('%s生成chrome报告,使用端口%s'%(DateTimeTool.getNowTime(),chromeport))
+            print('%schromeport报告地址:http://%s:%s/' % (DateTimeTool.getNowTime(),Network.get_local_ip(), chromeport))
+            generate_report_command='allure generate output/web_ui/chrome/report_data -o output/web_ui/chrome/report/web_ui_report_%s'%(test_time)
+            subprocess.check_output(generate_report_command,shell=True)
+            open_report_command='nohup allure open -p %s output/web_ui/chrome/report/web_ui_report_%s 2>&1 &'%(chromeport,test_time)
+            subprocess.check_output(open_report_command,shell=True)
         if firefoxport:
             # 获得当前监听firefox端口的进程id
             get_firefoxport_process_ids_command = "netstat -anp|grep -i " + firefoxport + "|grep -v grep|awk '{print $7}'|awk -F '/' '{print $1}'"
@@ -134,10 +148,13 @@ if __name__=='__main__':
                     allure_process_id = allure_process_id.strip()
                     firefoxport_process_id =  firefoxport_process_id.strip()
                     if allure_process_id == firefoxport_process_id and not is_find and allure_process_id and firefoxport_process_id:
-                        print('关闭allure进程,进程id:'+allure_process_id.strip()+',该进程监听已监听端口:'+firefoxport)
+                        print('%s关闭allure进程,进程id:%s,该进程监听已监听端口:%s'%(DateTimeTool.getNowTime(),allure_process_id.strip(),firefoxport))
                         subprocess.check_output("kill -9 " + allure_process_id, shell=True)
                         is_find = True
                         break
-            print('生成firefox报告,使用端口' + firefoxport)
-            print('firefoxport报告地址:http://%s:%s/' % (Network.get_local_ip(), firefoxport))
-            subprocess.check_output("nohup allure serve -p " + firefoxport + " output/web_ui/firefox >logs/firefox_generate_web_ui_test_report.log 2>&1 &",shell=True)
+            print('%s生成firefox报告,使用端口%s'%(DateTimeTool.getNowTime(),firefoxport))
+            print('%sfirefoxport报告地址:http://%s:%s/' % (DateTimeTool.getNowTime(),Network.get_local_ip(), firefoxport))
+            generate_report_command='allure generate output/web_ui/firefox/report_data -o output/web_ui/firefox/report/web_ui_report_%s'%(test_time)
+            subprocess.check_output(generate_report_command,shell=True)
+            open_report_command='nohup allure open -p %s output/web_ui/firefox/report/web_ui_report_%s 2>&1 &'%(firefoxport,test_time)
+            subprocess.check_output(open_report_command,shell=True)

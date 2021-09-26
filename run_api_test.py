@@ -34,7 +34,7 @@ if __name__=='__main__':
     print('%s初始化完成......'%DateTimeTool.getNowTime())
 
     # 执行pytest前的参数准备
-    pytest_execute_params=['-c', 'config/pytest.ini', '-v', '--alluredir', 'output/api/']
+    pytest_execute_params=['-c', 'config/pytest.ini', '-v', '--alluredir', 'output/api/report_data/']
     # 判断目录参数
     dir = 'cases/api/'
     if args.dir:

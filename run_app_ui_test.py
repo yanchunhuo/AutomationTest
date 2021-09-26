@@ -55,7 +55,7 @@ def start_app_device_test(index,device_info,keyword,dir,markexpr,capture,reruns,
             desired_capabilities_desc = desired_capabilities['bundleId']
         print('%s当前设备开始测试的desired_capabilities为:%s'%(DateTimeTool.getNowTime(),desired_capabilities))
         # 执行pytest前的参数准备
-        pytest_execute_params = ['-c', 'config/pytest.ini', '-v', '--alluredir', 'output/app_ui/'+device_info['device_desc']+'/'+desired_capabilities_desc]
+        pytest_execute_params = ['-c', 'config/pytest.ini', '-v', '--alluredir', 'output/app_ui/%s/%s/report_data/'%(device_info['device_desc'],desired_capabilities_desc)]
         # 判断目录参数
         if not dir:
             dir = 'cases/app_ui/'
@@ -148,7 +148,7 @@ if __name__=='__main__':
         p_pool.join()
     else:
         # 执行pytest前的参数准备
-        pytest_execute_params = ['-c', 'config/pytest.ini', '-v', '--alluredir', 'output/app_ui/windows']
+        pytest_execute_params = ['-c', 'config/pytest.ini', '-v', '--alluredir', 'output/app_ui/windows/report_data/']
         # 判断目录参数
         if not dir:
             dir = 'cases/app_ui/'

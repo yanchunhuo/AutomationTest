@@ -3,7 +3,7 @@
 # @author yanchunhuo
 # @description 
 # @created 2021-05-20T17:15:52.185Z+08:00
-# @last-modified 2021-05-20T18:04:37.466Z+08:00
+# @last-modified 2021-09-26T18:22:40.222Z+08:00
 # github https://github.com/yanchunhuo
 from common.dateTimeTool import DateTimeTool
 from common.pytest import deal_pytest_ini_file
@@ -25,7 +25,7 @@ if __name__=='__main__':
     deal_pytest_ini_file()
 
     # 执行pytest前的参数准备
-    pytest_execute_params=['-c', 'config/pytest.ini', '-v', '--alluredir', 'output/app_ui_monkey/']
+    pytest_execute_params=['-c', 'config/pytest.ini', '-v', '--alluredir', 'output/app_ui_monkey/report_data/']
     # 判断目录参数
     dir = 'cases/app_ui_monkey/'
     if args.dir:

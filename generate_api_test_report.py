@@ -1,18 +1,26 @@
 ﻿# 作者 yanchunhuo
 # 创建时间 2018/01/19 22:36
+# github https://github.com/yanchunhuo
 from base.read_report_config import Read_Report_Config
-from common.strTool import StrTool
+from common.dateTimeTool import DateTimeTool
 from common.network import Network
+from common.strTool import StrTool
 import multiprocessing
-import subprocess
 import platform
+import subprocess
 
-def generate_windows_reports(report_dir,port):
-    subprocess.check_output("start cmd.exe @cmd /c allure serve -p " + port + " " + report_dir, shell=True)
+def generate_windows_reports(test_time, port):
+    generate_report_command='allure generate output/api/report_data -o output/api/report/api_report_%s'%(test_time)
+    subprocess.check_output(generate_report_command,shell=True)
+    open_report_command='start cmd.exe @cmd /c "allure open -p %s output/api/report/api_report_%s"'%(port,test_time)
+    subprocess.check_output(open_report_command,shell=True)
 
-if __name__=='__main__':
+if __name__ == '__main__':
     report_config = Read_Report_Config().report_config
     port = report_config.api_port
+    notice_title = 'API自动化测试报告'
+    test_time=DateTimeTool.getNowTime('%Y_%m_%d_%H_%M_%S_%f')
+    notice_markdown_text = '* API生成时间：%s \n' % test_time
     if 'Windows' == platform.system():
         get_allure_process_id_command = 'netstat -ano|findstr "0.0.0.0:%s"' % port
         try:
@@ -23,12 +31,12 @@ if __name__=='__main__':
             try:
                 subprocess.check_call(kill_allure_process_command, shell=True)
             except:
-                print('关闭allure进程,进程id:' + get_allure_process_id + ',该进程监听已监听端口:' + port)
+                print('%s关闭allure进程,进程id:%s,该进程监听已监听端口:%s'%(DateTimeTool.getNowTime(),get_allure_process_id,port))
         except:
-            print('allure未查找到监听端口%s的服务' % port)
-        print('生成报告,使用端口' + port)
-        print('报告地址:http://%s:%s/' % (Network.get_local_ip(), port))
-        process=multiprocessing.Process(target=generate_windows_reports,args=('output/api/',port))
+            print('%sallure未查找到监听端口%s的服务' % (DateTimeTool.getNowTime(),port))
+        print('%s生成报告,使用端口%s'%(DateTimeTool.getNowTime(),port))
+        print('%s报告地址:http://%s:%s/' % (DateTimeTool.getNowTime(),Network.get_local_ip(), port))
+        process = multiprocessing.Process(target=generate_windows_reports, args=(test_time, port))
         process.start()
         process.join()
     else:
@@ -51,11 +59,13 @@ if __name__=='__main__':
                 allure_process_id = allure_process_id.strip()
                 port_process_id = port_process_id.strip()
                 if allure_process_id == port_process_id and not is_find and allure_process_id and port_process_id:
-                    print('关闭allure进程,进程id:' + allure_process_id.strip() + ',该进程监听已监听端口:' + port)
+                    print('%s关闭allure进程,进程id:%s,该进程监听已监听端口:%s'%(DateTimeTool.getNowTime(),allure_process_id.strip(),port))
                     subprocess.check_output("kill -9 " + allure_process_id.strip(), shell=True)
                     is_find = True
                     break
-        print('生成报告,使用端口' + port)
-        print('报告地址:http://%s:%s/' % (Network.get_local_ip(), port))
-        subprocess.check_output("nohup allure serve -p " + port + " output/api/ >logs/generate_api_test_report.log 2>&1 &",shell=True)
-
+        print('%s生成报告,使用端口%s'%(DateTimeTool.getNowTime(),port))
+        print('%s报告地址:http://%s:%s/' % (DateTimeTool.getNowTime(),Network.get_local_ip(), port))
+        generate_report_command='allure generate output/api/report_data -o output/api/report/api_report_%s'%(test_time)
+        subprocess.check_output(generate_report_command,shell=True)
+        open_report_command='nohup allure open -p %s output/api/report/api_report_%s 2>&1 &'%(port,test_time)
+        subprocess.check_output(open_report_command,shell=True)
