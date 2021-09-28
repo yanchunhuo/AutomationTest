@@ -67,5 +67,5 @@ if __name__ == '__main__':
         print('%s报告地址:http://%s:%s/' % (DateTimeTool.getNowTime(),Network.get_local_ip(), port))
         generate_report_command='allure generate output/api/report_data -o output/api/report/api_report_%s'%(test_time)
         subprocess.check_output(generate_report_command,shell=True)
-        open_report_command='nohup allure open -p %s output/api/report/api_report_%s 2>&1 &'%(port,test_time)
+        open_report_command='nohup allure open -p %s output/api/report/api_report_%s >logs/generate_api_test_report_%s.log 2>&1 &'%(port,test_time,test_time)
         subprocess.check_output(open_report_command,shell=True)

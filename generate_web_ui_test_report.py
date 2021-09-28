@@ -108,7 +108,7 @@ if __name__=='__main__':
             print('%sie报告地址:http://%s:%s/' % (DateTimeTool.getNowTime(),Network.get_local_ip(), ieport))
             generate_report_command='allure generate output/web_ui/ie/report_data -o output/web_ui/ie/report/web_ui_report_%s'%(test_time)
             subprocess.check_output(generate_report_command,shell=True)
-            open_report_command='nohup allure open -p %s output/web_ui/ie/report/web_ui_report_%s 2>&1 &'%(ieport,test_time)
+            open_report_command='nohup allure open -p %s output/web_ui/ie/report/web_ui_report_%s >logs/generate_web_ui_test_ie_report_%s.log 2>&1 &'%(ieport,test_time,test_time)
             subprocess.check_output(open_report_command,shell=True)
         if chromeport:
             # 获得当前监听chrome端口的进程id
@@ -132,7 +132,7 @@ if __name__=='__main__':
             print('%schromeport报告地址:http://%s:%s/' % (DateTimeTool.getNowTime(),Network.get_local_ip(), chromeport))
             generate_report_command='allure generate output/web_ui/chrome/report_data -o output/web_ui/chrome/report/web_ui_report_%s'%(test_time)
             subprocess.check_output(generate_report_command,shell=True)
-            open_report_command='nohup allure open -p %s output/web_ui/chrome/report/web_ui_report_%s 2>&1 &'%(chromeport,test_time)
+            open_report_command='nohup allure open -p %s output/web_ui/chrome/report/web_ui_report_%s >logs/generate_web_ui_test_chrome_report_%s.log 2>&1 &'%(chromeport,test_time,test_time)
             subprocess.check_output(open_report_command,shell=True)
         if firefoxport:
             # 获得当前监听firefox端口的进程id
@@ -156,5 +156,5 @@ if __name__=='__main__':
             print('%sfirefoxport报告地址:http://%s:%s/' % (DateTimeTool.getNowTime(),Network.get_local_ip(), firefoxport))
             generate_report_command='allure generate output/web_ui/firefox/report_data -o output/web_ui/firefox/report/web_ui_report_%s'%(test_time)
             subprocess.check_output(generate_report_command,shell=True)
-            open_report_command='nohup allure open -p %s output/web_ui/firefox/report/web_ui_report_%s 2>&1 &'%(firefoxport,test_time)
+            open_report_command='nohup allure open -p %s output/web_ui/firefox/report/web_ui_report_%s >logs/generate_web_ui_test_firefox_report_%s.log 2>&1 &'%(firefoxport,test_time,test_time)
             subprocess.check_output(open_report_command,shell=True)
