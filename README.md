@@ -21,6 +21,7 @@
     * tess4j：java的图片识别工具,https://github.com/nguyenq/tess4j/
     * allpairspy: 用于将参数列表进行正交分析，实现正交分析法用例覆盖，https://pypi.org/project/allpairspy/
     * python-binary-memcached：用于操作memcached，https://github.com/jaysonsantos/python-binary-memcached
+    * kazoo：用于操作zookeeper，https://github.com/python-zk/kazoo
 
 # [使用]()
 ## 一、环境准备
