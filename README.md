@@ -1,6 +1,3 @@
-
-[![Stargazers over time](https://starchart.cc/yanchunhuo/AutomationTest.svg)](https://starchart.cc/yanchunhuo/AutomationTest)
-
 ![avatar](https://github.com/yanchunhuo/resources/blob/master/APIAutomationTest/report.png)
 
 # [自动化测试]()
@@ -320,3 +317,6 @@
 
 # [交流]()
 ![avatar](https://github.com/yanchunhuo/resources/blob/master/wechat.png)
+
+
+[![Stargazers over time](https://starchart.cc/yanchunhuo/AutomationTest.svg)](https://starchart.cc/yanchunhuo/AutomationTest)
