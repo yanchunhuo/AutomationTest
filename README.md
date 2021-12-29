@@ -2,6 +2,9 @@
 
 # [自动化测试]()
 
+## Stargazers over time
+[![Stargazers over time](https://starchart.cc/gangly/datafaker.svg)](https://starchart.cc/gangly/datafaker)
+
 # [概况]()
 * 本项目支持接口自动化测试、app ui自动化测试、web ui自动化测试、性能测试
 * 本项目由以下工具组成
