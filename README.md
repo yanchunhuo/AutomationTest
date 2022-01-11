@@ -23,7 +23,8 @@
     * python-binary-memcached：用于操作memcached，https://github.com/jaysonsantos/python-binary-memcached
     * kazoo：用于操作zookeeper，https://github.com/python-zk/kazoo
     * websockets：用于websocket请求，https://github.com/aaugustin/websockets
-
+    * Js2Py：用于执行js代码，https://github.com/PiotrDabkowski/Js2Py
+    
 # [使用]()
 ## 一、环境准备
 ### 1、脚本运行环境准备
