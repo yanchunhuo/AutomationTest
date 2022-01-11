@@ -17,10 +17,10 @@ class Base_Encrypt_Tool:
         m=hashlib.md5()
         m.update(text.encode('utf-8'))
         return m.hexdigest()
-
+    
     @classmethod
-    def base64Encode(cls,text):
-        return base64.b64encode(bytes(text))
+    def base64Encode(cls,text,encoding='utf-8'):
+        return base64.b64encode(bytes(text,encoding=encoding))
 
     @classmethod
     def base64Decode(cls,base64Text):

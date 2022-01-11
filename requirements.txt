@@ -21,3 +21,4 @@ pycryptodome==3.9.8
 python-binary-memcached==0.30.1
 kazoo==2.8.0
 websockets==9.1
+Js2Py==0.71
