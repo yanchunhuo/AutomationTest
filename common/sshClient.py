@@ -6,11 +6,12 @@ import os
 import paramiko
 
 class SSHClient:
-    def __init__(self,ip,username='root',port=22,password='Hstest2014'):
+    def __init__(self,ip,username='root',port=22,password='Hstest2014',is_windows=False):
         self._ip=ip
         self._port=port
         self._username=username
         self._password=password
+        self._is_windows=is_windows
         self._setSSHClient()
 
     def _setSSHClient(self):
@@ -30,7 +31,7 @@ class SSHClient:
         return self._sftpclient
 
     def ssh_exec_command(self,command,timeout=60,is_source_profile=1):
-        if int(is_source_profile)==1:
+        if int(is_source_profile)==1 and not self._is_windows:
             command='source /etc/profile;'+command
         stdin, stdout, stderr=self._sshclient.exec_command(command=command,timeout=timeout)
         channel = stdout.channel
@@ -43,25 +44,45 @@ class SSHClient:
     def sftp_put(self, local_path, remote_path):
         self._sftpclient.put(local_path, remote_path)
 
-    def _get_all_files_in_local_path(self, local_path):
-        all_files = []
-        files = os.listdir(local_path)
-        for x in files:
-            filename = os.path.join(local_path, x)
-            if os.path.isdir(filename):
-                all_files.extend(self._get_all_files_in_local_path(filename))
-            else:
-                all_files.append(filename)
-        return all_files
-
     def sftp_put_dir(self, local_path, remote_path):
-        if remote_path[-1] == '/':
-            remote_path = remote_path[0:-1]
-        all_files = self._get_all_files_in_local_path(local_path)
-        for x in all_files:
-            filename = os.path.split(x)[-1]
-            remote_filename = remote_path + '/' + filename
-            self._sftpclient.put(x, remote_filename)
+        local_path=local_path.replace('\\','/')
+        if not local_path[-1] == '/':
+            local_path += '/'
+        remote_path=remote_path.replace('\\','/')
+        if not remote_path[-1] == '/':
+            remote_path += '/'
+        for dirpath,dirnames,filenames in os.walk(local_path):
+            dirpath=dirpath.replace('\\','/')
+            if not dirpath[-1] == '/':
+                dirpath += '/'                
+            # 创建当前路径目录
+            for dirname in dirnames:
+                local_next_dirpath=dirpath+dirname
+                remote_next_sub_dirpath=local_next_dirpath.replace(local_path,'')
+                if remote_next_sub_dirpath[0] == '/':
+                    remote_next_sub_dirpath = remote_next_sub_dirpath[1:]
+                if self._is_windows:
+                    mkdir_remote_command='mkdir "%s"'%(remote_path+remote_next_sub_dirpath)
+                else:
+                    mkdir_remote_command='mkdir -p "%s"'%(remote_path+remote_next_sub_dirpath)
+                stdin,stdout,stderr,exit_code=self.ssh_exec_command(mkdir_remote_command)
+                if not exit_code == 0:
+                    if self._is_windows:
+                        raise Exception(stderr.read().decode('gbk'))
+                    else:
+                        raise Exception(stderr.read().decode('utf-8'))
+            #上传当前路径文件
+            for filename in filenames:
+                remote_sub_dirpath=dirpath.replace(local_path,'')
+                remote_sub_dirpath=remote_sub_dirpath.replace('\\','/')
+                if len(remote_sub_dirpath)>0:
+                    if remote_sub_dirpath[0] == '/':
+                        remote_sub_dirpath = remote_sub_dirpath[1:]
+                    if not remote_sub_dirpath[-1] == '/':
+                        remote_sub_dirpath+='/'
+                else:
+                    remote_sub_dirpath='/'
+                self._sftpclient.put(local_path+remote_sub_dirpath+filename,remote_path+remote_sub_dirpath+filename)
 
     def closeSSHAndSFTP(self):
         self._sshclient.close()
