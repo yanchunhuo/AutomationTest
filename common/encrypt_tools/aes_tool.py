@@ -3,13 +3,13 @@
 # @author yanchunhuo
 # @description 
 # @created 2021-09-06T18:28:10.458Z+08:00
-# @last-modified 2021-09-06T19:02:54.219Z+08:00
+# @last-modified 2022-01-20T11:52:54.048Z+08:00
 # github https://github.com/yanchunhuo
 from Crypto.Cipher import AES
 import base64
 
 class AES_Tool:
-    def __init__(self,key:str,iv:str) -> None:
+    def __init__(self,key:str,iv:str=None) -> None:
         """[summary]
 
         Args:
@@ -17,7 +17,8 @@ class AES_Tool:
             iv (str): 初始化向量
         """
         self.key=key.encode('utf-8')
-        self.iv=iv.encode('utf-8')
+        if iv:
+            self.iv=iv.encode('utf-8')
     
     def aes_encrypt_cbc(self,text:str):
         """

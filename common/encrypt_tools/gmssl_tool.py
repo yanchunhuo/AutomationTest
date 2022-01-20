@@ -3,7 +3,7 @@
 # @author yanchunhuo
 # @description 
 # @created 2021-09-06T17:01:21.635Z+08:00
-# @last-modified 2021-09-06T19:02:47.324Z+08:00
+# @last-modified 2022-01-20T11:54:15.278Z+08:00
 # github https://github.com/yanchunhuo
 from common.encrypt_tools.gmssl.sm2 import CryptSM2
 from common.encrypt_tools.gmssl.sm4 import CryptSM4
@@ -12,7 +12,7 @@ from common.encrypt_tools.gmssl.sm4 import SM4_DECRYPT
 from common.encrypt_tools.gmssl import func
 
 class GMSSL_Tool:
-    def __init__(self,sm2_private_key:str=None,sm2_public_key:str=None,sm4_key:str=None,sm4_iv_cbc:str=None) -> None:
+    def __init__(self,sm2_private_key:str=None,sm2_public_key:str=None,sm4_key:str=None,sm4_iv_cbc:str=None,is_sm4_key_use_hex=True) -> None:
         """[summary]
 
         Args:
@@ -24,7 +24,10 @@ class GMSSL_Tool:
         self.sm2_public_key=sm2_public_key
         self.sm2_crypt=CryptSM2(private_key=self.sm2_private_key,public_key=self.sm2_public_key)
         if not sm4_key is None:
-            self.sm4_key=bytes(sm4_key,'utf-8')
+            if is_sm4_key_use_hex:
+                self.sm4_key=bytes.fromhex(sm4_key)
+            else:
+                self.sm4_key=bytes(sm4_key,'utf-8')
             self.sm4_encrypt=CryptSM4()
             self.sm4_decrypt=CryptSM4()
             self.sm4_encrypt.set_key(self.sm4_key,SM4_ENCRYPT)
