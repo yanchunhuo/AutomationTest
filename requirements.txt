@@ -14,7 +14,7 @@ scikit-image==0.16.2
 opencv-python==4.2.0.32
 PyMySQL==1.0.2
 redis==3.5.3
-ujson==4.0.2
+ujson==5.1.0
 locust==1.6.0
 mitmproxy==5.0.1
 pycryptodome==3.9.8
