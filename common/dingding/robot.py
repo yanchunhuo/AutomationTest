@@ -1,6 +1,10 @@
-# 作者 yanchunhuo
-# 创建时间 2020/7/11 21:03
-# github https://github.com/yanchunhuo
+#
+# robot.py
+# @author yanchunhuo
+# @description 
+# @created 2021-04-13T11:35:22.550Z+08:00
+# @last-modified 2022-02-07T18:55:03.094Z+08:00
+#
 
 from common.dateTimeTool import DateTimeTool
 from common.httpclient.doRequest import DoRequest
