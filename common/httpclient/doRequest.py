@@ -7,13 +7,13 @@ from requests.adapters import HTTPAdapter
 import requests
 
 class DoRequest(object):
-    def __init__(self,url,encoding='utf-8',pool_connections=10,pool_maxsize=10, max_retries=2,verify=True):
+    def __init__(self,url,encoding='utf-8',pool_connections=10,pool_maxsize=10, max_retries=2,timeout=30,verify=True):
         self._url=url
         self._encoding=encoding
         self._headers = {}
         self._cookies = {}
         self._proxies={}
-        self._timeout=30
+        self._timeout=timeout
         self._verify=verify
         self._session=requests.session()
         httpAdapter=HTTPAdapter(pool_connections=pool_connections,pool_maxsize=pool_maxsize,max_retries=max_retries)
@@ -81,9 +81,9 @@ class DoRequest(object):
         :param params:
         :return:
         """
-        r=requests.get(self._url+path,params=params,headers=self._headers, cookies=self._cookies, timeout=self._timeout,
-                       proxies=self._proxies,verify=self._verify,**kwargs)
-        httpResponseResult=HttpResponseResult()
+        r = self._session.get(self._url + path, params=params, headers=self._headers, cookies=self._cookies,
+                              timeout=self._timeout, proxies=self._proxies, verify=self._verify, **kwargs)
+        httpResponseResult = HttpResponseResult()
         httpResponseResult.status_code=r.status_code
         httpResponseResult.headers=self._session.headers.__str__()
         httpResponseResult.cookies=self._session.cookies.__str__()

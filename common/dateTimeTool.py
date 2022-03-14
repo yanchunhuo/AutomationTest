@@ -31,6 +31,15 @@ class DateTimeTool:
         return resultDateTime
 
     @classmethod
+    def strToTimeStamp(cls,str,str_format:str='%Y-%m-%d %H:%M:%S',is_with_millisecond=False):
+        dst_dateTime=datetime.datetime.strptime(str,str_format)
+        if is_with_millisecond:
+            timestamp=int(time.mktime(dst_dateTime.timetuple())*1000)
+        else:
+            timestamp=int(time.mktime(dst_dateTime.timetuple()))
+        return timestamp
+
+    @classmethod
     def getWeekDay(cls):
         """
         获得今天星期几，从1开始
@@ -49,7 +58,7 @@ class DateTimeTool:
         return theDateTime.strftime(format)
 
     @classmethod
-    def strToDateTime(cls,str,str_format):
+    def strToDateTime(cls,str,str_format:str='%Y-%m-%d %H:%M:%S'):
         dst_dateTime=datetime.datetime.strptime(str,str_format)
         return dst_dateTime
 
