@@ -55,7 +55,8 @@ class StrTool:
         :param object:
         :return:
         """
-        return ujson.dumps(object)
+        import json
+        return json.dumps(object,default=lambda o: o.__dict__)
 
     @classmethod
     def objectToJson(cls, object):
@@ -64,7 +65,8 @@ class StrTool:
         :param object:
         :return:
         """
-        return ujson.loads(ujson.dumps(object))
+        import json
+        return ujson.loads(json.dumps(object,default=lambda o: o.__dict__))
 
     @classmethod
     def getSpecifiedStr(cls, length, char):
