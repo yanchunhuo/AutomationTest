@@ -40,13 +40,23 @@ class StrTool:
                 return None
 
     @classmethod
-    def addUUID(cls, source):
+    def addUUID(cls,prefix:str=None,suffix:str=None,separator:str='_'):
+        """_summary_
+
+        Args:
+            prefix (_type_, optional): _description_. Defaults to None.
+            suffix (_type_, optional): _description_. Defaults to None.
+            separator (str, optional): _description_. Defaults to None.
+
+        Returns:
+            _type_: _description_
         """
-        字符串加上uuid
-        :param source:
-        :return:
-        """
-        return source + '_' + str(uuid.uuid4())
+        result=str(uuid.uuid4())
+        if prefix:
+            result=prefix+separator+result
+        if suffix:
+            result=result+separator+suffix
+        return result
 
     @classmethod
     def objectToJsonStr(cls, object):
