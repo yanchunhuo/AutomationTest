@@ -14,7 +14,7 @@
     * selenium：web ui自动化测试框架,https://www.seleniumhq.org/
     * cx_Oracle：oracle操作库,https://cx-oracle.readthedocs.io/en/latest/index.html
     * JPype1：用于执行java代码,https://github.com/jpype-project/jpype
-    * paramiko：ssh客户端,http://docs.paramiko.org/en/2.4/
+    * paramiko：ssh客户端,https://docs.paramiko.org/en/stable/
     * Pillow：用于图片处理,https://pillow.readthedocs.io/en/latest/
     * PyMySQL：用于操作MySQL数据库,https://github.com/PyMySQL/PyMySQL
     * redis：redis客户端,https://pypi.org/project/redis/
