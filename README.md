@@ -24,6 +24,7 @@
     * kazoo：用于操作zookeeper，https://github.com/python-zk/kazoo
     * websockets：用于websocket请求，https://github.com/aaugustin/websockets
     * Js2Py：用于执行js代码，https://github.com/PiotrDabkowski/Js2Py
+* 当前仅支持python3.6.8
     
 # [使用]()
 ## 一、环境准备
@@ -287,7 +288,7 @@
 * start_locust_slave.sh 启动locust从节点
 
 # [编码规范]()
-* 统一使用python 3.6
+* 统一使用python 3.6.8
 * 编码使用-\*- coding:utf8 -\*-,且不指定解释器
 * 类/方法的注释均写在class/def下一行，并且用三个双引号形式注释
 * 局部代码注释使用#号
