@@ -307,6 +307,7 @@
 # [注意点]()
 * 运行pytest时指定的目录内应当有conftest.py，方能在其他模块中使用。@allure.step会影响fixture，故在脚本中不使用@allure.step
 * 由于web ui配置的驱动是直接设置在系统环境变量，app ui指定了混合应用的浏览器驱动，在运行app ui时appium有可能会读取到系统的环境变量的配置，故运行时请排查此情况
+* 数据库操作，所有表操作均进行单表操作，如需多表查询，使用代码进行聚合
 * web ui测试
     * 统一使用Firefox浏览器进行元素定位
     * 能用id、name、link(不常变化的链接)定位的，不使用css定位，能使用css定位，不使用xpath定位
