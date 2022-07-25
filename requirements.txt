@@ -23,3 +23,5 @@ kazoo==2.8.0
 websockets==9.1
 Js2Py==0.71
 pytest-collect-formatter2==0.1.3
+sqlacodegen==3.0.0b2
+SQLAlchemy==1.4.39

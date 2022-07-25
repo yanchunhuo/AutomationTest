@@ -24,6 +24,8 @@
     * kazoo：用于操作zookeeper，https://github.com/python-zk/kazoo
     * websockets：用于websocket请求，https://github.com/aaugustin/websockets
     * Js2Py：用于执行js代码，https://github.com/PiotrDabkowski/Js2Py
+    * sqlacodegen：用于根据数据库表结构生成python对象
+    * SQLAlchemy：SQL工具包及对象关系映射（ORM）工具
 * 当前仅支持python3.6.8
     
 # [使用]()
