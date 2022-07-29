@@ -326,3 +326,5 @@
 
 
 [![Stargazers over time](https://starchart.cc/yanchunhuo/AutomationTest.svg)](https://starchart.cc/yanchunhuo/AutomationTest)
+
+[![Top Langs](https://profile-counter.glitch.me/yanchunhuo/count.svg)](https://github.com/yanchunhuo)
