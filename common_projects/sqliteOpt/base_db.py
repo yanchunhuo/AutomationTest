@@ -3,7 +3,7 @@
 # @author yanchunhuo
 # @description 
 # @created 2022-08-04T09:52:09.525Z+08:00
-# @last-modified 2022-08-08T11:55:53.566Z+08:00
+# @last-modified 2022-08-08T13:08:52.202Z+08:00
 # github https://github.com/yanchunhuo
 
 import copy
@@ -56,11 +56,3 @@ class Base_DB:
         if old_result_object:
             old_result_object=copy.copy(new_obj)
             self.db_session.commit()
-    
-    def update_objects(self,old_obj:object,new_obj):
-        old_attrs=old_obj.__dict__
-        old_attrs.pop('_sa_instance_state')
-        old_result_objects=self.db_session.query(self.model).filter_by(**old_attrs).all()
-        for old_result_object in old_result_objects:
-            old_result_object=copy.copy(new_obj)
-        self.db_session.commit()
