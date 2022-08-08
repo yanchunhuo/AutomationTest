@@ -3,8 +3,10 @@
 # @author yanchunhuo
 # @description 
 # @created 2022-08-04T09:52:09.525Z+08:00
-# @last-modified 2022-08-04T13:09:00.283Z+08:00
+# @last-modified 2022-08-08T11:55:53.566Z+08:00
 # github https://github.com/yanchunhuo
+
+import copy
 
 class Base_DB:
     def __init__(self,db_session,model) -> None:
@@ -26,3 +28,39 @@ class Base_DB:
         else:
             result_objects=self.db_session.query(self.model).filter_by(**attrs).all()
         return result_objects
+    
+    def add_object(self,obj:object):
+        self.db_session.add(obj)
+        self.db_session.commit()
+        
+    def add_object(self,objs:list=[]):
+        self.db_session.add_all(objs)
+        self.commit()
+        
+    def delete_object(self,obj:object):
+        attrs=obj.__dict__
+        attrs.pop('_sa_instance_state')
+        num=self.db_session.query(self.model).filter_by(**attrs).delete()
+        self.db_session.commit()
+        return num
+    
+    def empty_table(self):
+        num=self.db_session.query(self.model).delete()
+        self.db_session.commit()
+        return num
+    
+    def update_object(self,old_obj:object,new_obj):
+        old_attrs=old_obj.__dict__
+        old_attrs.pop('_sa_instance_state')
+        old_result_object=self.db_session.query(self.model).filter_by(**old_attrs).first()
+        if old_result_object:
+            old_result_object=copy.copy(new_obj)
+            self.db_session.commit()
+    
+    def update_objects(self,old_obj:object,new_obj):
+        old_attrs=old_obj.__dict__
+        old_attrs.pop('_sa_instance_state')
+        old_result_objects=self.db_session.query(self.model).filter_by(**old_attrs).all()
+        for old_result_object in old_result_objects:
+            old_result_object=copy.copy(new_obj)
+        self.db_session.commit()
