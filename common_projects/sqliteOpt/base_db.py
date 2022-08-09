@@ -3,7 +3,7 @@
 # @author yanchunhuo
 # @description 
 # @created 2022-08-04T09:52:09.525Z+08:00
-# @last-modified 2022-08-09T14:06:38.203Z+08:00
+# @last-modified 2022-08-09T20:13:15.469Z+08:00
 # github https://github.com/yanchunhuo
 import copy
 
@@ -25,7 +25,7 @@ class Base_DB:
         Returns:
             _type_: _description_
         """
-        attrs=obj.__dict__
+        attrs=(obj.__dict__).copy()
         attrs.pop('_sa_instance_state')
         if order_by_columns:
             result_object=self.db_session.query(self.model).filter_by(**attrs).order_by(*order_by_columns).first()
@@ -48,7 +48,7 @@ class Base_DB:
         Returns:
             _type_: _description_
         """
-        attrs=obj.__dict__
+        attrs=(obj.__dict__).copy()
         attrs.pop('_sa_instance_state')
         if page_index and page_size:
             if order_by_columns:
@@ -73,7 +73,7 @@ class Base_DB:
         self.commit()
         
     def delete_object(self,obj:object):
-        attrs=obj.__dict__
+        attrs=(obj.__dict__).copy()
         attrs.pop('_sa_instance_state')
         num=self.db_session.query(self.model).filter_by(**attrs).delete()
         self.db_session.commit()
@@ -85,7 +85,7 @@ class Base_DB:
         return num
     
     def update_object(self,old_obj:object,new_obj):
-        old_attrs=old_obj.__dict__
+        old_attrs=(old_obj.__dict__).copy()
         old_attrs.pop('_sa_instance_state')
         old_result_object=self.db_session.query(self.model).filter_by(**old_attrs).first()
         if old_result_object:
