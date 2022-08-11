@@ -3,9 +3,8 @@
 # @author yanchunhuo
 # @description 
 # @created 2022-08-04T09:52:09.525Z+08:00
-# @last-modified 2022-08-09T20:13:15.469Z+08:00
+# @last-modified 2022-08-11T13:26:35.415Z+08:00
 # github https://github.com/yanchunhuo
-import copy
 
 class Base_DB:
     def __init__(self,db_session,model) -> None:
@@ -88,6 +87,10 @@ class Base_DB:
         old_attrs=(old_obj.__dict__).copy()
         old_attrs.pop('_sa_instance_state')
         old_result_object=self.db_session.query(self.model).filter_by(**old_attrs).first()
-        if old_result_object:
-            old_result_object=copy.copy(new_obj)
-            self.db_session.commit()
+        old_result_object=None
+        for key in dir(old_result_object):
+            if not key.startswith('__') and not key=='_sa_instance_state' and hasattr(new_obj,key):
+                key_new_value=getattr(new_obj,key)
+                if key_new_value:
+                    setattr(old_result_object,key,key_new_value)
+        self.db_session.commit()
