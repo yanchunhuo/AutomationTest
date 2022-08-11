@@ -3,7 +3,7 @@
 # @author yanchunhuo
 # @description 
 # @created 2022-08-04T09:52:09.525Z+08:00
-# @last-modified 2022-08-11T13:26:35.415Z+08:00
+# @last-modified 2022-08-11T20:48:36.057Z+08:00
 # github https://github.com/yanchunhuo
 
 class Base_DB:
@@ -87,7 +87,6 @@ class Base_DB:
         old_attrs=(old_obj.__dict__).copy()
         old_attrs.pop('_sa_instance_state')
         old_result_object=self.db_session.query(self.model).filter_by(**old_attrs).first()
-        old_result_object=None
         for key in dir(old_result_object):
             if not key.startswith('__') and not key=='_sa_instance_state' and hasattr(new_obj,key):
                 key_new_value=getattr(new_obj,key)
