@@ -3,7 +3,7 @@
 # @author yanchunhuo
 # @description 
 # @created 2022-08-04T09:52:09.525Z+08:00
-# @last-modified 2022-08-17T11:22:51.395Z+08:00
+# @last-modified 2022-08-17T11:27:44.133Z+08:00
 # github https://github.com/yanchunhuo
 
 class Base_DB:
@@ -93,7 +93,7 @@ class Base_DB:
                     key_new_value=getattr(new_obj,key)
                     if key_new_value:
                         setattr(old_result_object,key,key_new_value)
-        self.db_session.commit()
+            self.db_session.commit()
         
     def update_objects(self,old_obj:object,new_obj):
         old_attrs=(old_obj.__dict__).copy()
