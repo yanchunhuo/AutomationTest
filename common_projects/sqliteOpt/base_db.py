@@ -3,7 +3,7 @@
 # @author yanchunhuo
 # @description 
 # @created 2022-08-04T09:52:09.525Z+08:00
-# @last-modified 2022-08-11T20:48:36.057Z+08:00
+# @last-modified 2022-08-17T11:22:51.395Z+08:00
 # github https://github.com/yanchunhuo
 
 class Base_DB:
@@ -67,7 +67,7 @@ class Base_DB:
         self.db_session.add(obj)
         self.db_session.commit()
         
-    def add_object(self,objs:list=[]):
+    def add_objects(self,objs:list=[]):
         self.db_session.add_all(objs)
         self.commit()
         
@@ -87,9 +87,22 @@ class Base_DB:
         old_attrs=(old_obj.__dict__).copy()
         old_attrs.pop('_sa_instance_state')
         old_result_object=self.db_session.query(self.model).filter_by(**old_attrs).first()
-        for key in dir(old_result_object):
-            if not key.startswith('__') and not key=='_sa_instance_state' and hasattr(new_obj,key):
-                key_new_value=getattr(new_obj,key)
-                if key_new_value:
-                    setattr(old_result_object,key,key_new_value)
+        if old_result_object:
+            for key in old_result_object.__dict__.keys():
+                if not key=='_sa_instance_state' and hasattr(new_obj,key):
+                    key_new_value=getattr(new_obj,key)
+                    if key_new_value:
+                        setattr(old_result_object,key,key_new_value)
+        self.db_session.commit()
+        
+    def update_objects(self,old_obj:object,new_obj):
+        old_attrs=(old_obj.__dict__).copy()
+        old_attrs.pop('_sa_instance_state')
+        old_result_objects=self.db_session.query(self.model).filter_by(**old_attrs).all()
+        for old_result_object in old_result_objects:
+            for key in old_result_object.__dict__.keys():
+                if not key=='_sa_instance_state' and hasattr(new_obj,key):
+                    key_new_value=getattr(new_obj,key)
+                    if key_new_value:
+                        setattr(old_result_object,key,key_new_value)
         self.db_session.commit()
