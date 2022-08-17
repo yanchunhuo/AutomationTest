@@ -3,7 +3,7 @@
 # @author yanchunhuo
 # @description 
 # @created 2022-08-04T09:52:09.525Z+08:00
-# @last-modified 2022-08-17T11:27:44.133Z+08:00
+# @last-modified 2022-08-17T18:04:46.295Z+08:00
 # github https://github.com/yanchunhuo
 
 class Base_DB:
@@ -84,6 +84,12 @@ class Base_DB:
         return num
     
     def update_object(self,old_obj:object,new_obj):
+        """变更的new_obj，如果需要将某个字段更新为Null，则设置字段值为'null'
+
+        Args:
+            old_obj (object): _description_
+            new_obj (_type_): _description_
+        """
         old_attrs=(old_obj.__dict__).copy()
         old_attrs.pop('_sa_instance_state')
         old_result_object=self.db_session.query(self.model).filter_by(**old_attrs).first()
@@ -91,11 +97,19 @@ class Base_DB:
             for key in old_result_object.__dict__.keys():
                 if not key=='_sa_instance_state' and hasattr(new_obj,key):
                     key_new_value=getattr(new_obj,key)
-                    if key_new_value:
+                    if not key_new_value is None:
+                        if key_new_value=='null'.lower():
+                            key_new_value=None
                         setattr(old_result_object,key,key_new_value)
             self.db_session.commit()
         
     def update_objects(self,old_obj:object,new_obj):
+        """变更的new_obj，如果需要将某个字段更新为Null，则设置字段值为'null'
+
+        Args:
+            old_obj (object): _description_
+            new_obj (_type_): _description_
+        """
         old_attrs=(old_obj.__dict__).copy()
         old_attrs.pop('_sa_instance_state')
         old_result_objects=self.db_session.query(self.model).filter_by(**old_attrs).all()
@@ -103,6 +117,8 @@ class Base_DB:
             for key in old_result_object.__dict__.keys():
                 if not key=='_sa_instance_state' and hasattr(new_obj,key):
                     key_new_value=getattr(new_obj,key)
-                    if key_new_value:
+                    if not key_new_value is None:
+                        if key_new_value=='null'.lower():
+                            key_new_value=None
                         setattr(old_result_object,key,key_new_value)
         self.db_session.commit()
