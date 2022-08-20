@@ -32,9 +32,11 @@
 ## 一、环境准备
 ### 1、脚本运行环境准备
 #### 1.1、安装系统依赖
-* Linux:
+* Linux-Ubuntu:
     * apt-get install g++ libgraphicsmagick++1-dev libboost-python-dev 【用于pgmagick所需依赖】
     * apt-get install python-pgmagick 【pgmagick所需依赖】
+* Linux-CentOS:
+    * yum install GraphicsMagick-c++-devel boost boost-devel
 * Windows:
     * 安装Microsoft Visual C++ 2019 Redistributable，下载地址：https://visualstudio.microsoft.com/zh-hans/downloads/ 【jpype1、图像识别字库所需依赖】
 
@@ -70,8 +72,8 @@
 #### 1.6、安装Oracle Instant Client
 * Linux
     * 安装libaio包
-        * centos:yum install libaio
-        * ubuntu:apt-get install libaio1
+        * Linux-CentOS:yum install libaio
+        * Linux-Ubuntu:apt-get install libaio1
     * 配置Oracle Instant Client
         * 下载地址:http://www.oracle.com/technetwork/topics/linuxx86-64soft-092277.html
         * 下载安装包instantclient-basic-linux.x64-18.3.0.0.0dbru.zip
@@ -97,8 +99,8 @@
 * 将下载的字库放到common/java/lib/tess4j/tessdata/
 * Linux
     * 安装依赖
-        * ubuntu:sudo apt install pkg-config aclocal libtool automake libleptonica-dev
-        * centos:yum install autoconf automake libtool libjpeg-devel libpng-devel libtiff-devel zlib-devel
+        * Linux-Ubuntu:sudo apt install pkg-config aclocal libtool automake libleptonica-dev
+        * Linux-CentOS:yum install autoconf automake libtool libjpeg-devel libpng-devel libtiff-devel zlib-devel
     * 安装leptonica，下载leptonica-1.78.0.tar.gz，下载地址：https://github.com/DanBloomberg/leptonica/releases
         * 安装步骤同tesseract-ocr的安装
     * 安装tesseract-ocr，下载tesseract-4.1.1.tar.gz，下载地址：https://github.com/tesseract-ocr/tesseract/releases
