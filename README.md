@@ -33,10 +33,12 @@
 ### 1、脚本运行环境准备
 #### 1.1、安装系统依赖
 * Linux-Ubuntu:
+    * apt-get install libpq-dev python3-dev 【用于psycopg2-binary所需依赖】
     * apt-get install g++ libgraphicsmagick++1-dev libboost-python-dev 【用于pgmagick所需依赖】
     * apt-get install python-pgmagick 【pgmagick所需依赖】
 * Linux-CentOS:
-    * yum install GraphicsMagick-c++-devel boost boost-devel
+    * yum install python3-devel postgresql-devel 【用于psycopg2-binary所需依赖】
+    * yum install GraphicsMagick-c++-devel boost boost-devel【用于pgmagick所需依赖】
 * Windows:
     * 安装Microsoft Visual C++ 2019 Redistributable，下载地址：https://visualstudio.microsoft.com/zh-hans/downloads/ 【jpype1、图像识别字库所需依赖】
 
@@ -103,6 +105,12 @@
         * Linux-CentOS:yum install autoconf automake libtool libjpeg-devel libpng-devel libtiff-devel zlib-devel
     * 安装leptonica，下载leptonica-1.78.0.tar.gz，下载地址：https://github.com/DanBloomberg/leptonica/releases
         * 安装步骤同tesseract-ocr的安装
+        * 修改/etc/profile添加如下内容，然后source
+        ```
+        export LD_LIBRARY_PATH=$LD_LIBRARY_PAYT:/usr/local/lib
+        export LIBLEPT_HEADERSDIR=/usr/local/include
+        export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
+        ```
     * 安装tesseract-ocr，下载tesseract-4.1.1.tar.gz，下载地址：https://github.com/tesseract-ocr/tesseract/releases
         * ./autogen.sh
         * ./configure
