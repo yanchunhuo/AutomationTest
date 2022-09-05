@@ -3,7 +3,7 @@
 # @author yanchunhuo
 # @description 
 # @created 2022-08-04T09:52:09.525Z+08:00
-# @last-modified 2022-08-17T18:04:46.295Z+08:00
+# @last-modified 2022-09-05T19:07:04.273Z+08:00
 # github https://github.com/yanchunhuo
 
 class Base_DB:
@@ -30,6 +30,7 @@ class Base_DB:
             result_object=self.db_session.query(self.model).filter_by(**attrs).order_by(*order_by_columns).first()
         else:
             result_object=self.db_session.query(self.model).filter_by(**attrs).first()
+        self.db_session.commit()
         return result_object
 
     def filter_objects(self,obj:object,page_index:int=None,page_size:int=None,order_by_columns:list=None):
@@ -61,6 +62,7 @@ class Base_DB:
                 result_objects=self.db_session.query(self.model).filter_by(**attrs).order_by(*order_by_columns).all()
             else:
                 result_objects=self.db_session.query(self.model).filter_by(**attrs).all()
+        self.db_session.commit()
         return result_objects
     
     def add_object(self,obj:object):
