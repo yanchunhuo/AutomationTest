@@ -19,6 +19,7 @@ from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.touch_actions import TouchActions
 from selenium.webdriver.common.by import By
 
 import allure
@@ -47,7 +48,7 @@ class AppOperator:
         elif isinstance(element,WebElement):
             webElement=element
         else:
-            return None
+            return element
         return webElement
 
     def get(self,url):
@@ -203,13 +204,14 @@ class AppOperator:
         """
         self._driver.switch_to.window(window_name)
 
-    def switch_to_frame(self,frame_name):
+    def switch_to_frame(self,frame_reference):
         """
         仅适用于web
-        :param frame_name:
+        :param frame_reference: 支持窗口名、frame索引、(i)frame元素
         :return:
         """
-        self._driver.switch_to.frame(frame_name)
+        frame_reference=self._change_element_to_webElement_type(frame_reference)
+        self._driver.switch_to.frame(frame_reference)
 
     def page_forward(self):
         """

@@ -33,7 +33,7 @@ class BrowserOperator:
         elif isinstance(element,WebElement):
             webElement=element
         else:
-            return None
+            return element
         return webElement
 
     def get(self,url):
@@ -190,8 +190,14 @@ class BrowserOperator:
         """
         self._driver.maximize_window()
 
-    def switch_to_frame(self,frame_name):
-        self._driver.switch_to.frame(frame_name)
+    def switch_to_frame(self,frame_reference):
+        """_summary_
+
+        Args:
+            frame_reference (_type_): 支持窗口名、frame索引、(i)frame元素
+        """
+        frame_reference=self._change_element_to_webElement_type(frame_reference)
+        self._driver.switch_to.frame(frame_reference)
 
     def switch_to_parent_frame(self):
         self._driver.switch_to.parent_frame()
