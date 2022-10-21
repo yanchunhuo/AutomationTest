@@ -5,7 +5,7 @@
 from pojo.httpResponseResult import HttpResponseResult
 from requests.adapters import HTTPAdapter
 import requests
-
+import ujson
 class DoRequest(object):
     def __init__(self,url,encoding='utf-8',pool_connections=10,pool_maxsize=10, max_retries=2,timeout=30,verify=True):
         self._url=url
@@ -86,7 +86,8 @@ class DoRequest(object):
         httpResponseResult = HttpResponseResult()
         httpResponseResult.status_code=r.status_code
         httpResponseResult.headers=self._session.headers.__str__()
-        httpResponseResult.cookies=self._session.cookies.__str__()
+        self.updateCookies(self._session.cookies.get_dict())
+        httpResponseResult.cookies=ujson.dumps(self.getCookies())
         with open(storeFilePath,"wb") as f:
             f.write(r.content)
         return httpResponseResult
@@ -101,7 +102,8 @@ class DoRequest(object):
         httpResponseResult=HttpResponseResult()
         httpResponseResult.status_code=r.status_code
         httpResponseResult.headers=r.headers.__str__()
-        httpResponseResult.cookies=r.cookies.__str__()
+        self.updateCookies(self._session.cookies.get_dict())
+        httpResponseResult.cookies=ujson.dumps(self.getCookies())
         httpResponseResult.body=r.content.decode(self._encoding)
         return httpResponseResult
 
