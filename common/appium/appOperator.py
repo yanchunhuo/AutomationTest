@@ -8,7 +8,6 @@ from appium.webdriver.common.multi_action import MultiAction
 from appium.webdriver.webelement import WebElement
 from common.dateTimeTool import DateTimeTool
 from common.httpclient.doRequest import DoRequest
-from common.captchaRecognitionTool import CaptchaRecognitionTool
 from page_objects.createElement import CreateElement
 from page_objects.app_ui.locator_type import Locator_Type
 from page_objects.app_ui.wait_type import Wait_Type  as Wait_By
@@ -361,12 +360,13 @@ class AppOperator:
 
     def get_captcha(self,element,language='eng'):
         """
-        识别图片验证码
+        识别图片验证码，如需使用该方法必须配置jpype1、字体库等依赖环境
         :param element: 验证码图片元素
         :param language: eng:英文,chi_sim:中文
         :return:
         """
         # 识别图片验证码
+        from common.captchaRecognitionTool import CaptchaRecognitionTool
         captcha_image_file_name=self.save_element_image(element,'captcha')
         captcha=CaptchaRecognitionTool.captchaRecognition(captcha_image_file_name,language)
         captcha=captcha.strip()
