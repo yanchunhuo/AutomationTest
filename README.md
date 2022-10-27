@@ -27,6 +27,7 @@
     * sqlacodegen：用于根据数据库表结构生成python对象
     * SQLAlchemy：SQL工具包及对象关系映射（ORM）工具
 * 当前仅支持python3.6.8
+* 项目如需执行java代码(即使用jpype1)，则项目目录所在的路径不可包含中文
     
 # [使用]()
 ## 一、环境准备
