@@ -3,7 +3,6 @@
 # 创建时间 2018/01/19 22:36
 # github https://github.com/yanchunhuo
 from base.read_web_ui_config import Read_WEB_UI_Config
-from common.captchaRecognitionTool import CaptchaRecognitionTool
 from common.dateTimeTool import DateTimeTool
 from pojo.elementInfo import ElementInfo
 from selenium.webdriver.support.ui import Select
@@ -296,13 +295,14 @@ class BrowserOperator:
 
     def get_captcha(self, element, language='eng'):
         """
-        识别图片验证码
+        识别图片验证码，如需使用该方法必须配置jpype1、字体库等依赖环境
         :param element: 验证码图片元素
         :param language: eng:英文,chi_sim:中文
         :return:
         """
         # 为防止截图包含高亮影响识别，元素不进行高亮
         # 识别图片验证码
+        from common.captchaRecognitionTool import CaptchaRecognitionTool
         captcha_image_file_name = self.save_element_image(element, 'captcha')
         captcha = CaptchaRecognitionTool.captchaRecognition(captcha_image_file_name, language)
         captcha = captcha.strip()
