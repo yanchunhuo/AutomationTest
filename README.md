@@ -8,7 +8,7 @@
     * pytest：python的一个单元测试框架,https://docs.pytest.org/en/latest/
     * pytest-xdist：pytest的一个插件,可多进程同时执行测试用例,https://github.com/pytest-dev/pytest-xdist
     * allure-pytest：用于生成测试报告,http://allure.qatools.ru/
-    * assertpy：一个包含丰富的断言库，支持pytest,https://github.com/ActivisionGameScience/assertpy
+    * PyHamcrest：一个匹配器对象的框架，用于断言，https://github.com/hamcrest/PyHamcrest
     * requests：http请求框架,http://docs.python-requests.org/en/master/
     * Appium：移动端的自动化测试框架,https://github.com/appium/appium/tree/v1.15.1
     * selenium：web ui自动化测试框架,https://www.seleniumhq.org/
