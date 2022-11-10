@@ -5,7 +5,8 @@
 import ujson
 import os
 import re
-import chardet
+# requests库依赖会安装charset_normalizer
+from charset_normalizer import detect
 
 class FileTool:
 
@@ -17,7 +18,7 @@ class FileTool:
         :return:
         """
         with open(filePath, 'rb') as f:
-            cur_encoding = chardet.detect(f.read())['encoding']
+            cur_encoding = detect(f.read())['encoding']
             f.close()
         return cur_encoding
 
