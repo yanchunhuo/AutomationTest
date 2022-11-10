@@ -1,5 +1,5 @@
 PyHamcrest==2.0.4
-requests==2.27.1
+requests==2.28.1
 Appium-Python-Client==0.48
 selenium==3.141.0
 JPype1==0.7.5
