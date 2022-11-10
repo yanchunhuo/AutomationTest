@@ -13,3 +13,4 @@
 *config/app_ui_tmp/*
 *packages*
 *.vscode*
+*ychtest.py*
