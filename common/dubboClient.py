@@ -17,7 +17,7 @@ class DubboClient:
         """
         # 启动jvm......'
         StartJpypeJVM()
-        self. _DubboClient=jpype.JClass("com.tools.DubboClient")
+        self. _DubboClient=jpype.JClass("com.yanchunhuo.tools.DubboClient")
         self._dubboClient=self._DubboClient(registryAddresses,protocol,group)
 
     def request(self,requestInterfaceClassName,requestMethod,params):
