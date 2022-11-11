@@ -5,15 +5,16 @@
 # [概况]()
 * 本项目支持接口自动化测试、app ui自动化测试、web ui自动化测试、性能测试
 * 本项目由以下工具组成
+    * JPype1：用于执行java代码,https://github.com/jpype-project/jpype
+    * PyHamcrest：一个匹配器对象的框架，用于断言，https://github.com/hamcrest/PyHamcrest
+    * requests：http请求框架,http://docs.python-requests.org/en/master/
+
     * pytest：python的一个单元测试框架,https://docs.pytest.org/en/latest/
     * pytest-xdist：pytest的一个插件,可多进程同时执行测试用例,https://github.com/pytest-dev/pytest-xdist
     * allure-pytest：用于生成测试报告,http://allure.qatools.ru/
-    * PyHamcrest：一个匹配器对象的框架，用于断言，https://github.com/hamcrest/PyHamcrest
-    * requests：http请求框架,http://docs.python-requests.org/en/master/
     * Appium：移动端的自动化测试框架,https://github.com/appium/appium/tree/v1.15.1
     * selenium：web ui自动化测试框架,https://www.seleniumhq.org/
     * cx_Oracle：oracle操作库,https://cx-oracle.readthedocs.io/en/latest/index.html
-    * JPype1：用于执行java代码,https://github.com/jpype-project/jpype
     * paramiko：ssh客户端,https://docs.paramiko.org/en/stable/
     * Pillow：用于图片处理,https://pillow.readthedocs.io/en/latest/
     * PyMySQL：用于操作MySQL数据库,https://github.com/PyMySQL/PyMySQL
@@ -28,11 +29,31 @@
     * SQLAlchemy：SQL工具包及对象关系映射（ORM）工具，https://github.com/sqlalchemy/sqlalchemy
 * 当前仅支持Python>=3.7
 * 项目如需执行java代码(即使用jpype1)，则项目目录所在的路径不可包含中文
+* dubbo当前支持V2.6.0
     
+
 # [使用]()
 ## 一、环境准备
 ### 1、脚本运行环境准备
 #### 1.1、安装系统依赖
+* Linux-Ubuntu：
+    * sudo apt-get install g++ python-dev python3-dev
+        * 说明：g++、python-dev、python3-dev是Jpype1依赖所需
+* Linux-CentOS：
+    * yum install gcc-c++ python-devel python3-devel
+        * 说明：gcc-c++、python-devel、python3-devel是Jpype1依赖所需
+<!-- * Windows：
+    * 安装Visual Studio Community 2019，下载地址：https://my.visualstudio.com/Downloads?q=visual%20studio%202019&wt.mc_id=o~msft~vscom~older-downloads
+        * 说明：Visual Studio Community 2019是Jpype1依赖所需 -->
+
+#### 1.2、安装jdk11
+* 安装jdk11，并配置JAVA_HOME系统环境变量
+
+#### 1.3、安装maven
+* 完成maven的安装配置，建议更换国内仓库，提高包下载速度
+* 配置jar包依赖配置文件为：config/java/pom.xml
+
+===========================================================
 * Linux-Ubuntu:
     * apt-get install libpq-dev python3-dev 【用于psycopg2-binary所需依赖】
     * apt-get install g++ libgraphicsmagick++1-dev libboost-python-dev 【用于pgmagick所需依赖】
