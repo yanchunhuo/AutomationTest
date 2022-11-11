@@ -26,7 +26,7 @@
     * Js2Py：用于执行js代码，https://github.com/PiotrDabkowski/Js2Py
     * sqlacodegen：用于根据数据库表结构生成python对象，https://github.com/agronholm/sqlacodegen
     * SQLAlchemy：SQL工具包及对象关系映射（ORM）工具，https://github.com/sqlalchemy/sqlalchemy
-* 当前仅支持Python>=3.7
+* 当前仅支持Python>=3.6
 * 项目如需执行java代码(即使用jpype1)，则项目目录所在的路径不可包含中文
     
 # [使用]()
