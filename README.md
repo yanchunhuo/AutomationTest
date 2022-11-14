@@ -7,6 +7,7 @@
 * 本项目由以下工具组成
     * JPype1：用于执行java代码,https://github.com/jpype-project/jpype
     * mitmproxy：用于HTTP/1、HTTP/2和WebSockets的交互式、支持SSL/TLS的拦截代理，https://mitmproxy.org/
+    * paramiko：ssh客户端，https://docs.paramiko.org/en/stable/
     * PyHamcrest：一个匹配器对象的框架，用于断言，https://github.com/hamcrest/PyHamcrest
     * requests：http请求框架,http://docs.python-requests.org/en/master/
     * ujson：一个用纯C编写的超快JSON编码器和解码器
@@ -16,7 +17,6 @@
     * Appium：移动端的自动化测试框架,https://github.com/appium/appium/tree/v1.15.1
     * selenium：web ui自动化测试框架,https://www.seleniumhq.org/
     * cx_Oracle：oracle操作库,https://cx-oracle.readthedocs.io/en/latest/index.html
-    * paramiko：ssh客户端,https://docs.paramiko.org/en/stable/
     * Pillow：用于图片处理,https://pillow.readthedocs.io/en/latest/
     * PyMySQL：用于操作MySQL数据库,https://github.com/PyMySQL/PyMySQL
     * redis：redis客户端,https://pypi.org/project/redis/
