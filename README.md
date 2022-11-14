@@ -10,6 +10,7 @@
     * mitmproxy：用于HTTP/1、HTTP/2和WebSockets的交互式、支持SSL/TLS的拦截代理，https://mitmproxy.org/
     * paramiko：ssh客户端，https://docs.paramiko.org/en/stable/
     * PyHamcrest：一个匹配器对象的框架，用于断言，https://github.com/hamcrest/PyHamcrest
+    * redis：redis客户端，https://github.com/redis/redis-py
     * requests：http请求框架,http://docs.python-requests.org/en/master/
     * ujson：一个用纯C编写的超快JSON编码器和解码器
     * pytest：python的一个单元测试框架,https://docs.pytest.org/en/latest/
@@ -19,7 +20,7 @@
     * selenium：web ui自动化测试框架,https://www.seleniumhq.org/
     * Pillow：用于图片处理,https://pillow.readthedocs.io/en/latest/
     * PyMySQL：用于操作MySQL数据库,https://github.com/PyMySQL/PyMySQL
-    * redis：redis客户端,https://pypi.org/project/redis/
+    
     * tess4j：java的图片识别工具,https://github.com/nguyenq/tess4j/
     * allpairspy: 用于将参数列表进行正交分析，实现正交分析法用例覆盖，https://pypi.org/project/allpairspy/
     * python-binary-memcached：用于操作memcached，https://github.com/jaysonsantos/python-binary-memcached
