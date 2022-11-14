@@ -16,7 +16,6 @@ ujson==5.5.0 # Python3.7~3.11
 # locust==1.6.0
 # pycryptodome==3.9.8
 # python-binary-memcached==0.30.1
-# kazoo==2.8.0
 # websockets==9.1
 # about pytest
 pytest==5.0.0

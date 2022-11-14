@@ -11,6 +11,7 @@
 4、common/sshClient.py移动至common/sshClient/sshClient.py
 5、删除common/oracleClient.py
 6、删除base/api/demoProject/api_demoproject_db_clients/API_DemoProject_DB_Clients中oracle的代码
+7、删除common/zookeeper_client目录内容
 
 
 
