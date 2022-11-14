@@ -1,13 +1,17 @@
-#!-*- coding:utf8 -*-
-# 作者 yanchunhuo
-# 创建时间 2018/01/19 22:36
-# github https://github.com/yanchunhuo
+#
+# ssh_client.py
+# @author yanchunhuo
+# @description 
+# @github https://github.com/yanchunhuo
+# @created 2018-01-19T13:47:34.691Z+08:00
+# @last-modified 2022-11-14T14:23:07.379Z+08:00
+#
 
 import os
 import paramiko
 import stat
 
-class SSHClient:
+class SSH_Client:
     def __init__(self,ip,username,port=22,password=None,is_windows=False,pkey_file=None):
         self.ip=ip
         self.port=port

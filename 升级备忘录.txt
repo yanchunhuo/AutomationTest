@@ -9,9 +9,9 @@
 2、README.md
 3、common/java/javaTools.py
 4、common/sshClient.py移动至common/sshClient/sshClient.py
-5、删除common/oracleClient.py
+5、移动common/oracleClient.py到commont/oracle_client/oracle_client，并注释所有代码
 6、删除base/api/demoProject/api_demoproject_db_clients/API_DemoProject_DB_Clients中oracle的代码
-7、删除common/zookeeper_client目录内容
+7、注释common/zookeeper_client所有代码
 
 
 
