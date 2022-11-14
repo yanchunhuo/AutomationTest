@@ -17,5 +17,4 @@ class API_DemoProject_DB_Clients(object):
         if self.__inited is None:
             self._demoProjectConfig = API_DemoProject_Read_Config().config
             # self.mysqlclient=MysqlClient('host','port','username','password','dbname')
-            # self.oracleclient = OracleClient('host', 'port', 'username', 'password', 'dbname')
             self.__inited=True

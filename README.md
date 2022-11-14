@@ -16,7 +16,6 @@
     * allure-pytest：用于生成测试报告,http://allure.qatools.ru/
     * Appium：移动端的自动化测试框架,https://github.com/appium/appium/tree/v1.15.1
     * selenium：web ui自动化测试框架,https://www.seleniumhq.org/
-    * cx_Oracle：oracle操作库,https://cx-oracle.readthedocs.io/en/latest/index.html
     * Pillow：用于图片处理,https://pillow.readthedocs.io/en/latest/
     * PyMySQL：用于操作MySQL数据库,https://github.com/PyMySQL/PyMySQL
     * redis：redis客户端,https://pypi.org/project/redis/
@@ -93,31 +92,6 @@
 
 #### 1.5、安装maven
 * 完成maven的安装配置
-
-#### 1.6、安装Oracle Instant Client
-* Linux
-    * 安装libaio包
-        * Linux-CentOS:yum install libaio
-        * Linux-Ubuntu:apt-get install libaio1
-    * 配置Oracle Instant Client
-        * 下载地址:http://www.oracle.com/technetwork/topics/linuxx86-64soft-092277.html
-        * 下载安装包instantclient-basic-linux.x64-18.3.0.0.0dbru.zip
-        * 解压zip包,并配置/etc/profile
-            * unzip instantclient-basic-linux.x64-18.3.0.0.0dbru.zip
-            * export LD_LIBRARY_PATH=/home/john/oracle_instant_client/instantclient_18_3:$LD_LIBRARY_PATH
-        * 中文编码设置
-        
-            ```python 
-            import os
-            os.environ['NLS_LANG'] = 'SIMPLIFIED CHINESE_CHINA.UTF8'
-            ```
-* Windows
-    * 下载地址:http://www.oracle.com/technetwork/topics/winx64soft-089540.html
-    * 下载安装包instantclient-basic-windows.x64-11.2.0.4.0.zip
-    * 解压zip包,并配置环境变量
-        * 系统环境变量加入D:\instantclient-basic-windows.x64-11.2.0.4.0\instantclient_11_2
-        * 配置中文编码,环境变量创建NLS_LANG=SIMPLIFIED CHINESE_CHINA.UTF8  
-    * 注意:如果使用64位,python和instantclient都需要使用64位
 
 #### 1.7、图像识别字库准备
 * 下载对应字库:https://github.com/tesseract-ocr/tessdata
