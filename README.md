@@ -6,6 +6,7 @@
 * 本项目支持接口自动化测试、app ui自动化测试、web ui自动化测试、性能测试
 * 本项目由以下工具组成
     * JPype1：用于执行java代码,https://github.com/jpype-project/jpype
+    * Js2Py：用于执行js代码，https://github.com/PiotrDabkowski/Js2Py
     * mitmproxy：用于HTTP/1、HTTP/2和WebSockets的交互式、支持SSL/TLS的拦截代理，https://mitmproxy.org/
     * paramiko：ssh客户端，https://docs.paramiko.org/en/stable/
     * PyHamcrest：一个匹配器对象的框架，用于断言，https://github.com/hamcrest/PyHamcrest
@@ -24,7 +25,6 @@
     * python-binary-memcached：用于操作memcached，https://github.com/jaysonsantos/python-binary-memcached
     * kazoo：用于操作zookeeper，https://github.com/python-zk/kazoo
     * websockets：用于websocket请求，https://github.com/aaugustin/websockets
-    * Js2Py：用于执行js代码，https://github.com/PiotrDabkowski/Js2Py
     * sqlacodegen：用于根据数据库表结构生成python对象，https://github.com/agronholm/sqlacodegen
     * SQLAlchemy：SQL工具包及对象关系映射（ORM）工具，https://github.com/sqlalchemy/sqlalchemy
 * 当前仅支持Python>=3.7
