@@ -13,6 +13,7 @@
 6、删除base/api/demoProject/api_demoproject_db_clients/API_DemoProject_DB_Clients中oracle的代码
 7、注释common/zookeeper_client所有代码
 
+c:\users\john\appdata\roaming\python\python38\site-packages
 
 
 【项目业务升级】
