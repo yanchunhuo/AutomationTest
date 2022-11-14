@@ -8,7 +8,7 @@
     * JPype1：用于执行java代码,https://github.com/jpype-project/jpype
     * PyHamcrest：一个匹配器对象的框架，用于断言，https://github.com/hamcrest/PyHamcrest
     * requests：http请求框架,http://docs.python-requests.org/en/master/
-
+    * ujson：一个用纯C编写的超快JSON编码器和解码器
     * pytest：python的一个单元测试框架,https://docs.pytest.org/en/latest/
     * pytest-xdist：pytest的一个插件,可多进程同时执行测试用例,https://github.com/pytest-dev/pytest-xdist
     * allure-pytest：用于生成测试报告,http://allure.qatools.ru/
