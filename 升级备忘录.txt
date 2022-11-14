@@ -16,6 +16,7 @@
 9、修改common/mysqlclient为common/mysql_client
 10、修改common/mysql_client/mysql_client.py内所有的驼峰格式
 11、修改common/memcached为common/mencached_client
+12、删除性能（performance）相关内容
 
 c:\users\john\appdata\roaming\python\python38\site-packages
 

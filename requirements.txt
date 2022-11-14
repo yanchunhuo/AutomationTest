@@ -15,8 +15,6 @@ ujson==5.5.0 # Python3.7~3.11
 # Pillow==5.3.0
 # scikit-image==0.16.2
 # opencv-python==4.2.0.32
-# locust==1.6.0
-
 # About pytest
 pytest==5.0.0
 pytest-xdist==1.30.0

@@ -224,11 +224,6 @@
 * python3 -u run_app_ui_test.py -tt phone -d dir     运行指定目录的用例，默认运行cases/app_ui/目录
 * python3 -u run_app_ui_test.py -m mark              运行指定标记的用例
 
-### 4、性能测试
-* cd AutomationTest/
-* ./start_locust_master.sh
-* ./start_locust_slave.sh
-
 ## 四、生成测试报告
 ### 1、API测试
 * cd AutomationTest/
@@ -291,8 +286,6 @@
 * generate_api_test_report.py 生成api测试报告
 * generateReport_web_ui_test_report.py 生成web ui测试报告
 * generateReport_app_ui_test_report.py 生成app ui测试报告
-* start_locust_master.sh 启动locust主节点
-* start_locust_slave.sh 启动locust从节点
 
 # [编码规范]()
 * 统一使用python 3.6.8
