@@ -6,6 +6,7 @@
 * 本项目支持接口自动化测试、app ui自动化测试、web ui自动化测试、性能测试
 * 本项目由以下工具组成
     * JPype1：用于执行java代码,https://github.com/jpype-project/jpype
+    * mitmproxy：用于HTTP/1、HTTP/2和WebSockets的交互式、支持SSL/TLS的拦截代理，https://mitmproxy.org/
     * PyHamcrest：一个匹配器对象的框架，用于断言，https://github.com/hamcrest/PyHamcrest
     * requests：http请求框架,http://docs.python-requests.org/en/master/
     * ujson：一个用纯C编写的超快JSON编码器和解码器
