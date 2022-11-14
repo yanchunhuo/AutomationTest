@@ -12,6 +12,9 @@
 5、移动common/oracleClient.py到commont/oracle_client/oracle_client，并注释所有代码
 6、删除base/api/demoProject/api_demoproject_db_clients/API_DemoProject_DB_Clients中oracle的代码
 7、注释common/zookeeper_client所有代码
+8、删除base/api/demoProject/api_demoProject_db_clients.py
+9、修改common/mysqlclient为common/mysql_client
+10、修改common/mysql_client/mysql_client.py内所有的驼峰格式
 
 c:\users\john\appdata\roaming\python\python38\site-packages
 

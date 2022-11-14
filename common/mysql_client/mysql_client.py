@@ -4,12 +4,12 @@
 # github https://github.com/yanchunhuo
 import pymysql
 
-class MysqlClient:
+class Mysql_Client:
     def __init__(self,host,port,username,password,dbname,charset='utf8',cursorclass=pymysql.cursors.DictCursor):
         self.conn=pymysql.connect(host=host,port=int(port),user=username,password=password,db=dbname,charset=charset,
                                   cursorclass=cursorclass)
 
-    def executeSQL(self,sql):
+    def execute_sql(self,sql):
         # try:
         # 为了避免连接被服务器关闭,检测进行重连
         self.conn.ping(reconnect=True)
@@ -21,7 +21,7 @@ class MysqlClient:
         #     self._conn.rollback()
         return result
 
-    def executeMany(self,query,values):
+    def execute_many(self,query,values):
         """
         :param query: insert into table(field1,field2) values(%s,%s)
         :param values: [(field1_value1,field2_value2),(field1_value3,field2_value4)]
@@ -40,5 +40,5 @@ class MysqlClient:
         # except:
         #     self._conn.rollback()
 
-    def closeAll(self):
+    def close_all(self):
         self.conn.close()
