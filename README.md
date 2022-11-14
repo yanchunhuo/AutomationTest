@@ -8,10 +8,14 @@
     * JPype1：用于执行java代码,https://github.com/jpype-project/jpype
     * Js2Py：用于执行js代码，https://github.com/PiotrDabkowski/Js2Py
     * mitmproxy：用于HTTP/1、HTTP/2和WebSockets的交互式、支持SSL/TLS的拦截代理，https://mitmproxy.org/
-    * paramiko：ssh客户端，https://docs.paramiko.org/en/stable/
+    * paramiko：ssh客户端，https://github.com/paramiko/paramiko
+    * pycryptodome：加密库，https://github.com/Legrandin/pycryptodome/
     * PyHamcrest：一个匹配器对象的框架，用于断言，https://github.com/hamcrest/PyHamcrest
+    * PyMySQL：用于操作MySQL数据库,https://github.com/PyMySQL/PyMySQL
     * redis：redis客户端，https://github.com/redis/redis-py
     * requests：http请求框架,http://docs.python-requests.org/en/master/
+    * sqlacodegen：用于根据数据库表结构生成python对象，https://github.com/agronholm/sqlacodegen
+    * SQLAlchemy：SQL工具包及对象关系映射（ORM）工具，https://github.com/sqlalchemy/sqlalchemy
     * ujson：一个用纯C编写的超快JSON编码器和解码器
     * pytest：python的一个单元测试框架,https://docs.pytest.org/en/latest/
     * pytest-xdist：pytest的一个插件,可多进程同时执行测试用例,https://github.com/pytest-dev/pytest-xdist
@@ -19,14 +23,10 @@
     * Appium：移动端的自动化测试框架,https://github.com/appium/appium/tree/v1.15.1
     * selenium：web ui自动化测试框架,https://www.seleniumhq.org/
     * Pillow：用于图片处理,https://pillow.readthedocs.io/en/latest/
-    * PyMySQL：用于操作MySQL数据库,https://github.com/PyMySQL/PyMySQL
-    
     * tess4j：java的图片识别工具,https://github.com/nguyenq/tess4j/
     * allpairspy: 用于将参数列表进行正交分析，实现正交分析法用例覆盖，https://pypi.org/project/allpairspy/
     * python-binary-memcached：用于操作memcached，https://github.com/jaysonsantos/python-binary-memcached
     * websockets：用于websocket请求，https://github.com/aaugustin/websockets
-    * sqlacodegen：用于根据数据库表结构生成python对象，https://github.com/agronholm/sqlacodegen
-    * SQLAlchemy：SQL工具包及对象关系映射（ORM）工具，https://github.com/sqlalchemy/sqlalchemy
 * 当前仅支持Python>=3.7
 * 项目如需执行java代码(即使用jpype1)，则项目目录所在的路径不可包含中文
 * dubbo当前支持V2.6.0

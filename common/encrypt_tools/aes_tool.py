@@ -2,9 +2,12 @@
 # aes_tool.py
 # @author yanchunhuo
 # @description 
+# @github https://github.com/yanchunhuo
 # @created 2021-09-06T18:28:10.458Z+08:00
-# @last-modified 2022-03-04T17:25:01.311Z+08:00
-# github https://github.com/yanchunhuo
+# @last-modified 2022-11-14T16:20:50.304Z+08:00
+#
+
+
 from Crypto.Cipher import AES
 import base64
 
