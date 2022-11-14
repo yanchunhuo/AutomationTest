@@ -26,7 +26,6 @@
     * tess4j：java的图片识别工具,https://github.com/nguyenq/tess4j/
     * allpairspy: 用于将参数列表进行正交分析，实现正交分析法用例覆盖，https://pypi.org/project/allpairspy/
     * python-binary-memcached：用于操作memcached，https://github.com/jaysonsantos/python-binary-memcached
-    * websockets：用于websocket请求，https://github.com/aaugustin/websockets
 * 当前仅支持Python>=3.7
 * 项目如需执行java代码(即使用jpype1)，则项目目录所在的路径不可包含中文
 * dubbo当前支持V2.6.0
