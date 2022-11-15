@@ -8,13 +8,15 @@
     * JPype1：用于执行java代码,https://github.com/jpype-project/jpype
     * Js2Py：用于执行js代码，https://github.com/PiotrDabkowski/Js2Py
     * mitmproxy：用于HTTP/1、HTTP/2和WebSockets的交互式、支持SSL/TLS的拦截代理，https://mitmproxy.org/
+    * opencv-python：opencv python库，https://github.com/opencv/opencv-python
     * paramiko：ssh客户端，https://github.com/paramiko/paramiko
     * pycryptodome：加密库，https://github.com/Legrandin/pycryptodome/
     * PyHamcrest：一个匹配器对象的框架，用于断言，https://github.com/hamcrest/PyHamcrest
     * PyMySQL：用于操作MySQL数据库,https://github.com/PyMySQL/PyMySQL
     * python-binary-memcached：用于操作memcached，https://github.com/jaysonsantos/python-binary-memcached
     * redis：redis客户端，https://github.com/redis/redis-py
-    * requests：http请求框架,http://docs.python-requests.org/en/master/
+    * requests：http请求框架，http://docs.python-requests.org/en/master/
+    * scikit-image：图形处理，https://github.com/scikit-image/scikit-image
     * sqlacodegen：用于根据数据库表结构生成python对象，https://github.com/agronholm/sqlacodegen
     * SQLAlchemy：SQL工具包及对象关系映射（ORM）工具，https://github.com/sqlalchemy/sqlalchemy
     * ujson：一个用纯C编写的超快JSON编码器和解码器

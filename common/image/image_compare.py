@@ -1,6 +1,12 @@
-# 作者 yanchunhuo
-# 创建时间 2020/2/26 10:00
-# github https://github.com/yanchunhuo
+#
+# imageCompare.py
+# @author yanchunhuo
+# @description 
+# @github https://github.com/yanchunhuo
+# @created 2020-02-26T13:47:34.255Z+08:00
+# @last-modified 2022-11-15T14:48:08.985Z+08:00
+#
+
 from skimage.metrics import structural_similarity
 import cv2
 
@@ -31,5 +37,5 @@ class ImageCompare:
             image2 = cv2.resize(image2, (height, width))
         image1_gray=cv2.cvtColor(image1,cv2.COLOR_BGR2GRAY)
         image2_gray=cv2.cvtColor(image2,cv2.COLOR_BGR2GRAY)
-        score,diff=structural_similarity(image1_gray,image2_gray,full=True,multichannel=True)
+        score,diff=structural_similarity(image1_gray,image2_gray,full=True,channel_axis=1)
         return score
