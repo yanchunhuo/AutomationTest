@@ -4,6 +4,7 @@
 # github https://github.com/yanchunhuo
 from base.app_ui.android.demoProject.app_ui_android_demoProject_client import APP_UI_Android_demoProject_Client
 from page_objects.app_ui.android.demoProject.pages.startPage import StartPage
+import logging
 import pytest
 class TestStartPage:
     def setup_class(self):
@@ -18,9 +19,9 @@ class TestStartPage:
 
     @pytest.fixture
     def fixture_test_click_start_btn(self):
-        print('start......')
+        logging.info('start......')
         yield self.fixture_test_click_start_btn
-        print('end......')
+        logging.info('end......')
 
     def test_click_start_btn(self,fixture_test_click_start_btn):
         self.startPage.click_start()
