@@ -22,6 +22,7 @@
 14、修改common/image/image_compare.py内容
 15、cases/api/demoProject/api/test_demoProject_login.py中新增日志打印
 16、修改config/pytest.conf内容
+17、.gitignore中添加*logs*
 
 
 
