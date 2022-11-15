@@ -1,4 +1,4 @@
-*.log*
+*logs*
 *.idea*
 *.pyc*
 *.class*
