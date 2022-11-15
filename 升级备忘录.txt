@@ -13,12 +13,17 @@
 6、删除base/api/demoProject/api_demoproject_db_clients/API_DemoProject_DB_Clients中oracle的代码
 7、注释common/zookeeper_client所有代码
 8、删除base/api/demoProject/api_demoProject_db_clients.py
+8.1、删除base/api/demoProject/api_demoProject_client.py对API_DemoProject_DB_Clients的引入
 9、修改common/mysqlclient为common/mysql_client
 10、修改common/mysql_client/mysql_client.py内所有的驼峰格式
 11、修改common/memcached为common/mencached_client
 12、删除性能（performance）相关内容
 13、修改common/image/imageCompare.py为common/image/image_compare.py
 14、修改common/image/image_compare.py内容
+15、cases/api/demoProject/api/test_demoProject_login.py中新增日志打印
+16、修改config/pytest.conf内容
+
+
 
 c:\users\john\appdata\roaming\python\python38\site-packages
 

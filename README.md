@@ -5,14 +5,18 @@
 # [概况]()
 * 本项目支持接口自动化测试、app ui自动化测试、web ui自动化测试、性能测试
 * 本项目由以下工具组成
-    * JPype1：用于执行java代码,https://github.com/jpype-project/jpype
+    * allure-pytest：pytest的一个插件，用于生成测试报告，http://allure.qatools.ru/
+    * JPype1：用于执行java代码，https://github.com/jpype-project/jpype
     * Js2Py：用于执行js代码，https://github.com/PiotrDabkowski/Js2Py
     * mitmproxy：用于HTTP/1、HTTP/2和WebSockets的交互式、支持SSL/TLS的拦截代理，https://mitmproxy.org/
     * opencv-python：opencv python库，https://github.com/opencv/opencv-python
     * paramiko：ssh客户端，https://github.com/paramiko/paramiko
     * pycryptodome：加密库，https://github.com/Legrandin/pycryptodome/
     * PyHamcrest：一个匹配器对象的框架，用于断言，https://github.com/hamcrest/PyHamcrest
-    * PyMySQL：用于操作MySQL数据库,https://github.com/PyMySQL/PyMySQL
+    * PyMySQL：用于操作MySQL数据库，https://github.com/PyMySQL/PyMySQL
+    * pytest：python的一个单元测试框架,https://docs.pytest.org/en/latest/
+    * pytest-rerunfailures：pytest的一个插件，用于重跑测试用例，https://github.com/pytest-dev/pytest-rerunfailures
+    * pytest-xdist：pytest的一个插件,可多进程同时执行测试用例，https://github.com/pytest-dev/pytest-xdist
     * python-binary-memcached：用于操作memcached，https://github.com/jaysonsantos/python-binary-memcached
     * redis：redis客户端，https://github.com/redis/redis-py
     * requests：http请求框架，http://docs.python-requests.org/en/master/
@@ -20,9 +24,6 @@
     * sqlacodegen：用于根据数据库表结构生成python对象，https://github.com/agronholm/sqlacodegen
     * SQLAlchemy：SQL工具包及对象关系映射（ORM）工具，https://github.com/sqlalchemy/sqlalchemy
     * ujson：一个用纯C编写的超快JSON编码器和解码器
-    * pytest：python的一个单元测试框架,https://docs.pytest.org/en/latest/
-    * pytest-xdist：pytest的一个插件,可多进程同时执行测试用例,https://github.com/pytest-dev/pytest-xdist
-    * allure-pytest：用于生成测试报告,http://allure.qatools.ru/
     * Appium：移动端的自动化测试框架,https://github.com/appium/appium/tree/v1.15.1
     * selenium：web ui自动化测试框架,https://www.seleniumhq.org/
     * Pillow：用于图片处理,https://pillow.readthedocs.io/en/latest/
@@ -52,6 +53,20 @@
 #### 1.3、安装maven
 * 完成maven的安装配置，建议更换国内仓库，提高包下载速度
 * 配置jar包依赖配置文件为：config/java/pom.xml
+
+#### 1.4、安装python依赖模块
+* pip3 install -r requirements.txt
+
+#### 1.5、安装allure
+* 源安装
+    * sudo apt-add-repository ppa:qameta/allure
+    * sudo apt-get update 
+    * sudo apt-get install allure
+    * 其他安装方式：https://github.com/allure-framework/allure2
+* 手动安装
+    * 下载2.20.1版本:https://github.com/allure-framework/allure2/releases
+    * 解压allure-2.20.1.zip
+    * 加入系统环境变量:export PATH=/home/john/allure-2.20.1/bin:$PATH
 
 ===========================================================
 * Linux-Ubuntu:
