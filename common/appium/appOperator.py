@@ -255,7 +255,7 @@ class AppOperator:
         :param is_top_align: 是否元素与窗口顶部对齐，否则与窗口底部对齐
         :return:
         """
-        webElement = self._change_element_to_webElement_type(element,highlight_seconds)
+        webElement = self._change_element_to_webElement_type(element)
         if webElement:
             if is_top_align:
                 self._driver.execute_script("arguments[0].scrollIntoView();", webElement)
