@@ -9,7 +9,6 @@
     * JPype1：用于执行java代码，https://github.com/jpype-project/jpype
     * Js2Py：用于执行js代码，https://github.com/PiotrDabkowski/Js2Py
     * mitmproxy：用于HTTP/1、HTTP/2和WebSockets的交互式、支持SSL/TLS的拦截代理，https://mitmproxy.org/
-    * opencv-python：opencv python库，https://github.com/opencv/opencv-python
     * paramiko：ssh客户端，https://github.com/paramiko/paramiko
     * pycryptodome：加密库，https://github.com/Legrandin/pycryptodome/
     * PyHamcrest：一个匹配器对象的框架，用于断言，https://github.com/hamcrest/PyHamcrest
@@ -21,12 +20,11 @@
     * redis：redis客户端，https://github.com/redis/redis-py
     * requests：http请求框架，http://docs.python-requests.org/en/master/
     * scikit-image：图形处理，https://github.com/scikit-image/scikit-image
+    * selenium：web ui自动化测试框架,https://www.seleniumhq.org/
     * sqlacodegen：用于根据数据库表结构生成python对象，https://github.com/agronholm/sqlacodegen
     * SQLAlchemy：SQL工具包及对象关系映射（ORM）工具，https://github.com/sqlalchemy/sqlalchemy
     * ujson：一个用纯C编写的超快JSON编码器和解码器
     * Appium：移动端的自动化测试框架,https://github.com/appium/appium/tree/v1.15.1
-    * selenium：web ui自动化测试框架,https://www.seleniumhq.org/
-    * Pillow：用于图片处理,https://pillow.readthedocs.io/en/latest/
     * tess4j：java的图片识别工具,https://github.com/nguyenq/tess4j/
 * 当前仅支持Python>=3.7
 * 项目如需执行java代码(即使用jpype1)，则项目目录所在的路径不可包含中文
@@ -67,6 +65,24 @@
     * 下载2.20.1版本:https://github.com/allure-framework/allure2/releases
     * 解压allure-2.20.1.zip
     * 加入系统环境变量:export PATH=/home/john/allure-2.20.1/bin:$PATH
+
+### 2、selenium server运行环境准备
+#### 2.1、安装jdk11
+* 安装jdk11，并配置JAVA_HOME系统环境变量
+
+#### 2.2、安装配置selenium
+* 配置selenium server
+    * 下载selenium-server-4.6.0.jar
+    * 下载地址：https://github.com/SeleniumHQ/selenium/releases
+    * 以管理员身份启动服务:java -jar selenium-server-4.6.0.jar standalone
+* 下载浏览器驱动
+    * 谷歌浏览器：https://chromedriver.storage.googleapis.com/index.html
+        * 驱动支持的最低浏览器版本：https://raw.githubusercontent.com/appium/appium-chromedriver/master/config/mapping.json
+    * 火狐浏览器：https://github.com/mozilla/geckodriver/
+        * 驱动支持的浏览器版本：https://firefox-source-docs.mozilla.org/testing/geckodriver/geckodriver/Support.html
+    * Edge浏览器：https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/
+    * Safari浏览器：操作系统内置，无需下载配置。启用在命令行执行：safaridriver --enable
+    * 将驱动所在目录加入到selenium server服务器系统环境变量:export PATH=/home/john/selenium/:$PATH
 
 ===========================================================
 * Linux-Ubuntu:

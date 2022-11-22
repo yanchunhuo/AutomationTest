@@ -1,21 +1,25 @@
-#-*- coding:utf8 -*-
-# 作者 yanchunhuo
-# 创建时间 2018/01/19 22:36
-# github https://github.com/yanchunhuo
+#
+# appOperator.py
+# @author yanchunhuo
+# @description 
+# @github https://github.com/yanchunhuo
+# @created 2018-01-19T13:47:34.201Z+08:00
+# @last-modified 2022-11-22T13:46:49.571Z+08:00
+#
 
+from appium.webdriver.common.appiumby import AppiumBy
 from appium.webdriver.common.touch_action import TouchAction
 from appium.webdriver.common.multi_action import MultiAction
 from appium.webdriver.webelement import WebElement
 from common.dateTimeTool import DateTimeTool
 from common.httpclient.doRequest import DoRequest
-from page_objects.createElement import CreateElement
-from page_objects.app_ui.locator_type import Locator_Type
-from page_objects.app_ui.wait_type import Wait_Type  as Wait_By
-from pojo.elementInfo import ElementInfo
+from page_objects.create_element import CreateElement
+from page_objects.wait_type import Wait_Type as Wait_By
+from page_objects.element_info import Element_Info
 from PIL import Image
 from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver.support.ui import Select
-from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.touch_actions import TouchActions
@@ -27,9 +31,6 @@ import ujson
 import os
 
 class AppOperator:
-    """
-    类中的element参数可以有appium.webdriver.webelement.WebElement和pojo.elementInfo.ElementInfo类型
-    """
 
     def __init__(self,driver,appium_hub):
         self._doRequest=DoRequest(appium_hub)
@@ -42,7 +43,7 @@ class AppOperator:
         self._windows_size=self.get_window_size()
 
     def _change_element_to_webElement_type(self,element):
-        if isinstance(element, ElementInfo):
+        if isinstance(element, Element_Info):
             webElement=self.getElement(element)
         elif isinstance(element,WebElement):
             webElement=element
@@ -255,7 +256,7 @@ class AppOperator:
         :param is_top_align: 是否元素与窗口顶部对齐，否则与窗口底部对齐
         :return:
         """
-        webElement = self._change_element_to_webElement_type(element,highlight_seconds)
+        webElement = self._change_element_to_webElement_type(element)
         if webElement:
             if is_top_align:
                 self._driver.execute_script("arguments[0].scrollIntoView();", webElement)
@@ -380,7 +381,7 @@ class AppOperator:
         :param data_type: text-返回表格文本内容,html-返回表格html内容,webElement-返回表格元素
         :return:
         """
-        if isinstance(element, ElementInfo):
+        if isinstance(element, Element_Info):
             # 由于表格定位经常会出现【StaleElementReferenceException: Message: stale element reference: element is not attached to the page document 】异常错误,
             # 解决此异常只需要用显示等待，保证元素存在即可，显示等待类型中visibility_of_all_elements_located有实现StaleElementReferenceException异常捕获,
             # 所以强制设置表格定位元素时使用VISIBILITY_OF
@@ -453,7 +454,7 @@ class AppOperator:
             return False
         if 'android' == platformName.lower():
             if 'uiautomator2' == automationName.lower():
-                toast_element = CreateElement.create(Locator_Type.XPATH, ".//*[contains(@text,'%s')]" % text, None,
+                toast_element = CreateElement.create(AppiumBy.XPATH, ".//*[contains(@text,'%s')]" % text, None,
                                                      Wait_By.PRESENCE_OF_ELEMENT_LOCATED, wait_seconds=wait_seconds)
                 try:
                     self.getElement(toast_element)
@@ -1312,21 +1313,21 @@ class AppOperator:
                 webElement = WebDriverWait(self._driver,wait_seconds).until(lambda driver:driver.find_element_by_class_name(locator_value))
             elif locator_type==By.TAG_NAME:
                 webElement = WebDriverWait(self._driver,wait_seconds).until(lambda driver:driver.find_element_by_tag_name(locator_value))
-            elif locator_type==Locator_Type.ACCESSIBILITY_ID:
+            elif locator_type==AppiumBy.ACCESSIBILITY_ID:
                 webElement = WebDriverWait(self._driver,wait_seconds).until(lambda driver:driver.find_element_by_accessibility_id(locator_value))
-            elif locator_type==Locator_Type.IMAGE:
+            elif locator_type==AppiumBy.IMAGE:
                 webElement = WebDriverWait(self._driver,wait_seconds).until(lambda driver:driver.find_element_by_image(locator_value))
-            elif locator_type==Locator_Type.ANDROID_UIAUTOMATOR:
+            elif locator_type==AppiumBy.ANDROID_UIAUTOMATOR:
                 webElement = WebDriverWait(self._driver,wait_seconds).until(lambda driver:driver.find_element_by_android_uiautomator(locator_value))
-            elif locator_type==Locator_Type.ANDROID_DATA_MATCHER:
+            elif locator_type==AppiumBy.ANDROID_DATA_MATCHER:
                 webElement = WebDriverWait(self._driver,wait_seconds).until(lambda driver:driver.find_element_by_android_data_matcher(locator_value))
-            elif locator_type==Locator_Type.ANDROID_VIEWTAG:
+            elif locator_type==AppiumBy.ANDROID_VIEWTAG:
                 webElement = WebDriverWait(self._driver,wait_seconds).until(lambda driver:driver.find_element_by_android_viewtag(locator_value))
-            elif locator_type==Locator_Type.IOS_UIAUTOMATION:
+            elif locator_type==AppiumBy.IOS_UIAUTOMATION:
                 webElement = WebDriverWait(self._driver, wait_seconds).until(lambda driver: driver.find_element_by_ios_uiautomation(locator_value))
-            elif locator_type==Locator_Type.IOS_CLASS_CHAIN:
+            elif locator_type==AppiumBy.IOS_CLASS_CHAIN:
                 webElement = WebDriverWait(self._driver, wait_seconds).until(lambda driver: driver.find_element_by_ios_class_chain(locator_value))
-            elif locator_type==Locator_Type.IOS_PREDICATE:
+            elif locator_type==AppiumBy.IOS_PREDICATE:
                 webElement = WebDriverWait(self._driver, wait_seconds).until(lambda driver: driver.find_element_by_ios_predicate(locator_value))
         return webElement
 
@@ -1364,21 +1365,21 @@ class AppOperator:
                 webElements = WebDriverWait(self._driver,wait_seconds).until(lambda driver:driver.find_elements_by_class_name(locator_value))
             elif locator_type==By.TAG_NAME:
                 webElements = WebDriverWait(self._driver,wait_seconds).until(lambda driver:driver.find_elements_by_tag_name(locator_value))
-            elif locator_type==Locator_Type.ACCESSIBILITY_ID:
+            elif locator_type==AppiumBy.ACCESSIBILITY_ID:
                 webElements = WebDriverWait(self._driver,wait_seconds).until(lambda driver:driver.find_elements_by_accessibility_id(locator_value))
-            elif locator_type==Locator_Type.IMAGE:
+            elif locator_type==AppiumBy.IMAGE:
                 webElements = WebDriverWait(self._driver,wait_seconds).until(lambda driver:driver.find_elements_by_image(locator_value))
-            elif locator_type==Locator_Type.ANDROID_UIAUTOMATOR:
+            elif locator_type==AppiumBy.ANDROID_UIAUTOMATOR:
                 webElements = WebDriverWait(self._driver,wait_seconds).until(lambda driver:driver.find_elements_by_android_uiautomator(locator_value))
-            elif locator_type==Locator_Type.ANDROID_DATA_MATCHER:
+            elif locator_type==AppiumBy.ANDROID_DATA_MATCHER:
                 webElements = WebDriverWait(self._driver,wait_seconds).until(lambda driver:driver.find_elements_by_android_data_matcher(locator_value))
-            elif locator_type==Locator_Type.ANDROID_VIEWTAG:
+            elif locator_type==AppiumBy.ANDROID_VIEWTAG:
                 webElements = WebDriverWait(self._driver,wait_seconds).until(lambda driver:driver.find_elements_by_android_viewtag(locator_value))
-            elif locator_type==Locator_Type.IOS_UIAUTOMATION:
+            elif locator_type==AppiumBy.IOS_UIAUTOMATION:
                 webElements = WebDriverWait(self._driver, wait_seconds).until(lambda driver: driver.find_elements_by_ios_uiautomation(locator_value))
-            elif locator_type==Locator_Type.IOS_CLASS_CHAIN:
+            elif locator_type==AppiumBy.IOS_CLASS_CHAIN:
                 webElements = WebDriverWait(self._driver, wait_seconds).until(lambda driver: driver.find_elements_by_ios_class_chain(locator_value))
-            elif locator_type==Locator_Type.IOS_PREDICATE:
+            elif locator_type==AppiumBy.IOS_PREDICATE:
                 webElements = WebDriverWait(self._driver, wait_seconds).until(lambda driver: driver.find_elements_by_ios_predicate(locator_value))
         return webElements
 
@@ -1392,7 +1393,7 @@ class AppOperator:
         webElement=self._change_element_to_webElement_type(parent_element)
         if not webElement:
             return None
-        if not isinstance(sub_elementInfo,ElementInfo):
+        if not isinstance(sub_elementInfo,Element_Info):
             return None
 
         # 通过父元素查找子元素
@@ -1417,21 +1418,21 @@ class AppOperator:
             subWebElement = WebDriverWait(webElement,wait_seconds).until(lambda webElement:webElement.find_element_by_class_name(locator_value))
         elif locator_type == By.TAG_NAME:
             subWebElement = WebDriverWait(webElement,wait_seconds).until(lambda webElement:webElement.find_element_by_tag_name(locator_value))
-        elif locator_type == Locator_Type.ACCESSIBILITY_ID:
+        elif locator_type == AppiumBy.ACCESSIBILITY_ID:
             subWebElement = WebDriverWait(webElement, wait_seconds).until(lambda webElement: webElement.find_element_by_accessibility_id(locator_value))
-        elif locator_type == Locator_Type.IMAGE:
+        elif locator_type == AppiumBy.IMAGE:
             subWebElement = WebDriverWait(webElement, wait_seconds).until(lambda webElement: webElement.find_element_by_image(locator_value))
-        elif locator_type == Locator_Type.ANDROID_UIAUTOMATOR:
+        elif locator_type == AppiumBy.ANDROID_UIAUTOMATOR:
             subWebElement = WebDriverWait(webElement, wait_seconds).until(lambda webElement: webElement.find_element_by_android_uiautomator(locator_value))
-        elif locator_type == Locator_Type.ANDROID_DATA_MATCHER:
+        elif locator_type == AppiumBy.ANDROID_DATA_MATCHER:
             subWebElement = WebDriverWait(webElement, wait_seconds).until(lambda webElement: webElement.find_element_by_android_data_matcher(locator_value))
-        elif locator_type == Locator_Type.ANDROID_VIEWTAG:
+        elif locator_type == AppiumBy.ANDROID_VIEWTAG:
             subWebElement = WebDriverWait(webElement, wait_seconds).until(lambda webElement: webElement.find_element_by_android_viewtag(locator_value))
-        elif locator_type == Locator_Type.IOS_UIAUTOMATION:
+        elif locator_type == AppiumBy.IOS_UIAUTOMATION:
             subWebElement = WebDriverWait(webElement, wait_seconds).until(lambda webElement: webElement.find_element_by_ios_uiautomation(locator_value))
-        elif locator_type == Locator_Type.IOS_CLASS_CHAIN:
+        elif locator_type == AppiumBy.IOS_CLASS_CHAIN:
             subWebElement = WebDriverWait(webElement, wait_seconds).until(lambda webElement: webElement.find_element_by_ios_class_chain(locator_value))
-        elif locator_type == Locator_Type.IOS_PREDICATE:
+        elif locator_type == AppiumBy.IOS_PREDICATE:
             subWebElement = WebDriverWait(webElement, wait_seconds).until(lambda webElement: webElement.find_element_by_ios_predicate(locator_value))
         else:
             return None
@@ -1447,7 +1448,7 @@ class AppOperator:
         webElement=self._change_element_to_webElement_type(parent_element)
         if not webElement:
             return None
-        if not isinstance(sub_elementInfo,ElementInfo):
+        if not isinstance(sub_elementInfo,Element_Info):
             return None
 
         # 通过父元素查找多个子元素
@@ -1472,21 +1473,21 @@ class AppOperator:
             subWebElements = WebDriverWait(webElement,wait_seconds).until(lambda webElement:webElement.find_elements_by_class_name(locator_value))
         elif locator_type == By.TAG_NAME:
             subWebElements = WebDriverWait(webElement,wait_seconds).until(lambda webElement:webElement.find_elements_by_tag_name(locator_value))
-        elif locator_type == Locator_Type.ACCESSIBILITY_ID:
+        elif locator_type == AppiumBy.ACCESSIBILITY_ID:
             subWebElements = WebDriverWait(webElement, wait_seconds).until(lambda webElement: webElement.find_elements_by_accessibility_id(locator_value))
-        elif locator_type == Locator_Type.IMAGE:
+        elif locator_type == AppiumBy.IMAGE:
             subWebElements = WebDriverWait(webElement, wait_seconds).until(lambda webElement: webElement.find_elements_by_image(locator_type))
-        elif locator_type == Locator_Type.ANDROID_UIAUTOMATOR:
+        elif locator_type == AppiumBy.ANDROID_UIAUTOMATOR:
             subWebElements = WebDriverWait(webElement, wait_seconds).until(lambda webElement: webElement.find_elements_by_android_uiautomator(locator_value))
-        elif locator_type == Locator_Type.ANDROID_DATA_MATCHER:
+        elif locator_type == AppiumBy.ANDROID_DATA_MATCHER:
             subWebElements = WebDriverWait(webElement, wait_seconds).until(lambda webElement: webElement.find_elements_by_android_data_matcher(locator_value))
-        elif locator_type == Locator_Type.ANDROID_VIEWTAG:
+        elif locator_type == AppiumBy.ANDROID_VIEWTAG:
             subWebElements = WebDriverWait(webElement, wait_seconds).until(lambda webElement: webElement.find_elements_by_android_viewtag(locator_value))
-        elif locator_type == Locator_Type.IOS_UIAUTOMATION:
+        elif locator_type == AppiumBy.IOS_UIAUTOMATION:
             subWebElements = WebDriverWait(webElement, wait_seconds).until(lambda webElement: webElement.find_elements_by_ios_uiautomation(locator_value))
-        elif locator_type == Locator_Type.IOS_CLASS_CHAIN:
+        elif locator_type == AppiumBy.IOS_CLASS_CHAIN:
             subWebElements = WebDriverWait(webElement, wait_seconds).until(lambda webElement: webElement.find_elements_by_ios_class_chain(locator_value))
-        elif locator_type == Locator_Type.IOS_PREDICATE:
+        elif locator_type == AppiumBy.IOS_PREDICATE:
             subWebElements = WebDriverWait(webElement, wait_seconds).until(lambda webElement: webElement.find_elements_by_ios_predicate(locator_value))
         else:
             return None

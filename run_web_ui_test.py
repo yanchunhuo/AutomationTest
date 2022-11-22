@@ -9,12 +9,11 @@ from common.httpclient.doRequest import DoRequest
 from common.pytest import deal_pytest_ini_file
 from init.web_ui.web_ui_init import web_ui_init
 from init.java.java_maven_init import java_maven_init
-from selenium.webdriver.remote.remote_connection import RemoteConnection
-from selenium.webdriver.remote.command import Command
 import argparse
-import ujson
+import os
 import pytest
 import sys
+import ujson
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser()
@@ -31,9 +30,10 @@ if __name__=='__main__':
     print('%s开始检测selenium server是否可用......'%DateTimeTool.getNowTime())
     try:
         doRquest=DoRequest(Read_WEB_UI_Config().web_ui_config.selenium_hub)
+        doRquest.updateHeaders({"Content-Type": "application/json;charset=UTF-8"})
         httpResponseResult=doRquest.get('/status')
         result=ujson.loads(httpResponseResult.body)
-        if result['status']==0:
+        if result['value']['ready']:
             print('%sselenium server状态为可用......'%DateTimeTool.getNowTime())
         else:
             sys.exit('%sselenium server状态为不可用'%DateTimeTool.getNowTime())
@@ -96,16 +96,15 @@ if __name__=='__main__':
             exit_code=tmp_exit_code
         print('%s结束%s浏览器测试......'%(DateTimeTool.getNowTime(),current_browser))
     
+    
     print('%s清除未被关闭的浏览器......'%DateTimeTool.getNowTime())
-    try:
-        conn=RemoteConnection(Read_WEB_UI_Config().web_ui_config.selenium_hub,True)
-        sessions=conn.execute(Command.GET_ALL_SESSIONS,None)
-        sessions=sessions['value']
-        for session in sessions:
-            session_id=session['id']
-            conn.execute(Command.QUIT,{'sessionId':session_id})
-    except Exception as e:
-        print('%s清除未关闭浏览器异常:\r\n%s'%(DateTimeTool.getNowTime(),e.args.__str__()))
+    if os.path.exists('output/tmp/web_ui/driver_sessions_info'):
+        with open('output/tmp/web_ui/driver_sessions_info','r',encoding='utf-8') as f:
+            for line in f.readlines():
+                line=line.strip()
+                doRquest.delete('/session/%s'%line)
+        FileTool.truncateFile('output/tmp/web_ui/driver_sessions_info')
+    
     print('%s清除未被关闭的浏览器完成......'%DateTimeTool.getNowTime())
 
     print('%s结束测试......'%DateTimeTool.getNowTime())

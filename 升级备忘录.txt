@@ -23,6 +23,16 @@
 15、cases/api/demoProject/api/test_demoProject_login.py中新增日志打印
 16、修改config/pytest.conf内容
 17、.gitignore中添加*logs*
+18、修改common/selenium/driverTool.py为common/selenium/driver_tool.py，同时修改文件内容
+19、修改common/selenium/browserOperator.py为common/selenium/browser_operator.py，同时修改文件内容
+20、删除page_objects/web_ui/locator_type.py，对应的内容改用系统默认方式
+21、删除page_objects/web_ui/wait_type.py,对应的内容改用page_objects/wait_type.py
+22、删除page_objects/app_ui/locator_type.py，对应的内容改用系统默认方式
+23、删除page_objects/app_ui/wait_type.py,对应的内容改用page_objects/wait_type.py
+24、删除pojo/elementInfo.py，对应内容改用page_objects/element_info.py
+25、修改page_objects/createElement.py修改为page_objects/create_element.py
+26、修改run_web_ui_test.py的清除driver的session方法；修改status获取方式
+27、修改config/web_ui_config.conf内容
 
 
 

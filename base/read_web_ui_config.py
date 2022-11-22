@@ -30,4 +30,5 @@ class Read_WEB_UI_Config(object):
         web_ui_config.download_dir=configParser.get('browser','download_dir')
         web_ui_config.is_chrome_headless=configParser.get('browser','is_chrome_headless')
         web_ui_config.is_firefox_headless = configParser.get('browser', 'is_firefox_headless')
+        web_ui_config.is_edge_headless = configParser.get('browser', 'is_edge_headless')
         return web_ui_config

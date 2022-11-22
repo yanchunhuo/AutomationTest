@@ -9,15 +9,15 @@ from common.hamcrest.hamcrest import assert_that
 class TestIndex:
     def setup_class(self):
         self.demoProjectClient = WEB_UI_DemoProject_Client()
-        self.indexPage=IndexPage(self.demoProjectClient.browserOperator)
+        self.indexPage=IndexPage(self.demoProjectClient.browser_operator)
 
     def test_search_empty_kw(self):
         self.indexPage.search_kw('')
-        assert_that(self.indexPage.getElements().title.wait_expected_value).is_equal_to(self.demoProjectClient.browserOperator.getTitle())
+        assert_that(self.indexPage.index_page_elements.title.wait_expected_value).is_equal_to(self.demoProjectClient.browser_operator.get_title())
 
     def test_search_kw(self):
-        self.indexPage.search_kw('apitest')
-        assert_that('apitest_百度搜索').is_equal_to(self.demoProjectClient.browserOperator.getTitle())
+        self.indexPage.search_kw('AutomationTest')
+        assert_that('AutomationTest_百度搜索').is_equal_to(self.demoProjectClient.browser_operator.get_title())
 
     def teardown_class(self):
-        self.demoProjectClient.browserOperator.close()
+        self.demoProjectClient.browser_operator.close()

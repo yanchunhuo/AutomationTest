@@ -11,3 +11,4 @@ class WEB_UI_Config:
         self.download_dir = None
         self.is_chrome_headless = None
         self.is_firefox_headless = None
+        self.is_edge_headless = None
