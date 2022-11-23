@@ -74,7 +74,8 @@
 * 配置selenium server
     * 下载selenium-server-4.6.0.jar
     * 下载地址：https://github.com/SeleniumHQ/selenium/releases
-    * 以管理员身份启动服务:java -jar selenium-server-4.6.0.jar standalone
+    * 以管理员身份启动服务:java -jar selenium-server-4.6.0.jar standalone --log selenium.log
+        * 其他可选项说明：java -jar selenium-server-4.5.3.jar standalone --help
 * 下载浏览器驱动
     * 谷歌浏览器：https://chromedriver.storage.googleapis.com/index.html
         * 驱动支持的最低浏览器版本：https://raw.githubusercontent.com/appium/appium-chromedriver/master/config/mapping.json
@@ -160,6 +161,7 @@
     * 下载selenium-server-standalone-3.141.0.jar
     * 下载地址:http://selenium-release.storage.googleapis.com/index.html
     * 以管理员身份启动服务:java -jar selenium-server-standalone-3.141.0.jar -log selenium.log
+        * 其他可选项说明：java -jar selenium-server-4.5.3.jar standalone --help
 * 下载浏览器驱动
     * 谷歌浏览器：https://chromedriver.storage.googleapis.com/index.html
         * 驱动支持的最低浏览器版本：https://raw.githubusercontent.com/appium/appium-chromedriver/master/config/mapping.json
