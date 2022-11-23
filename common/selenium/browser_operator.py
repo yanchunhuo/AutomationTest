@@ -4,7 +4,7 @@
 # @description 
 # @github https://github.com/yanchunhuo
 # @created 2018-01-19T13:47:34.673Z+08:00
-# @last-modified 2022-11-22T13:39:35.038Z+08:00
+# @last-modified 2022-11-23T11:38:53.513Z+08:00
 #
 
 from base.read_web_ui_config import Read_WEB_UI_Config
@@ -14,6 +14,7 @@ from page_objects.element_info import Element_Info
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support.relative_locator import locate_with
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.action_chains import ActionChains
@@ -29,6 +30,7 @@ import os
 
 # JSON Wire protocol：https://www.selenium.dev/documentation/legacy/json_wire_protocol/
 # API：https://www.selenium.dev/selenium/docs/api/py/api.html
+# chrome浏览器相关命令行操作：https://peter.sh/experiments/chromium-command-line-switches/
 
 class Browser_Operator:
     
@@ -40,6 +42,29 @@ class Browser_Operator:
         if isinstance(element, Element_Info):
             element=self.get_element(element,highlight_seconds)
         return element
+    
+    def add_cookie(self,cookie:dict)->None:
+        """ 
+            driver.add_cookie({'name' : 'foo', 'value' : 'bar'})
+            driver.add_cookie({'name' : 'foo', 'value' : 'bar', 'path' : '/'}) 
+            driver.add_cookie({'name' : 'foo', 'value' : 'bar', 'path' : '/', 'secure':True})
+            driver.add_cookie({'name': 'foo', 'value': 'bar', 'sameSite': 'Strict'})
+        Args:
+            cookie (dict): _description_
+        """
+        self.driver.add_cookie(cookie)
+    
+    def delete_cookie(self,name:str)->None:
+        self.driver.delete_cookie(name)
+    
+    def delete_all_cookies(self)->None:
+        self.driver.delete_all_cookies()
+        
+    def get_cookie(self,name:str)->dict:
+        return self.driver.get_cookie(name)
+    
+    def get_cookies(self)->List[dict]:
+        return self.driver.get_cookies()
 
     def get(self,url:str)->str:
         self.driver.get(url)
@@ -54,6 +79,11 @@ class Browser_Operator:
         web_element=self._change_element_to_web_element_type(element,highlight_seconds)
         if web_element:
             return web_element.text
+    
+    def get_element_rect(self,element:Union[Element_Info,WebElement],highlight_seconds:float=5)->dict:
+        web_element=self._change_element_to_web_element_type(element,highlight_seconds)
+        if web_element:
+            return web_element.rect
 
     def click(self,element:Union[Element_Info,WebElement],highlight_seconds:float=5)->None:
         web_element = self._change_element_to_web_element_type(element,highlight_seconds)
@@ -403,24 +433,49 @@ class Browser_Operator:
         """
         ActionChains(self.driver).move_by_offset(x,y).click().perform()
 
-    def get_element(self,element_info:Element_Info,highlight_seconds:float=5)->WebElement:
+    def get_element(self,element:Element_Info,highlight_seconds:float=5)->WebElement:
         """定位单个元素
 
         Args:
-            element_info (Element_Info): _description_
+            element (Element_Info): _description_
             highlight_seconds (float, optional): _description_. Defaults to 5.
 
         Returns:
             WebElement: _description_
         """
         web_element=None
-        locator_type=element_info.locator_type
-        locator_value=element_info.locator_value
-        wait_type = element_info.wait_type
-        wait_seconds = element_info.wait_seconds
-        wait_expected_value = element_info.wait_expected_value
+        locator_type=element.locator_type
+        locator_value=element.locator_value
+        wait_type = element.wait_type
+        wait_seconds = element.wait_seconds
+        wait_expected_value = element.wait_expected_value
+        relative_element = element.relative_element
+        relative_type = element.relative_type
 
         # 查找元素,为了保证元素被定位,都进行显式等待,部分返回并非是WebElement对象
+        # 相对位置定位方式
+        if relative_element and relative_type:
+            tmp_element=element
+            tmp_element.relative_element=None
+            tmp_element.relative_type=None
+            tmp_web_element=self.get_element(tmp_element)
+            if relative_type == 'above':
+                relative_locattor=locate_with(relative_element.locator_type,relative_element.locator_value).above(tmp_web_element)
+            elif relative_type == 'below':
+                relative_locattor=locate_with(relative_element.locator_type,relative_element.locator_value).below(tmp_web_element)
+            elif relative_type == 'to_left_of':
+                relative_locattor=locate_with(relative_element.locator_type,relative_element.locator_value).to_left_of(tmp_web_element)
+            elif relative_type == 'to_right_of':
+                relative_locattor=locate_with(relative_element.locator_type,relative_element.locator_value).to_right_of(tmp_web_element)
+            elif relative_type == 'near':
+                relative_locattor=locate_with(relative_element.locator_type,relative_element.locator_value).near(tmp_web_element)
+            else:
+                relative_locattor={}
+            web_element=self.driver.find_element(relative_locattor)
+            if isinstance(web_element,WebElement):
+                self.highLight(web_element,highlight_seconds)
+            return web_element
+        # 状态定位方式
         if wait_type == Wait_By.ALERT_IS_PRESENT:
             web_element = WebDriverWait(self.driver,wait_seconds).until(expected_conditions.alert_is_present())
         elif wait_type == Wait_By.ELEMENT_ATTRIBUTE_TO_INCLUDE:
@@ -456,47 +511,73 @@ class Browser_Operator:
         elif wait_type == Wait_By.VISIBILITY_OF_ELEMENT_LOCATED:
             web_element = WebDriverWait(self.driver,wait_seconds).until(expected_conditions.visibility_of_element_located((locator_type,locator_value)))
         else:
-            # 使用显式等待常规定位方式
+            # 常规定位方式
             web_element=WebDriverWait(self.driver,wait_seconds).until(lambda driver:driver.find_element(locator_type,locator_value))
         if isinstance(web_element,WebElement):
             self.highLight(web_element,highlight_seconds)
         return web_element
 
-    def get_elements(self,elementInfo:Element_Info,highlight_seconds:float=5)->List[WebElement]:
+    def get_elements(self,element:Element_Info,highlight_seconds:float=5)->List[WebElement]:
         """定位多个元素
 
         Args:
-            elementInfo (Element_Info): _description_
+            element (Element_Info): _description_
             highlight_seconds (float, optional): _description_. Defaults to 5.
 
         Returns:
             List[WebElement]: _description_
         """
         web_elements=None
-        locator_type=elementInfo.locator_type
-        locator_value=elementInfo.locator_value
-        wait_type = elementInfo.wait_type
-        wait_seconds = elementInfo.wait_seconds
+        locator_type=element.locator_type
+        locator_value=element.locator_value
+        wait_type = element.wait_type
+        wait_seconds = element.wait_seconds
+        relative_element = element.relative_element
+        relative_type = element.relative_type
 
         # 查找元素,为了保证元素被定位,都进行显式等待,部分返回并非是WebElement对象
+        # 相对位置定位方式
+        if relative_element and relative_type:
+            tmp_element=element
+            tmp_element.relative_element=None
+            tmp_element.relative_type=None
+            tmp_web_element=self.get_element(tmp_element)
+            if relative_type == 'above':
+                relative_locattor=locate_with(relative_element.locator_type,relative_element.locator_value).above(tmp_web_element)
+            elif relative_type == 'below':
+                relative_locattor=locate_with(relative_element.locator_type,relative_element.locator_value).below(tmp_web_element)
+            elif relative_type == 'to_left_of':
+                relative_locattor=locate_with(relative_element.locator_type,relative_element.locator_value).to_left_of(tmp_web_element)
+            elif relative_type == 'to_right_of':
+                relative_locattor=locate_with(relative_element.locator_type,relative_element.locator_value).to_right_of(tmp_web_element)
+            elif relative_type == 'near':
+                relative_locattor=locate_with(relative_element.locator_type,relative_element.locator_value).near(tmp_web_element)
+            else:
+                relative_locattor={}
+            web_elements=self.driver.find_elements(relative_locattor)
+            for web_element in web_elements:
+                if isinstance(web_element,WebElement):
+                    self.highLight(web_element,highlight_seconds)
+            return web_elements
+        # 状态定位方式
         if wait_type == Wait_By.PRESENCE_OF_ALL_ELEMENTS_LOCATED:
             web_elements = WebDriverWait(self.driver, wait_seconds).until(expected_conditions.presence_of_all_elements_located((locator_type, locator_value)))
         elif wait_type == Wait_By.VISIBILITY_OF_ALL_ELEMENTS_LOCATED:
             web_elements = WebDriverWait(self.driver, wait_seconds).until(expected_conditions.visibility_of_all_elements_located((locator_type,locator_value)))
         else:
-            self.driver.find_elements()
+            # 常规定位方式
             web_elements=WebDriverWait(self.driver,wait_seconds).until(lambda driver:driver.find_elements(locator_type,locator_value))
         for web_element in web_elements:
             if isinstance(web_element,WebElement):
                 self.highLight(web_element,highlight_seconds)
         return web_elements
 
-    def get_sub_element(self,parent_element:Union[Element_Info,WebElement],sub_elementInfo:Element_Info,highlight_seconds:float=5)->WebElement:
+    def get_sub_element(self,parent_element:Union[Element_Info,WebElement],sub_element:Element_Info,highlight_seconds:float=5)->WebElement:
         """获得元素的单个子元素
 
         Args:
             parent_element (Union[Element_Info,WebElement]): _description_
-            sub_elementInfo (Element_Info): _description_
+            sub_element (Element_Info): _description_
             highlight_seconds (float, optional): _description_. Defaults to 5.
 
         Returns:
@@ -508,26 +589,25 @@ class Browser_Operator:
             web_element=parent_element
         else:
             return None
-        if not isinstance(sub_elementInfo,Element_Info):
+        if not isinstance(sub_element,Element_Info):
             return None
 
         # 通过父元素查找子元素
-        locator_type=sub_elementInfo.locator_type
-        locator_value=sub_elementInfo.locator_value
-        wait_seconds = sub_elementInfo.wait_seconds
-        web_element.find_element()
+        locator_type=sub_element.locator_type
+        locator_value=sub_element.locator_value
+        wait_seconds = sub_element.wait_seconds
         # 查找元素,为了保证元素被定位,都进行显式等待
         sub_web_element = WebDriverWait(web_element,wait_seconds).until(lambda web_element:web_element.find_element(locator_type,locator_value))
         if isinstance(sub_web_element,WebElement):
             self.highLight(sub_web_element,highlight_seconds)
         return sub_web_element
 
-    def get_sub_elements(self, parent_element:Union[Element_Info,WebElement], sub_elementInfo:Element_Info,highlight_seconds:float=5)->List[WebElement]:
+    def get_sub_elements(self, parent_element:Union[Element_Info,WebElement], sub_element:Element_Info,highlight_seconds:float=5)->List[WebElement]:
         """获得元素的多个子元素
 
         Args:
             parent_element (Union[Element_Info,WebElement]): _description_
-            sub_elementInfo (Element_Info): _description_
+            sub_element (Element_Info): _description_
             highlight_seconds (float, optional): _description_. Defaults to 5.
 
         Returns:
@@ -539,13 +619,13 @@ class Browser_Operator:
             web_element=parent_element
         else:
             return None
-        if not isinstance(sub_elementInfo,Element_Info):
+        if not isinstance(sub_element,Element_Info):
             return None
 
         # 通过父元素查找多个子元素
-        locator_type = sub_elementInfo.locator_type
-        locator_value = sub_elementInfo.locator_value
-        wait_seconds = sub_elementInfo.wait_seconds
+        locator_type = sub_element.locator_type
+        locator_value = sub_element.locator_value
+        wait_seconds = sub_element.wait_seconds
 
         # 查找元素,为了保证元素被定位,都进行显式等待
         sub_web_elements =WebDriverWait(web_element,wait_seconds).until(lambda web_element:web_element.find_elements(locator_type,locator_value))
@@ -554,13 +634,13 @@ class Browser_Operator:
                 self.highLight(sub_web_element,highlight_seconds)
         return sub_web_elements
 
-    def explicit_wait_page_title(self,elementInfo:Element_Info)->None:
+    def explicit_wait_page_title(self,element:Element_Info)->None:
         """显式等待页面title
 
         Args:
-            elementInfo (Element_Info): _description_
+            element (Element_Info): _description_
         """
-        self.get_element(elementInfo)
+        self.get_element(element)
 
     def highLight(self,web_element:WebElement,seconds:float=5)->None:
         try:

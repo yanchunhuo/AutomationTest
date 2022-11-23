@@ -10,3 +10,6 @@ class Element_Info:
         self.wait_type=None
         self.wait_seconds=None
         self.wait_expected_value=None
+        self.relative_element=None
+        self.relative_type=None
+        

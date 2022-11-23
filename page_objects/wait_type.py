@@ -1,6 +1,12 @@
-# 作者 yanchunhuo
-# 创建时间 2018/01/19 22:36
-# github https://github.com/yanchunhuo
+#
+# wait_type.py
+# @author yanchunhuo
+# @description 
+# @github https://github.com/yanchunhuo
+# @created 2018-01-19T13:47:34.931Z+08:00
+# @last-modified 2022-11-22T17:43:37.844Z+08:00
+#
+
 class Wait_Type:
     ALERT_IS_PRESENT = 'alert_is_present'
     ELEMENT_ATTRIBUTE_TO_INCLUDE = 'element_attribute_to_include'

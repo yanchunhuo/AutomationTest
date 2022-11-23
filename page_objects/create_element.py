@@ -4,10 +4,11 @@
 # @description 
 # @github https://github.com/yanchunhuo
 # @created 2018-01-19T13:47:34.922Z+08:00
-# @last-modified 2022-11-21T15:31:41.749Z+08:00
+# @last-modified 2022-11-23T11:29:28.533Z+08:00
 #
 from appium.webdriver.common.appiumby import AppiumBy
 from page_objects.element_info import Element_Info
+from page_objects.relative_type import Relative_Type
 from page_objects.wait_type import Wait_Type
 from selenium.webdriver.common.by import By
 from typing import Union
@@ -15,7 +16,9 @@ from typing import Union
 class Create_Element:
     
     @classmethod
-    def create(cls, locator_type:Union[By,AppiumBy], locator_value:str, expected_value:str=None, wait_type:Wait_Type=None, wait_expected_value:str=None, wait_seconds:float=30):
+    def create(cls, locator_type:Union[By,AppiumBy], locator_value:str, expected_value:str=None,
+               wait_type:Wait_Type=None, wait_expected_value:str=None, wait_seconds:float=30,
+               relative_element:Element_Info=None,relative_type:Relative_Type=None):
         """_summary_
 
         Args:
@@ -25,6 +28,8 @@ class Create_Element:
             wait_type (Wait_Type, optional): _description_. Defaults to None.
             wait_expected_value (str, optional): _description_. Defaults to None.
             wait_seconds (float, optional): _description_. Defaults to 30.
+            relative_element (Element_Info, optional): _description_. Defaults to None.
+            relative_type (Relative_Type, optional): _description_. Defaults to None.
 
         Returns:
             _type_: _description_
@@ -36,4 +41,6 @@ class Create_Element:
         element_info.wait_type=wait_type
         element_info.wait_seconds=wait_seconds
         element_info.wait_expected_value=wait_expected_value
+        element_info.relative_element=relative_element
+        element_info.relative_type=relative_type
         return element_info
