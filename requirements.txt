@@ -1,6 +1,7 @@
 # Must be installed first
 markupsafe==2.0.1 # Python>=3.6;The mitmproxy depends on, and the installation of a specific version is compatible
 # Base libs
+Appium-Python-Client==2.7.1 # Python3.7~3.9
 JPype1==1.4.1 # Python3.7~3.10
 Js2Py==0.74 # Python3
 mitmproxy==5.3.0 # Python3.6~3.9
@@ -11,9 +12,8 @@ PyHamcrest==2.0.4 # Python3.6~3.11
 python-binary-memcached==0.31.1 # Python3.4~3.9
 requests==2.28.1 # Python3.7~3.11
 scikit-image==0.19.3 # Python3.7~3.10
+selenium==4.6.0 # Python3.7~3.9
 ujson==5.5.0 # Python3.7~3.11
-Appium-Python-Client==2.7.1 # Python3.7~3.9
-selenium==4.6.0
 # About pytest
 pytest==7.2.0 # Python3.7~3.10
 pytest-xdist==3.0.2 # Python3.6~3.10
