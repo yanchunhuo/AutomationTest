@@ -24,12 +24,11 @@
     * sqlacodegen：用于根据数据库表结构生成python对象，https://github.com/agronholm/sqlacodegen
     * SQLAlchemy：SQL工具包及对象关系映射（ORM）工具，https://github.com/sqlalchemy/sqlalchemy
     * ujson：一个用纯C编写的超快JSON编码器和解码器
-    * Appium：移动端的自动化测试框架,https://github.com/appium/appium/tree/v1.15.1
-    * tess4j：java的图片识别工具,https://github.com/nguyenq/tess4j/
-* 当前仅支持Python>=3.7
+    * Appium：移动端的自动化测试框架，https://github.com/appium/appium
+    * tess4j：java的图片识别工具，https://github.com/nguyenq/tess4j/
+* 当前仅支持Python3.7、Python3.8、Python3.9
 * 项目如需执行java代码(即使用jpype1)，则项目目录所在的路径不可包含中文
 * dubbo当前支持V2.6.0
-    
 
 # [使用]()
 ## 一、环境准备
