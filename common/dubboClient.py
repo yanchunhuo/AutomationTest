@@ -46,7 +46,7 @@ class DubboClient:
         result=self._dubboClient.request(requestInterfaceClassName,requestMethod,params)
         if result:
             if is_return_dict:
-                ujson.loads(str(result))
+                return ujson.loads(str(result))
             else:
                 return str(result)
 
