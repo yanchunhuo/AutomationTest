@@ -9,13 +9,13 @@ import pytest
 class TestStartPage:
     def setup_class(self):
         self.demoProjectClient = APP_UI_Android_demoProject_Client(is_need_reset_app=True)
-        self.startPage=StartPage(self.demoProjectClient.appOperator)
+        self.startPage=StartPage(self.demoProjectClient.app_operator)
 
     @pytest.fixture(autouse=True)
     def record_test_case_video(self):
-        self.demoProjectClient.appOperator.start_recording_screen()
+        self.demoProjectClient.app_operator.start_recording_screen()
         yield self.record_test_case_video
-        self.demoProjectClient.appOperator.stop_recording_screen()
+        self.demoProjectClient.app_operator.stop_recording_screen()
 
     @pytest.fixture
     def fixture_test_click_start_btn(self):
@@ -36,4 +36,4 @@ class TestStartPage:
         self.startPage.choice_a_city()
 
     def teardown_class(self):
-        self.demoProjectClient.appOperator.reset_app()
+        self.demoProjectClient.app_operator.reset_app()

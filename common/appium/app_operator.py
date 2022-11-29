@@ -1,0 +1,1551 @@
+#
+# app_operator.py
+# @author yanchunhuo
+# @description 
+# @github https://github.com/yanchunhuo
+# @created 2018-01-19T13:47:34.201Z+08:00
+# @last-modified 2022-11-29T14:08:46.878Z+08:00
+#
+
+from appium.webdriver.common.appiumby import AppiumBy
+from appium.webdriver.common.touch_action import TouchAction
+from appium.webdriver.common.multi_action import MultiAction
+from appium.webdriver.webdriver import WebDriver
+from appium.webdriver.webelement import WebElement
+from common.dateTimeTool import DateTimeTool
+from common.httpclient.doRequest import DoRequest
+from page_objects.create_element import Create_Element
+from page_objects.wait_type import Wait_Type as Wait_By
+from page_objects.element_info import Element_Info
+from PIL import Image
+from selenium.common.exceptions import StaleElementReferenceException
+from selenium.webdriver.support.ui import Select
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.touch_actions import TouchActions
+from selenium.webdriver.common.by import By
+from typing import List
+from typing import Union
+
+import allure
+import base64
+import ujson
+import os
+
+class App_Operator:
+
+    def __init__(self,driver:WebDriver,appium_hub:str):
+        self.doRequest=DoRequest(appium_hub)
+        self.doRequest.setHeaders({'Content-Type':'application/json'})
+        self.driver=driver
+        self.session_id=driver.session_id
+        # 获得设备支持的性能数据类型
+        self.performance_types=ujson.loads(self.doRequest.post_with_form('/session/'+self.session_id+'/appium/performanceData/types').body)['value']
+        # 获取当前窗口大小
+        self.windows_size=self.get_window_size()
+
+    def _change_element_to_webElement_type(self,element:Union[Element_Info,WebElement])->WebElement:
+        if isinstance(element, Element_Info):
+            web_element=self.getElement(element)
+        elif isinstance(element,WebElement):
+            web_element=element
+        else:
+            return element
+        return web_element
+
+    def get(self,url:str)->None:
+        self.driver.get(url)
+
+    def get_current_url(self)->str:
+        return self.driver.current_url
+
+    def get_title(self)->str:
+        return self.driver.title
+
+    def get_text(self,element:Union[Element_Info,WebElement])->str:
+        web_element=self._change_element_to_webElement_type(element)
+        if web_element:
+            return web_element.text
+
+    def click(self,element:Union[Element_Info,WebElement])->None:
+        web_element=self._change_element_to_webElement_type(element)
+        if web_element:
+            web_element.click()
+        
+    def click_web_element(self,element:Union[Element_Info,WebElement])->None:
+        """由于混合应用存在点击无效的情况，故混合应用的点击采用selenium的tab操作确保能够正常点击
+
+        Args:
+            element (Union[Element_Info,WebElement]): _description_
+        """
+        
+        web_element=self._change_element_to_webElement_type(element)
+        if web_element:
+            actions=TouchActions(self.driver)
+            actions.tap(web_element).perform()
+
+    def submit(self,element:Union[Element_Info,WebElement])->None:
+        web_element=self._change_element_to_webElement_type(element)
+        if web_element:
+            web_element.submit()
+
+    def send_text(self,element:Union[Element_Info,WebElement],text:str)->None:
+        web_element=self._change_element_to_webElement_type(element)
+        if web_element:
+            web_element.clear()
+            web_element.send_keys(text)
+
+    def is_displayed(self,element:Union[Element_Info,WebElement])->bool:
+        web_element=self._change_element_to_webElement_type(element)
+        if web_element:
+            flag=web_element.is_displayed()
+            return flag
+
+    def is_enabled(self,element:Union[Element_Info,WebElement])->bool:
+        web_element=self._change_element_to_webElement_type(element)
+        if web_element:
+            flag = web_element.is_enabled()
+            return flag
+
+    def is_selected(self,element:Union[Element_Info,WebElement])->bool:
+        web_element=self._change_element_to_webElement_type(element)
+        if web_element:
+            flag = web_element.is_selected()
+            return flag
+
+    def select_dropDownBox_by_value(self,element:Union[Element_Info,WebElement],value:str)->None:
+        """适用单选下拉框
+
+        Args:
+            element (Union[Element_Info,WebElement]): _description_
+            value (str): _description_
+        """
+        web_element=self._change_element_to_webElement_type(element)
+        if web_element:
+            web_element = Select(web_element)
+            web_element.select_by_value(value)
+
+    def select_dropDownBox_by_text(self,element:Union[Element_Info,WebElement],text:str)->None:
+        """适用单选下拉框
+
+        Args:
+            element (Union[Element_Info,WebElement]): _description_
+            text (str): _description_
+        """
+        web_element=self._change_element_to_webElement_type(element)
+        if web_element:
+            web_element = Select(web_element)
+            web_element.select_by_visible_text(text)
+
+    def select_dropDownBox_by_index(self,element:Union[Element_Info,WebElement],index:int)->None:
+        """适用单选下拉框,下标从0开始
+
+        Args:
+            element (_type_): _description_
+            index (_type_): _description_
+        """
+        web_element=self._change_element_to_webElement_type(element)
+        if web_element:
+            web_element = Select(web_element)
+            web_element.select_by_index(index)
+
+    def select_dropDownBox_by_values(self,element:Union[Element_Info,WebElement],values:List[str])->None:
+        """适用多选下拉框
+
+        Args:
+            element (Union[Element_Info,WebElement]): _description_
+            values (List[str]): _description_
+        """
+        web_element=self._change_element_to_webElement_type(element)
+        if web_element:
+            web_element = Select(web_element)
+            web_element.deselect_all()
+            for value in values:
+                web_element.select_by_value(value)
+
+    def select_dropDownBox_by_texts(self,element:Union[Element_Info,WebElement],texts:List[str])->None:
+        """适用多选下拉框
+
+        Args:
+            element (Union[Element_Info,WebElement]): _description_
+            texts (List[str]): _description_
+        """
+        web_element=self._change_element_to_webElement_type(element)
+        if web_element:
+            web_element = Select(web_element)
+            web_element.deselect_all()
+            for text in texts:
+                web_element.select_by_visible_text(text)
+
+    def select_dropDownBox_by_indexs(self,element:Union[Element_Info,WebElement],indexs:List[int])->None:
+        """适用多选下拉框，下标从0开始
+
+        Args:
+            element (Union[Element_Info,WebElement]): _description_
+            indexs (List[int]): _description_
+        """
+        web_element=self._change_element_to_webElement_type(element)
+        if web_element:
+            web_element = Select(web_element)
+            web_element.deselect_all()
+            for index in indexs:
+                web_element.select_by_index(index)
+
+    def get_window_handles(self)->List[str]:
+        """获得窗口句柄，仅适用于web
+
+        Returns:
+            _type_: _description_
+        """
+        return self.driver.window_handles
+
+    def switch_to_window(self,window_name:str)->None:
+        """仅适用于web
+
+        Args:
+            window_name (str): _description_
+        """
+        self.driver.switch_to.window(window_name)
+
+    def switch_to_frame(self,frame_reference)->None:
+        """仅适用于web
+
+        Args:
+            frame_reference (_type_): 支持窗口名、frame索引、(i)frame元素
+        """
+        frame_reference=self._change_element_to_webElement_type(frame_reference)
+        self.driver.switch_to.frame(frame_reference)
+
+    def page_forward(self)->None:
+        """仅适用于web
+        """
+        self.driver.forward()
+
+    def pag_back(self)->None:
+        """仅适用于web
+        """
+        self.driver.back()
+
+    def web_alert(self,action_type:str='accept')->None:
+        """仅适用于web
+
+        Args:
+            action_type (str, optional): accept、dismiss. Defaults to 'accept'.
+        """
+        if action_type:
+            action_type.lower()
+        alert = self.driver.switch_to.alert
+        if action_type=='accept':
+            alert.accept()
+        elif action_type=='dismiss':
+            alert.dismiss()
+
+    def get_alert_text(self)->str:
+        """仅适用于web
+
+        Returns:
+            str: _description_
+        """
+        alert=self.driver.switch_to.alert
+        return alert.text
+    
+    def scroll_to_show(self,element:Union[Element_Info,WebElement],is_top_align:bool=True)->None:
+        """仅适用于web,滚动页面直至元素可见
+
+        Args:
+            element (Union[Element_Info,WebElement]): _description_
+            is_top_align (bool, optional): 是否元素与窗口顶部对齐，否则与窗口底部对齐. Defaults to True.
+        """
+        web_element = self._change_element_to_webElement_type(element)
+        if web_element:
+            if is_top_align:
+                self.driver.execute_script("arguments[0].scrollIntoView();", web_element)
+            else:
+                self.driver.execute_script("arguments[0].scrollIntoView(false);", web_element)
+
+    def get_screenshot(self,fileName:str)->None:
+        fileName=DateTimeTool.getNowTime('%Y%m%d%H%M%S%f_')+fileName
+        allure.attach(name=fileName,body=self.driver.get_screenshot_as_png(),attachment_type=allure.attachment_type.PNG)
+
+    def refresh(self)->None:
+        self.driver.refresh()
+
+    def upload_file(self,element:Union[Element_Info,WebElement],filePath)->None:
+        """仅适用于web，适用于元素为input且type="file"的文件上传
+
+        Args:
+            element (Union[Element_Info,WebElement]): _description_
+            filePath (_type_): _description_
+        """
+        web_element=self._change_element_to_webElement_type(element)
+        if web_element:
+            web_element.send_keys(os.path.abspath(filePath))
+
+    def switch_to_parent_frame(self)->None:
+        """切换到父frame(仅适用于web)
+        """
+        self.driver.switch_to.parent_frame()
+
+    def get_property(self,element:Union[Element_Info,WebElement],property_name:str)->str:
+        web_element=self._change_element_to_webElement_type(element)
+        if web_element:
+            return web_element.get_property(property_name)
+
+    def get_attribute(self,element:Union[Element_Info,WebElement],attribute_name:str)->str:
+        web_element=self._change_element_to_webElement_type(element)
+        if web_element:
+            return web_element.get_attribute(attribute_name)
+
+    def get_element_outer_html(self,element:Union[Element_Info,WebElement])->str:
+        return self.get_attribute(element,'outerHTML')
+
+    def get_element_inner_html(self, element:Union[Element_Info,WebElement])->str:
+        return self.get_attribute(element,'innerHTML')
+
+    def get_page_source(self)->str:
+        """获得app的层次结构xml，web页面源码
+
+        Returns:
+            str: _description_
+        """
+        return self.driver.page_source
+
+    def get_element_rgb(self,element:Union[Element_Info,WebElement],x_percent:float=0,y_percent:float=0)->list:
+        """获得元素上的rgb值,默认返回元素左上角坐标轴
+
+        Args:
+            element (Union[Element_Info,WebElement]): _description_
+            x_percent (float, optional): x轴百分比位置,范围0~1. Defaults to 0.
+            y_percent (float, optional): y轴百分比位置,范围0~1. Defaults to 0.
+
+        Returns:
+            list: _description_
+        """
+        img = Image.open(self.save_element_image(element,'element_rgb'))
+        pix = img.load()
+        width = img.size[0]
+        height = img.size[1]
+        point_rgb=pix[width * x_percent, height * y_percent]
+        point_rgb=point_rgb[:3]
+        return point_rgb
+
+    def save_element_image(self,element:Union[Element_Info,WebElement],image_file_name:str)->str:
+        """截取元素图片
+
+        Args:
+            element (Union[Element_Info,WebElement]): _description_
+            image_file_name (str): _description_
+
+        Returns:
+            str: _description_
+        """
+        web_element = self._change_element_to_webElement_type(element)
+        web_element_x=web_element.location['x']
+        web_element_y = web_element.location['y']
+        web_element_width=web_element.size['width']
+        web_element_height=web_element.size['height']
+        screen_size=self.get_window_size()
+        screen_width=screen_size['width']
+        screen_height=screen_size['height']
+        left_percent=web_element_x/screen_width
+        top_percent=web_element_y/screen_height
+        right_percent=(web_element_x+web_element_width)/screen_width
+        bottom_percent=(web_element_y+web_element_height)/screen_height
+        # 进行屏幕截图
+        image_file_name = DateTimeTool.getNowTime('%Y%m%d%H%M%S%f_') + '%s.png'%image_file_name
+        if not os.path.exists('output/tmp/'):
+            os.mkdir('output/tmp/')
+        image_file_name = os.path.abspath('output/tmp/' + image_file_name)
+        self.driver.get_screenshot_as_file(image_file_name)
+        img = Image.open(image_file_name)
+        img_size=img.size
+        img_width=img_size[0]
+        img_height=img_size[1]
+        # 验证码图片裁切并保存
+        img = img.crop((left_percent*img_width, top_percent*img_height, right_percent*img_width, bottom_percent*img_height))
+        img.save(image_file_name)
+        return image_file_name
+
+    def get_captcha(self,element:Union[Element_Info,WebElement],language:str='eng')->str:
+        """识别图片验证码，如需使用该方法必须配置jpype1、字体库等依赖环境
+    
+        Args:
+            element (Union[Element_Info,WebElement]): 验证码图片元素
+            language (str, optional): eng:英文,chi_sim:中文. Defaults to 'eng'.
+
+        Returns:
+            str: _description_
+        """
+        # 识别图片验证码
+        from common.captchaRecognitionTool import CaptchaRecognitionTool
+        captcha_image_file_name=self.save_element_image(element,'captcha')
+        captcha=CaptchaRecognitionTool.captchaRecognition(captcha_image_file_name,language)
+        captcha=captcha.strip()
+        captcha=captcha.replace(' ','')
+        return captcha
+
+    def get_table_data(self,element:Union[Element_Info,WebElement],data_type:str='text')->List[List[str]]:
+        """以二维数组返回表格每一行的每一列的数据[[row1][row2][colume1,clume2]]
+
+        Args:
+            element (Union[Element_Info,WebElement]): _description_
+            data_type (str, optional): text-返回表格文本内容,html-返回表格html内容,webElement-返回表格元素. Defaults to 'text'.
+
+        Returns:
+            List[List[str]]: _description_
+        """
+        if isinstance(element, Element_Info):
+            # 由于表格定位经常会出现【StaleElementReferenceException: Message: stale element reference: element is not attached to the page document 】异常错误,
+            # 解决此异常只需要用显示等待，保证元素存在即可，显示等待类型中visibility_of_all_elements_located有实现StaleElementReferenceException异常捕获,
+            # 所以强制设置表格定位元素时使用VISIBILITY_OF
+            element.wait_type=Wait_By.VISIBILITY_OF
+            web_element = self.getElement(element)
+        elif isinstance(element,WebElement):
+            web_element = element
+        else:
+            return None
+        table_data = []
+        table_trs = web_element.find_elements(AppiumBy.TAG_NAME,'tr')
+        try:
+            for tr in table_trs:
+                tr_data=[]
+                tr_tds = tr.find_elements(AppiumBy.TAG_NAME,'td')
+                if data_type.lower()=='text':
+                    for td in tr_tds:
+                        tr_data.append(td.text)
+                elif data_type.lower()=='html':
+                    for td in tr_tds:
+                        tr_data.append(td.get_attribute('innerHTML'))
+                elif data_type.lower()=='webelement':
+                    tr_data=tr_tds
+                table_data.append(tr_data)
+        except StaleElementReferenceException as e:
+                print('获取表格内容异常:' + e.msg)
+        return table_data
+
+    def get_window_size(self)->dict:
+        return self.driver.get_window_size()
+
+    def app_alert(self, platform_name:str,action_type:str='accept',button_label:str=None)->None:
+        """"仅适用于app
+
+        Args:
+            platform_name (str): android、ios
+            action_type (str, optional): accept、dismiss. Defaults to 'accept'.
+            button_label (str, optional): _description_. Defaults to None.
+        """
+        if action_type:
+            action_type.lower()
+        if platform_name:
+            platform_name.lower()
+        script=None
+        script_arg={}
+        if button_label:
+            script_arg.update({'buttonLabel': button_label})
+        if platform_name=='android':
+            # 仅支持UiAutomator2
+            if action_type == 'accept':
+                script = 'mobile:acceptAlert'
+            elif action_type == 'dismiss':
+                script = 'mobile:dismissAlert'
+        elif platform_name=='ios':
+            # 仅支持XCUITest
+            script='mobile:alert'
+            script_arg.update({'action':action_type})
+        self.driver.execute_script(script,script_arg)
+
+    def is_toast_visible(self, text:str, platform_name:str='android', automation_name:str='UiAutomator2', is_regexp:bool=False, wait_seconds:float=5)->bool:
+        """仅支持Android
+
+        Args:
+            text (str): _description_
+            platform_name (str, optional): android、ios. Defaults to 'android'.
+            automation_name (str, optional):支持UiAutomator2、Espresso. Defaults to 'UiAutomator2'.
+            is_regexp (bool, optional): 仅当automation_nameEspresso时有效. Defaults to False.
+            wait_seconds (float, optional): _description_. Defaults to 5.
+
+        Returns:
+            bool: _description_
+        """
+        if not text:
+            return False
+        if 'android' == platform_name.lower():
+            if 'uiautomator2' == automation_name.lower():
+                toast_element = Create_Element.create(AppiumBy.XPATH, ".//*[contains(@text,'%s')]" % text, None,
+                                                     Wait_By.PRESENCE_OF_ELEMENT_LOCATED, wait_seconds=wait_seconds)
+                try:
+                    self.getElement(toast_element)
+                    return True
+                except:
+                    return False
+            elif 'espresso' == platform_name.lower():
+                script_arg = {'text': text}
+                if is_regexp:
+                    script_arg.update({'isRegexp': True})
+                script = 'mobile:isToastVisible'
+                return self.driver.execute_script(script, script_arg)
+        elif 'ios' == platform_name.lower():
+            return False
+
+    def get_geolocation(self)->dict:
+        """返回定位信息,纬度/经度/高度
+
+        Returns:
+            dict: _description_
+        """
+        httpResponseResult=self.doRequest.get('/session/'+self.session_id+'/location')
+        return ujson.loads(httpResponseResult.body)
+
+    def set_geolocation(self,latitude:float,longitude:float,altitude:float)->None:
+        """设置定位信息
+
+        Args:
+            latitude (float): 纬度 -90 ~ 90
+            longitude (float): 经度 ~180 ~ 180
+            altitude (float): 高度
+        """
+        geolocation={}
+        location={}
+        location.update({'latitude':latitude})
+        location.update({'longitude':longitude})
+        location.update({'altitude':altitude})
+        geolocation.update({'location':location})
+        self.doRequest.post_with_form('/session/'+self.session_id+'/location',params=ujson.dumps(geolocation))
+
+    def start_activity(self,package_name:str,activity_name:str)->None:
+        """启动Android的activity
+
+        Args:
+            package_name (str): _description_
+            activity_name (str): _description_
+        """
+        self.driver.start_activity(package_name,activity_name)
+
+    def get_current_activity(self)->str:
+        """获得Android的activity
+
+        Returns:
+            str: _description_
+        """
+        return self.driver.current_activity
+
+    def get_current_package(self)->str:
+        """获得Android的package
+
+        Returns:
+            str: _description_
+        """
+        return self.driver.current_package
+
+    def execute_javascript(self,script:str)->None:
+        self.driver.execute_script(script)
+
+    def install_app(self,file_path:str)->None:
+        self.driver.install_app(os.path.abspath(file_path))
+
+    def remove_app(self,app_id:str)->None:
+        self.driver.remove_app(app_id)
+
+    def launch_app(self)->None:
+        self.driver.launch_app()
+
+    def reset_app(self)->None:
+        """Appium 2.0.0 即将废弃该功能
+
+        Returns:
+            _type_: _description_
+        """
+        return self.driver.reset()
+
+    def close_app(self)->None:
+        self.driver.close_app()
+
+    def background_app(self,seconds:float)->None:
+        """后台运行
+
+        Args:
+            seconds (float): -1代表完全停用
+        """
+        self.driver.background_app(seconds)
+
+    def activate_app(self,app_id:str)->None:
+        """_summary_
+
+        Args:
+            app_id (str): IOS是bundleId，Android是Package名
+        """
+        self.driver.activate_app(app_id)
+
+    def terminate_app(self,app_id:str,timeout:float=None)->None:
+        """
+
+        Args:
+            app_id (str): IOS是bundleId，Android是Package名
+            timeout (float, optional): 重试超时时间，仅支持Android. Defaults to None.
+        """
+        if timeout:
+            self.driver.terminate_app(app_id,timeout=timeout)
+        else:
+            self.driver.terminate_app(app_id)
+
+    def get_app_state(self,app_id:str)->int:
+        """_summary_
+
+        Args:
+            app_id (str): IOS是bundleId，Android是Package名
+
+        Returns:
+            int: 0:未安装,1:不在运行,2:在后台运行或者挂起,3:在后台运行,4:在前台运行
+        """
+        return self.driver.query_app_state(app_id)
+
+    def get_clipboard(self,content_type:str='plaintext')->Union[bytes,str]:
+        """
+        
+        Args:
+            content_type (str, optional): plaintxt、image、url. Defaults to 'plaintext'. Android上仅支持'plaintext'
+
+        Returns:
+            Union[bytes,str]: _description_
+        """
+        return self.driver.get_clipboard(content_type)
+
+    def set_clipboard(self,content:bytes,content_type:str='plaintext',label:str=None)->None:
+        """_summary_
+
+        Args:
+            content (bytes): _description_
+            content_type (str): plaintxt、image、url. Defaults to 'plaintext'. Android上仅支持'plaintext'
+            label (str): 仅支持Android. Defaults to None.
+        """
+        self.driver.set_clipboard(content,content_type,label)
+
+    def push_file_to_device(self,device_filePath:str,local_filePath:str)->None:
+        """上传文件设备
+
+        Args:
+            device_filePath (str): _description_
+            local_filePath (str): _description_
+        """
+        local_filePath=os.path.abspath(local_filePath)
+        with open(local_filePath,'rb') as f:
+            data=base64.b64encode(f.read())
+            f.close()
+        self.driver.push_file(device_filePath,data)
+
+    def pull_file_from_device(self,device_filePath:str,local_filePath:str)->None:
+        """从设备上下载文件
+
+        Args:
+            device_filePath (str): _description_
+            local_filePath (str): _description_
+        """
+        local_filePath = os.path.abspath(local_filePath)
+        data=self.driver.pull_file(device_filePath)
+        with open(local_filePath,'wb') as f:
+            f.write(base64.b64decode(data))
+            f.close()
+
+    def shake_device(self)->None:
+        """仅支持IOS,详见https://appium.io/docs/en/commands/device/interactions/shake/index.html
+        """
+        self.driver.shake()
+
+    def lock_screen(self,seconds:float=None)->None:
+        self.driver.lock(seconds)
+
+    def unlock_screen(self)->None:
+        self.driver.unlock()
+
+    def press_keycode(self,keycode:int)->None:
+        """按键盘按键，仅支持Android
+
+        Args:
+            keycode (int): 键盘上每个按键的ascii
+        """
+        self.driver.press_keycode(keycode)
+
+    def long_press_keycode(self,keycode:int)->None:
+        """长按键盘按键，仅支持Android
+
+        Args:
+            keycode (int): 键盘上每个按键的ascii
+        """
+        self.driver.long_press_keycode(keycode)
+
+    def hide_keyboard(self,key_name:str=None, key:str=None, strategy:str=None)->None:
+        """隐藏软键盘,ios需要指定key_name或strategy,Android无需参数
+
+        Args:
+            key_name (str, optional): _description_. Defaults to None.
+            key (str, optional): _description_. Defaults to None.
+            strategy (str, optional): 例如：tapOutside. Defaults to None.
+        """
+        self.driver.hide_keyboard(key_name,key,strategy)
+
+    def toggle_airplane_mode(self)->None:
+        """切换飞行模式(开启关闭),仅支持Android
+        """
+        self.doRequest.post_with_form('/session/'+self.session_id+'/appium/device/toggle_airplane_mode')
+
+    def toggle_data(self)->None:
+        """切换蜂窝数据模式(开启关闭),仅支持Android
+        """
+        self.doRequest.post_with_form('/session/'+self.session_id+'/appium/device/toggle_data')
+
+    def toggle_wifi(self)->None:
+        """切换wifi模式(开启关闭),仅支持Android
+        """
+        self.driver.toggle_wifi()
+
+    def toggle_location_services(self)->None:
+        """切换定位服务模式(开启关闭),仅支持Android
+        """
+        self.driver.toggle_location_services()
+
+    def get_performance_date(self,data_type:str,package_name:str=None,data_read_timeout:float=10)->List[List[str]]:
+        """获得设备性能数据
+
+        Args:
+            data_type (str): cpuinfo、batteryinfo、networkinfo、memoryinfo
+            package_name (str, optional): _description_. Defaults to None.
+            data_read_timeout (float, optional): _description_. Defaults to 10.
+
+        Returns:
+            List[List[str]]: _description_
+        """
+        if data_type in self.driver.get_performance_data_types():
+            return self.driver.get_performance_data(package_name,data_type,data_read_timeout)
+
+    def start_recording_screen(self)->None:
+        """默认录制为3分钟,android最大只能3分钟,ios最大只能10分钟。如果录制产生的视频文件过大无法放到手机内存里会抛异常，所以尽量录制短视频
+        """
+        self.driver.start_recording_screen(forcedRestart=True)
+
+    def stop_recording_screen(self,fileName='')->None:
+        """停止录像并将视频附加到报告里
+
+        Args:
+            fileName (str, optional): _description_. Defaults to ''.
+        """
+        fileName = DateTimeTool.getNowTime('%Y%m%d%H%M%S%f_') + fileName
+        data=self.driver.stop_recording_screen()
+        allure.attach(name=fileName, body=base64.b64decode(data), attachment_type=allure.attachment_type.MP4)
+
+    def get_device_time(self,format='YYYY-MM-DD HH:mm:ss')->str:
+        """获得设备时间
+
+        Args:
+            format (str, optional): _description_. Defaults to 'YYYY-MM-DD HH:mm:ss'.
+
+        Returns:
+            _type_: _description_
+        """
+        return self.driver.get_device_time(format)
+
+    def get_element_location(self,element:Union[Element_Info,WebElement])->dict:
+        """获得元素在屏幕的位置,x、y坐标为元素左上角
+
+        Args:
+            element (Union[Element_Info,WebElement]): _description_
+
+        Returns:
+            dict: _description_
+        """
+        web_element=self._change_element_to_webElement_type(element)
+        if web_element:
+            return web_element.location
+
+    def get_element_center_location(self,element:Union[Element_Info,WebElement])->dict:
+        """获得元素中心的x、y坐标
+
+        Args:
+            element (Union[Element_Info,WebElement]): _description_
+
+        Returns:
+            dict: _description_
+        """
+        web_element=self._change_element_to_webElement_type(element)
+        if web_element:
+            rect=web_element.rect
+            height=rect['height']
+            width=rect['width']
+            x=rect['x']
+            y=rect['y']
+            result_x=x+width/2
+            result_y=y+height/2
+            return {'x':result_x,'y':result_y}
+
+    def touch_element_left_slide(self,element:Union[Element_Info,WebElement],start_x_percent:float=0.5,start_y_percent:float=0.5,
+                                 duration:float=500,edge_type:str='element')->None:
+        """通过元素宽度、高度的百分比值的位置点击滑动到元素或者屏幕的左边缘
+
+        Args:
+            element (Union[Element_Info,WebElement]): _description_
+            start_x_percent (float, optional): 相对元素宽度的百分比. Defaults to 0.5.
+            start_y_percent (float, optional): 相对元素高度的百分比. Defaults to 0.5.
+            duration (float, optional): _description_. Defaults to 500.
+            edge_type (str, optional): element:滑动到元素边缘,screen:滑动到屏幕边缘. Defaults to 'element'.
+        """
+        
+        if start_x_percent>=1:
+            start_x_percent=0.99
+        if start_y_percent>=1:
+            start_y_percent=0.99
+        web_element=self._change_element_to_webElement_type(element)
+        if web_element:
+            rect=web_element.rect
+            height = rect['height']
+            width = rect['width']
+            x = rect['x']
+            y = rect['y']
+            start_x = x + width * start_x_percent
+            start_y = y + height * start_y_percent
+            if edge_type.lower()=='element':
+                end_x=x+0.01
+                end_y=y+height*0.5
+            elif edge_type.lower()=='screen':
+                end_x = 0+0.01
+                end_y = self.windows_size['height'] * 0.5
+            else:
+                end_x=start_x
+                end_y=end_x
+            self.driver.swipe(start_x=start_x,start_y=start_y,end_x=end_x,end_y=end_y,duration=duration)
+
+    def touch_element_right_slide(self,element,start_x_percent=0.5,start_y_percent=0.5,duration=500,edge_type='element'):
+        """
+        通过元素宽度、高度的百分比值的位置点击滑动到元素或者屏幕的右边缘
+        :param element:
+        :param start_x_percent: 相对元素宽度的百分比
+        :param start_y_percent: 相对元素高度的百分比
+        :param duration:
+        :param edge_type: element:滑动到元素边缘,screen:滑动到屏幕边缘
+        :return:
+        """
+        if start_x_percent>=1:
+            start_x_percent=0.99
+        if start_y_percent>=1:
+            start_y_percent=0.99
+        web_element=self._change_element_to_webElement_type(element)
+        if web_element:
+            rect=web_element.rect
+            height = rect['height']
+            width = rect['width']
+            x = rect['x']
+            y = rect['y']
+            start_x = x + width*start_x_percent
+            start_y = y + height*start_y_percent
+            if edge_type.lower()=='element':
+                end_x = x + width*0.99
+                end_y = y + height * 0.5
+            elif edge_type.lower()=='screen':
+                end_x = self.windows_size['width'] * 0.99
+                end_y = self.windows_size['height'] * 0.5
+            else:
+                end_x=start_x
+                end_y=end_x
+            self.driver.swipe(start_x=start_x,start_y=start_y,end_x=end_x,end_y=end_y,duration=duration)
+
+    def touch_element_up_slide(self,element,start_x_percent=0.5,start_y_percent=0.5,duration=500,edge_type='element'):
+        """
+        通过元素宽度、高度的百分比值的位置点击滑动到元素或者屏幕的上边缘
+        :param element:
+        :param start_x_percent: 相对元素宽度的百分比
+        :param start_y_percent: 相对元素高度的百分比
+        :param duration:
+        :param edge_type: element:滑动到元素边缘,screen:滑动到屏幕边缘
+        :return:
+        """
+        if start_x_percent>=1:
+            start_x_percent=0.99
+        if start_y_percent>=1:
+            start_y_percent=0.99
+        web_element=self._change_element_to_webElement_type(element)
+        if web_element:
+            rect=web_element.rect
+            height = rect['height']
+            width = rect['width']
+            x = rect['x']
+            y = rect['y']
+            start_x = x + width*start_x_percent
+            start_y = y + height*start_y_percent
+            if edge_type.lower()=='element':
+                end_x = x + width * 0.5
+                end_y = y+0.01
+            elif edge_type.lower()=='screen':
+                end_x = self.windows_size['width'] * 0.5
+                end_y = 0+0.01
+            else:
+                end_x=start_x
+                end_y=end_x
+            self.driver.swipe(start_x=start_x,start_y=start_y,end_x=end_x,end_y=end_y,duration=duration)
+
+    def touch_element_down_slide(self,element,start_x_percent=0.5,start_y_percent=0.5,duration=500,edge_type='element'):
+        """
+        通过元素宽度、高度的百分比值的位置点击滑动到元素或者屏幕的下边缘
+        :param element:
+        :param start_x_percent: 相对元素宽度的百分比
+        :param start_y_percent: 相对元素高度的百分比
+        :param duration:
+        :param edge_type: element:滑动到元素边缘,screen:滑动到屏幕边缘
+        :return:
+        """
+        if start_x_percent>=1:
+            start_x_percent=0.99
+        if start_y_percent>=1:
+            start_y_percent=0.99
+        web_element=self._change_element_to_webElement_type(element)
+        if web_element:
+            rect=web_element.rect
+            height = rect['height']
+            width = rect['width']
+            x = rect['x']
+            y = rect['y']
+            start_x = x + width*start_x_percent
+            start_y = y + height*start_y_percent
+            if edge_type.lower()=='element':
+                end_x = x + width * 0.5
+                end_y = y + height*0.99
+            elif edge_type.lower()=='screen':
+                end_x = self.windows_size['width'] * 0.5
+                end_y = self.windows_size['height'] * 0.99
+            else:
+                end_x=start_x
+                end_y=end_x
+            self.driver.swipe(start_x=start_x,start_y=start_y,end_x=end_x,end_y=end_y,duration=duration)
+
+    def touch_a_element_to_another_element_slide(self,src_element,dst_element,src_start_x_percent=0.5,src_start_y_percent=0.5,
+                                                dst_end_x_percent=0.5,dst_end_y_percent=0.5,duration=500):
+        """
+        通过一个元素宽度、高度的百分比值的位置点击滑动到另一个元素宽度、高度的百分比值的位置
+        :param src_element: 开始的元素
+        :param dst_element: 结束的元素
+        :param src_start_x_percent: 相对元素宽度的百分比
+        :param src_start_y_percent: 相对元素高度的百分比
+        :param dst_end_x_percent: 相对元素宽度的百分比
+        :param dst_end_y_percent: 相对元素高度的百分比
+        :return:
+        """
+        if src_start_x_percent>=1:
+            src_start_x_percent=0.99
+        if src_start_y_percent>=1:
+            src_start_y_percent=0.99
+        if dst_end_x_percent>=1:
+            dst_end_x_percent=0.99
+        if dst_end_y_percent>=1:
+            dst_end_y_percent=0.99
+        src_web_element=self._change_element_to_webElement_type(src_element)
+        dst_web_element = self._change_element_to_webElement_type(dst_element)
+        if src_web_element and dst_web_element:
+            src_rect=src_web_element.rect
+            src_height = src_rect['height']
+            src_width = src_rect['width']
+            src_x = src_rect['x']
+            src_y = src_rect['y']
+            dst_rect=dst_web_element.rect
+            dst_height = dst_rect['height']
+            dst_width = dst_rect['width']
+            dst_x = dst_rect['x']
+            dst_y = dst_rect['y']
+            # 计算位置
+            start_x=src_x+src_width*src_start_x_percent
+            start_y=src_y+src_height*src_start_y_percent
+            end_x=dst_x+dst_width*dst_end_x_percent
+            end_y=dst_y+dst_height*dst_end_y_percent
+            self.driver.swipe(start_x=start_x, start_y=start_y, end_x=end_x, end_y=end_y, duration=duration)
+
+    def touch_a_element_move_to_another_element(self, src_element, dst_element, src_start_x_percent=0.5,
+                                                src_start_y_percent=0.5,
+                                                dst_end_x_percent=0.5, dst_end_y_percent=0.5, long_press=True,
+                                                duration=0):
+        """
+        通过一个元素宽度、高度的百分比值的位置点击移动到另一个元素宽度、高度的百分比值的位置
+        :param src_element: 开始的元素
+        :param dst_element: 结束的元素
+        :param src_start_x_percent: 相对元素宽度的百分比
+        :param src_start_y_percent: 相对元素高度的百分比
+        :param dst_end_x_percent: 相对元素宽度的百分比
+        :param dst_end_y_percent: 相对元素高度的百分比
+        :param long_press: 是否长按
+        :param duration: 耗时
+        :return:
+        """
+        if src_start_x_percent >= 1:
+            src_start_x_percent = 0.99
+        if src_start_y_percent >= 1:
+            src_start_y_percent = 0.99
+        if dst_end_x_percent >= 1:
+            dst_end_x_percent = 0.99
+        if dst_end_y_percent >= 1:
+            dst_end_y_percent = 0.99
+        src_web_element = self._change_element_to_webElement_type(src_element)
+        dst_web_element = self._change_element_to_webElement_type(dst_element)
+        if src_web_element and dst_web_element:
+            src_rect = src_web_element.rect
+            src_height = src_rect['height']
+            src_width = src_rect['width']
+            src_x = src_rect['x']
+            src_y = src_rect['y']
+            dst_rect = dst_web_element.rect
+            dst_height = dst_rect['height']
+            dst_width = dst_rect['width']
+            dst_x = dst_rect['x']
+            dst_y = dst_rect['y']
+            # 计算位置
+            start_x = src_x + src_width * src_start_x_percent
+            start_y = src_y + src_height * src_start_y_percent
+            end_x = dst_x + dst_width * dst_end_x_percent
+            end_y = dst_y + dst_height * dst_end_y_percent
+            self.touch_move_to(start_x, start_y, end_x, end_y, long_press, duration)
+
+    def touch_a_element_drag_to_another_element(self, src_element, dst_element, src_start_x_percent=0.5,
+                                                src_start_y_percent=0.5,
+                                                dst_end_x_percent=0.5, dst_end_y_percent=0.5, duration=0.5):
+        """
+        【仅适用IOS】通过一个元素宽度、高度的百分比值的位置点击拖拽到另一个元素宽度、高度的百分比值的位置
+        :param src_element: 开始的元素
+        :param dst_element: 结束的元素
+        :param src_start_x_percent: 相对元素宽度的百分比
+        :param src_start_y_percent: 相对元素高度的百分比
+        :param dst_end_x_percent: 相对元素宽度的百分比
+        :param dst_end_y_percent: 相对元素高度的百分比
+        :return:
+        """
+        if src_start_x_percent >= 1:
+            src_start_x_percent = 0.99
+        if src_start_y_percent >= 1:
+            src_start_y_percent = 0.99
+        if dst_end_x_percent >= 1:
+            dst_end_x_percent = 0.99
+        if dst_end_y_percent >= 1:
+            dst_end_y_percent = 0.99
+        src_web_element = self._change_element_to_webElement_type(src_element)
+        dst_web_element = self._change_element_to_webElement_type(dst_element)
+        if src_web_element and dst_web_element:
+            src_rect = src_web_element.rect
+            src_height = src_rect['height']
+            src_width = src_rect['width']
+            src_x = src_rect['x']
+            src_y = src_rect['y']
+            dst_rect = dst_web_element.rect
+            dst_height = dst_rect['height']
+            dst_width = dst_rect['width']
+            dst_x = dst_rect['x']
+            dst_y = dst_rect['y']
+            # 计算位置
+            start_x = src_x + src_width * src_start_x_percent
+            start_y = src_y + src_height * src_start_y_percent
+            end_x = dst_x + dst_width * dst_end_x_percent
+            end_y = dst_y + dst_height * dst_end_y_percent
+            self.driver.execute_script("mobile:dragFromToForDuration",
+                                        {"duration": duration, "element": None, "fromX": start_x, "fromY": start_y,
+                                         "toX": end_x, "toY": end_y})
+
+    def get_element_size_in_pixels(self,element):
+        """
+        返回元素的像素大小
+        :param element:
+        :return:
+        """
+        web_element=self._change_element_to_webElement_type(element)
+        if web_element:
+            return web_element.size
+
+    def get_all_contexts(self):
+        """
+        获得能够自动化测所有上下文(混合应用中的原生应用和web应用)
+        :return:
+        """
+        return self.driver.contexts
+
+    def get_current_context(self):
+        """
+        获得当前appium中正在运行的上下文(混合应用中的原生应用和web应用)
+        :return:
+        """
+        return self.driver.current_context
+
+    def switch_context(self,context_name):
+        """
+        切换上下文(混合应用中的原生应用和web应用)
+        :param context_name:
+        :return:
+        """
+        context={}
+        context.update({'name':context_name})
+        self.doRequest.post_with_form('/session/'+self.session_id+'/context',params=ujson.dumps(context))
+
+    def mouse_move_to(self,element,xoffset=None,yoffset=None):
+        """
+        移动鼠标到指定位置(仅适用于Windows、mac)
+        1、如果xoffset和yoffset都None,则鼠标移动到指定元素的正中间
+        2、如果element、xoffset和yoffset都不为None,则根据元素的左上角做x和y的偏移移动鼠标
+        :param element:
+        :param xoffset:
+        :param yoffset:
+        :return:
+        """
+        web_element=self._change_element_to_webElement_type(element)
+        if element:
+            actions = ActionChains(self.driver)
+            if xoffset and yoffset:
+                actions.move_to_element_with_offset(web_element,xoffset,yoffset)
+            actions.move_to_element(web_element)
+            actions.perform()
+
+    def mouse_click(self):
+        """
+        点击鼠标当前位置(仅适用于Windows、mac)
+        :return:
+        """
+        actions = ActionChains(self.driver)
+        actions.click()
+        actions.perform()
+
+    def mouse_double_click(self):
+        """
+        双击鼠标当前位置(仅适用于Windows、mac)
+        :return:
+        """
+        actions = ActionChains(self.driver)
+        actions.double_click()
+        actions.perform()
+
+    def mouse_click_and_hold(self):
+        """
+        长按鼠标(仅适用于Windows、mac)
+        :return:
+        """
+        actions = ActionChains(self.driver)
+        actions.click_and_hold()
+        actions.perform()
+
+    def mouse_release_click_and_hold(self):
+        """
+        停止鼠标长按(仅适用于Windows、mac)
+        :return:
+        """
+        actions = ActionChains(self.driver)
+        actions.release()
+        actions.perform()
+
+    def touch_move_to(self,start_x,start_y,end_x,end_y,long_press=True,duration=0):
+        """
+        点击从一个点移动到另外一个点
+        :param start_x:
+        :param start_y:
+        :param end_x:
+        :param end_y:
+        :param long_press: 是否长按
+        :param duration: 为0时不会出现惯性滑动
+        :return:
+        """
+        if long_press:
+            action = TouchAction(self.driver)
+            action.long_press(x=start_x,y=start_y,duration=duration).move_to(x=end_x,y=end_y).release().perform()
+        else:
+            actions = TouchAction(self.driver)
+            actions.press(x=start_x, y=start_y).wait(duration)
+            actions.move_to(x=end_x, y=end_y)
+            actions.perform()
+            
+    def tap(self,x:float,y:float,duration=None):
+        """点击坐标
+
+        Args:
+            x (float): 
+            y (float): 
+            duration ([type], optional): [description]. Defaults to None.
+        """
+        self.driver.tap([(x,y)],duration)
+
+    def touch_tap(self,element,xoffset=None,yoffset=None,count=1,is_perfrom=True):
+        """
+        触屏点击
+        1、如果xoffset和yoffset都None,则在指定元素的正中间进行点击
+        2、如果element、xoffset和yoffset都不为None,则根据元素的左上角做x和y的偏移然后进行点击
+        :param element:
+        :param xoffset:
+        :param yoffset:
+        :param count: 点击次数
+        :param is_perfrom 是否马上执行动作,不执行可以返回动作给多点触控执行
+        :return:
+        """
+        web_element=self._change_element_to_webElement_type(element)
+        if web_element:
+            actions=TouchAction(self.driver)
+            actions.tap(web_element,xoffset,yoffset,count)
+            if is_perfrom:
+                actions.perform()
+            return actions
+
+    def touch_long_press(self,element,xoffset=None,yoffset=None,duration_sconds=10,is_perfrom=True):
+        """
+        触屏长按
+        1、如果xoffset和yoffset都None,则在指定元素的正中间进行长按
+        2、如果element、xoffset和yoffset都不为None,则根据元素的左上角做x和y的偏移然后进行长按
+        :param element:
+        :param xoffset:
+        :param yoffset:
+        :param duration_sconds: 长按秒数
+        :param is_perfrom 是否马上执行动作,不执行可以返回动作给多点触控执行
+        :return:
+        """
+        web_element = self._change_element_to_webElement_type(element)
+        if web_element:
+            actions = TouchAction(self.driver)
+            actions.long_press(web_element,xoffset,yoffset,duration_sconds*1000)
+            if is_perfrom:
+                actions.perform()
+            return actions
+
+    def multi_touch_actions_perform(self,touch_actions):
+        """
+        多点触控执行
+        :param touch_actions:
+        :return:
+        """
+        multiActions=MultiAction(self.driver)
+        for actions in touch_actions:
+            multiActions.add(actions)
+        multiActions.perform()
+
+    def touch_slide(self,start_element=None,start_x=None, start_y=None, end_element=None,end_x=None, end_y=None, duration=None):
+        """
+        滑动屏幕,在指定时间内从一个位置滑动到另外一个位置
+        1、如果start_element不为None,则从元素的中间位置开始滑动
+        2、如果end_element不为None,滑动结束到元素的中间位置
+        :param start_element:
+        :param end_element:
+        :param start_x:
+        :param start_y:
+        :param end_x:
+        :param end_y:
+        :param duration: 毫秒
+        :return:
+        """
+        start_web_element=self._change_element_to_webElement_type(start_element)
+        end_web_element=self._change_element_to_webElement_type(end_element)
+        if start_web_element:
+            start_web_element_location=self.get_element_location(start_web_element)
+            start_x=start_web_element_location['x']
+            start_y=start_web_element_location['y']
+        if end_web_element:
+            end_web_element_location=self.get_element_location(end_web_element)
+            end_x=end_web_element_location['x']
+            end_y=end_web_element_location['y']
+        self.driver.swipe(start_x,start_y,end_x,end_y,duration)
+
+    def touch_left_slide(self,start_x_percent=0.5,start_y_percent=0.5,duration=500):
+        """
+        通过屏幕宽度、高度的百分比值的位置点击滑动到元素的左边缘
+        :param element:
+        :param start_x_percent: 相对屏幕宽度的百分比
+        :param start_y_percent: 相对屏幕高度的百分比
+        :return:
+        """
+        if start_x_percent>=1:
+            start_x_percent=0.99
+        if start_y_percent>=1:
+            start_y_percent=0.99
+        start_x=self.windows_size['width']*start_x_percent
+        start_y=self.windows_size['height']*start_y_percent
+        end_x=0
+        end_y=self.windows_size['height']*0.5
+        self.driver.swipe(start_x,start_y,end_x,end_y,duration)
+
+    def touch_right_slide(self,start_x_percent=0.5,start_y_percent=0.5,duration=500):
+        """
+        通过屏幕宽度、高度的百分比值的位置点击滑动到元素的右边缘
+        :param element:
+        :param start_x_percent: 相对屏幕宽度的百分比
+        :param start_y_percent: 相对屏幕高度的百分比
+        :return:
+        """
+        if start_x_percent>=1:
+            start_x_percent=0.99
+        if start_y_percent>=1:
+            start_y_percent=0.99
+        start_x=self.windows_size['width']*start_x_percent
+        start_y=self.windows_size['height']*start_y_percent
+        end_x=self.windows_size['width']*0.99
+        end_y=self.windows_size['height']*0.5
+        self.driver.swipe(start_x,start_y,end_x,end_y,duration)
+
+    def touch_up_slide(self,start_x_percent=0.5,start_y_percent=0.5,duration=500):
+        """
+        通过屏幕宽度、高度的百分比值的位置点击滑动到元素的上边缘
+        :param element:
+        :param start_x_percent: 相对屏幕宽度的百分比
+        :param start_y_percent: 相对屏幕高度的百分比
+        :return:
+        :return:
+        """
+        if start_x_percent>=1:
+            start_x_percent=0.99
+        if start_y_percent>=1:
+            start_y_percent=0.99
+        start_x=self.windows_size['width']*start_x_percent
+        start_y=self.windows_size['height']*start_y_percent
+        end_x=self.windows_size['width']*0.5
+        end_y=0
+        self.driver.swipe(start_x,start_y,end_x,end_y,duration)
+
+    def touch_down_slide(self,start_x_percent=0.5,start_y_percent=0.5,duration=500):
+        """
+        通过屏幕宽度、高度的百分比值的位置点击滑动到元素的下边缘
+        :param element:
+        :param start_x_percent: 相对屏幕宽度的百分比
+        :param start_y_percent: 相对屏幕高度的百分比
+        :return:
+        :return:
+        """
+        if start_x_percent>=1:
+            start_x_percent=0.99
+        if start_y_percent>=1:
+            start_y_percent=0.99
+        start_x=self.windows_size['width']*start_x_percent
+        start_y=self.windows_size['height']*start_y_percent
+        end_x=self.windows_size['width']*0.5
+        end_y=self.windows_size['height']*0.99
+        self.driver.swipe(start_x,start_y,end_x,end_y,duration)
+
+    def getElement(self,elementInfo):
+        """
+        定位单个元素
+        :param elementInfo:
+        :return:
+        """
+        web_element=None
+        locator_type=elementInfo.locator_type
+        locator_value=elementInfo.locator_value
+        wait_type = elementInfo.wait_type
+        wait_seconds = elementInfo.wait_seconds
+        wait_expected_value = elementInfo.wait_expected_value
+        if wait_expected_value:
+            wait_expected_value = wait_expected_value
+
+        # 查找元素,为了保证元素被定位,都进行显式等待
+        if wait_type == Wait_By.TITLE_IS:
+            web_element = WebDriverWait(self.driver, wait_seconds).until(expected_conditions.title_is(wait_expected_value))
+        elif wait_type == Wait_By.TITLE_CONTAINS:
+            web_element = WebDriverWait(self.driver, wait_seconds).until(expected_conditions.title_contains(wait_expected_value))
+        elif wait_type == Wait_By.PRESENCE_OF_ELEMENT_LOCATED:
+            web_element = WebDriverWait(self.driver, wait_seconds).until(expected_conditions.presence_of_element_located((locator_type, locator_value)))
+        elif wait_type == Wait_By.ELEMENT_TO_BE_CLICKABLE:
+            web_element = WebDriverWait(self.driver, wait_seconds).until(expected_conditions.element_to_be_clickable((locator_type, locator_value)))
+        elif wait_type == Wait_By.ELEMENT_LOCATED_TO_BE_SELECTED:
+            web_element = WebDriverWait(self.driver, wait_seconds).until(expected_conditions.element_located_to_be_selected((locator_type, locator_value)))
+        elif wait_type == Wait_By.VISIBILITY_OF:
+            web_elements = WebDriverWait(self.driver,wait_seconds).until((expected_conditions.visibility_of_all_elements_located((locator_type,locator_value))))
+            if len(web_elements)>0:
+                web_element=web_elements[0]
+        else:
+            if locator_type==By.ID:
+                web_element=WebDriverWait(self.driver,wait_seconds).until(lambda driver:driver.find_element_by_id(locator_value))
+            elif locator_type==By.NAME:
+                web_element=WebDriverWait(self.driver,wait_seconds).until(lambda driver:driver.find_element_by_name(locator_value))
+            elif locator_type==By.LINK_TEXT:
+                web_element=WebDriverWait(self.driver,wait_seconds).until(lambda driver:driver.find_element_by_link_text(locator_value))
+            elif locator_type==By.XPATH:
+                web_element=WebDriverWait(self.driver,wait_seconds).until(lambda driver:driver.find_element_by_xpath(locator_value))
+            elif locator_type==By.PARTIAL_LINK_TEXT:
+                web_element=WebDriverWait(self.driver,wait_seconds).until(lambda driver:driver.find_element_by_partial_link_text(locator_value))
+            elif locator_type==By.CSS_SELECTOR:
+                web_element=WebDriverWait(self.driver,wait_seconds).until(lambda driver:driver.find_element_by_css_selector(locator_value))
+            elif locator_type==By.CLASS_NAME:
+                web_element = WebDriverWait(self.driver,wait_seconds).until(lambda driver:driver.find_element_by_class_name(locator_value))
+            elif locator_type==By.TAG_NAME:
+                web_element = WebDriverWait(self.driver,wait_seconds).until(lambda driver:driver.find_element_by_tag_name(locator_value))
+            elif locator_type==AppiumBy.ACCESSIBILITY_ID:
+                web_element = WebDriverWait(self.driver,wait_seconds).until(lambda driver:driver.find_element_by_accessibility_id(locator_value))
+            elif locator_type==AppiumBy.IMAGE:
+                web_element = WebDriverWait(self.driver,wait_seconds).until(lambda driver:driver.find_element_by_image(locator_value))
+            elif locator_type==AppiumBy.ANDROID_UIAUTOMATOR:
+                web_element = WebDriverWait(self.driver,wait_seconds).until(lambda driver:driver.find_element_by_android_uiautomator(locator_value))
+            elif locator_type==AppiumBy.ANDROID_DATA_MATCHER:
+                web_element = WebDriverWait(self.driver,wait_seconds).until(lambda driver:driver.find_element_by_android_data_matcher(locator_value))
+            elif locator_type==AppiumBy.ANDROID_VIEWTAG:
+                web_element = WebDriverWait(self.driver,wait_seconds).until(lambda driver:driver.find_element_by_android_viewtag(locator_value))
+            elif locator_type==AppiumBy.IOS_UIAUTOMATION:
+                web_element = WebDriverWait(self.driver, wait_seconds).until(lambda driver: driver.find_element_by_ios_uiautomation(locator_value))
+            elif locator_type==AppiumBy.IOS_CLASS_CHAIN:
+                web_element = WebDriverWait(self.driver, wait_seconds).until(lambda driver: driver.find_element_by_ios_class_chain(locator_value))
+            elif locator_type==AppiumBy.IOS_PREDICATE:
+                web_element = WebDriverWait(self.driver, wait_seconds).until(lambda driver: driver.find_element_by_ios_predicate(locator_value))
+        return web_element
+
+    def getElements(self,elementInfo):
+        """
+        定位多个元素
+        :param elementInfo:
+        :return:
+        """
+        web_elements=None
+        locator_type=elementInfo.locator_type
+        locator_value=elementInfo.locator_value
+        wait_type = elementInfo.wait_type
+        wait_seconds = elementInfo.wait_seconds
+
+        # 查找元素,为了保证元素被定位,都进行显式等待
+        if wait_type == Wait_By.PRESENCE_OF_ELEMENT_LOCATED:
+            web_elements = WebDriverWait(self.driver, wait_seconds).until(expected_conditions.presence_of_all_elements_located((locator_type, locator_value)))
+        elif wait_type == Wait_By.VISIBILITY_OF:
+            web_elements = WebDriverWait(self.driver, wait_seconds).until(expected_conditions.visibility_of_all_elements_located((locator_type,locator_value)))
+        else:
+            if locator_type==By.ID:
+                web_elements=WebDriverWait(self.driver,wait_seconds).until(lambda driver:driver.find_elements_by_id(locator_value))
+            elif locator_type==By.NAME:
+                web_elements=WebDriverWait(self.driver,wait_seconds).until(lambda driver:driver.find_elements_by_name(locator_value))
+            elif locator_type==By.LINK_TEXT:
+                web_elements=WebDriverWait(self.driver,wait_seconds).until(lambda driver:driver.find_elements_by_link_text(locator_value))
+            elif locator_type==By.XPATH:
+                web_elements=WebDriverWait(self.driver,wait_seconds).until(lambda driver:driver.find_elements_by_xpath(locator_value))
+            elif locator_type==By.PARTIAL_LINK_TEXT:
+                web_elements=WebDriverWait(self.driver,wait_seconds).until(lambda driver:driver.find_elements_by_partial_link_text(locator_value))
+            elif locator_type==By.CSS_SELECTOR:
+                web_elements=WebDriverWait(self.driver,wait_seconds).until(lambda driver:driver.find_elements_by_css_selector(locator_value))
+            elif locator_type==By.CLASS_NAME:
+                web_elements = WebDriverWait(self.driver,wait_seconds).until(lambda driver:driver.find_elements_by_class_name(locator_value))
+            elif locator_type==By.TAG_NAME:
+                web_elements = WebDriverWait(self.driver,wait_seconds).until(lambda driver:driver.find_elements_by_tag_name(locator_value))
+            elif locator_type==AppiumBy.ACCESSIBILITY_ID:
+                web_elements = WebDriverWait(self.driver,wait_seconds).until(lambda driver:driver.find_elements_by_accessibility_id(locator_value))
+            elif locator_type==AppiumBy.IMAGE:
+                web_elements = WebDriverWait(self.driver,wait_seconds).until(lambda driver:driver.find_elements_by_image(locator_value))
+            elif locator_type==AppiumBy.ANDROID_UIAUTOMATOR:
+                web_elements = WebDriverWait(self.driver,wait_seconds).until(lambda driver:driver.find_elements_by_android_uiautomator(locator_value))
+            elif locator_type==AppiumBy.ANDROID_DATA_MATCHER:
+                web_elements = WebDriverWait(self.driver,wait_seconds).until(lambda driver:driver.find_elements_by_android_data_matcher(locator_value))
+            elif locator_type==AppiumBy.ANDROID_VIEWTAG:
+                web_elements = WebDriverWait(self.driver,wait_seconds).until(lambda driver:driver.find_elements_by_android_viewtag(locator_value))
+            elif locator_type==AppiumBy.IOS_UIAUTOMATION:
+                web_elements = WebDriverWait(self.driver, wait_seconds).until(lambda driver: driver.find_elements_by_ios_uiautomation(locator_value))
+            elif locator_type==AppiumBy.IOS_CLASS_CHAIN:
+                web_elements = WebDriverWait(self.driver, wait_seconds).until(lambda driver: driver.find_elements_by_ios_class_chain(locator_value))
+            elif locator_type==AppiumBy.IOS_PREDICATE:
+                web_elements = WebDriverWait(self.driver, wait_seconds).until(lambda driver: driver.find_elements_by_ios_predicate(locator_value))
+        return web_elements
+
+    def getSubElement(self,parent_element,sub_elementInfo):
+        """
+        获得元素的单个子元素
+        :param parent_element: 父元素
+        :param sub_elementInfo: 子元素,只能提供pojo.elementInfo.ElementInfo类型
+        :return:
+        """
+        web_element=self._change_element_to_webElement_type(parent_element)
+        if not web_element:
+            return None
+        if not isinstance(sub_elementInfo,Element_Info):
+            return None
+
+        # 通过父元素查找子元素
+        locator_type=sub_elementInfo.locator_type
+        locator_value=sub_elementInfo.locator_value
+        wait_seconds = sub_elementInfo.wait_seconds
+
+        # 查找元素,为了保证元素被定位,都进行显式等待
+        if locator_type == By.ID:
+            sub_web_element =WebDriverWait(web_element,wait_seconds).until(lambda web_element:web_element.find_element_by_id(locator_value))
+        elif locator_type == By.NAME:
+            sub_web_element = WebDriverWait(web_element,wait_seconds).until(lambda web_element:web_element.find_element_by_name(locator_value))
+        elif locator_type == By.LINK_TEXT:
+            sub_web_element = WebDriverWait(web_element,wait_seconds).until(lambda web_element:web_element.find_element_by_link_text(locator_value))
+        elif locator_type == By.XPATH:
+            sub_web_element = WebDriverWait(web_element,wait_seconds).until(lambda web_element:web_element.find_element_by_xpath(locator_value))
+        elif locator_type == By.PARTIAL_LINK_TEXT:
+            sub_web_element = WebDriverWait(web_element,wait_seconds).until(lambda web_element:web_element.find_element_by_partial_link_text(locator_value))
+        elif locator_type == By.CSS_SELECTOR:
+            sub_web_element = WebDriverWait(web_element,wait_seconds).until(lambda web_element:web_element.find_element_by_css_selector(locator_value))
+        elif locator_type == By.CLASS_NAME:
+            sub_web_element = WebDriverWait(web_element,wait_seconds).until(lambda web_element:web_element.find_element_by_class_name(locator_value))
+        elif locator_type == By.TAG_NAME:
+            sub_web_element = WebDriverWait(web_element,wait_seconds).until(lambda web_element:web_element.find_element_by_tag_name(locator_value))
+        elif locator_type == AppiumBy.ACCESSIBILITY_ID:
+            sub_web_element = WebDriverWait(web_element, wait_seconds).until(lambda web_element: web_element.find_element_by_accessibility_id(locator_value))
+        elif locator_type == AppiumBy.IMAGE:
+            sub_web_element = WebDriverWait(web_element, wait_seconds).until(lambda web_element: web_element.find_element_by_image(locator_value))
+        elif locator_type == AppiumBy.ANDROID_UIAUTOMATOR:
+            sub_web_element = WebDriverWait(web_element, wait_seconds).until(lambda web_element: web_element.find_element_by_android_uiautomator(locator_value))
+        elif locator_type == AppiumBy.ANDROID_DATA_MATCHER:
+            sub_web_element = WebDriverWait(web_element, wait_seconds).until(lambda web_element: web_element.find_element_by_android_data_matcher(locator_value))
+        elif locator_type == AppiumBy.ANDROID_VIEWTAG:
+            sub_web_element = WebDriverWait(web_element, wait_seconds).until(lambda web_element: web_element.find_element_by_android_viewtag(locator_value))
+        elif locator_type == AppiumBy.IOS_UIAUTOMATION:
+            sub_web_element = WebDriverWait(web_element, wait_seconds).until(lambda web_element: web_element.find_element_by_ios_uiautomation(locator_value))
+        elif locator_type == AppiumBy.IOS_CLASS_CHAIN:
+            sub_web_element = WebDriverWait(web_element, wait_seconds).until(lambda web_element: web_element.find_element_by_ios_class_chain(locator_value))
+        elif locator_type == AppiumBy.IOS_PREDICATE:
+            sub_web_element = WebDriverWait(web_element, wait_seconds).until(lambda web_element: web_element.find_element_by_ios_predicate(locator_value))
+        else:
+            return None
+        return sub_web_element
+
+    def getSubElements(self, parent_element, sub_elementInfo):
+        """
+        获得元素的多个子元素
+        :param parent_element: 父元素
+        :param sub_elementInfo: 子元素,只能提供pojo.elementInfo.ElementInfo类型
+        :return:
+        """
+        web_element=self._change_element_to_webElement_type(parent_element)
+        if not web_element:
+            return None
+        if not isinstance(sub_elementInfo,Element_Info):
+            return None
+
+        # 通过父元素查找多个子元素
+        locator_type = sub_elementInfo.locator_type
+        locator_value = sub_elementInfo.locator_value
+        wait_seconds = sub_elementInfo.wait_seconds
+
+        # 查找元素,为了保证元素被定位,都进行显式等待
+        if locator_type == By.ID:
+            sub_web_elements =WebDriverWait(web_element,wait_seconds).until(lambda web_element:web_element.find_elements_by_id(locator_value))
+        elif locator_type == By.NAME:
+            sub_web_elements = WebDriverWait(web_element,wait_seconds).until(lambda web_element:web_element.find_elements_by_name(locator_value))
+        elif locator_type == By.LINK_TEXT:
+            sub_web_elements = WebDriverWait(web_element,wait_seconds).until(lambda web_element:web_element.find_elements_by_link_text(locator_value))
+        elif locator_type == By.XPATH:
+            sub_web_elements = WebDriverWait(web_element,wait_seconds).until(lambda web_element:web_element.find_elements_by_xpath(locator_value))
+        elif locator_type == By.PARTIAL_LINK_TEXT:
+            sub_web_elements = WebDriverWait(web_element,wait_seconds).until(lambda web_element:web_element.find_elements_by_partial_link_text(locator_value))
+        elif locator_type == By.CSS_SELECTOR:
+            sub_web_elements = WebDriverWait(web_element,wait_seconds).until(lambda web_element:web_element.find_elements_by_css_selector(locator_value))
+        elif locator_type == By.CLASS_NAME:
+            sub_web_elements = WebDriverWait(web_element,wait_seconds).until(lambda web_element:web_element.find_elements_by_class_name(locator_value))
+        elif locator_type == By.TAG_NAME:
+            sub_web_elements = WebDriverWait(web_element,wait_seconds).until(lambda web_element:web_element.find_elements_by_tag_name(locator_value))
+        elif locator_type == AppiumBy.ACCESSIBILITY_ID:
+            sub_web_elements = WebDriverWait(web_element, wait_seconds).until(lambda web_element: web_element.find_elements_by_accessibility_id(locator_value))
+        elif locator_type == AppiumBy.IMAGE:
+            sub_web_elements = WebDriverWait(web_element, wait_seconds).until(lambda web_element: web_element.find_elements_by_image(locator_type))
+        elif locator_type == AppiumBy.ANDROID_UIAUTOMATOR:
+            sub_web_elements = WebDriverWait(web_element, wait_seconds).until(lambda web_element: web_element.find_elements_by_android_uiautomator(locator_value))
+        elif locator_type == AppiumBy.ANDROID_DATA_MATCHER:
+            sub_web_elements = WebDriverWait(web_element, wait_seconds).until(lambda web_element: web_element.find_elements_by_android_data_matcher(locator_value))
+        elif locator_type == AppiumBy.ANDROID_VIEWTAG:
+            sub_web_elements = WebDriverWait(web_element, wait_seconds).until(lambda web_element: web_element.find_elements_by_android_viewtag(locator_value))
+        elif locator_type == AppiumBy.IOS_UIAUTOMATION:
+            sub_web_elements = WebDriverWait(web_element, wait_seconds).until(lambda web_element: web_element.find_elements_by_ios_uiautomation(locator_value))
+        elif locator_type == AppiumBy.IOS_CLASS_CHAIN:
+            sub_web_elements = WebDriverWait(web_element, wait_seconds).until(lambda web_element: web_element.find_elements_by_ios_class_chain(locator_value))
+        elif locator_type == AppiumBy.IOS_PREDICATE:
+            sub_web_elements = WebDriverWait(web_element, wait_seconds).until(lambda web_element: web_element.find_elements_by_ios_predicate(locator_value))
+        else:
+            return None
+        return sub_web_elements
+
+    def explicit_wait_page_title(self,elementInfo):
+        """
+        仅适用于web
+        显式等待页面title
+        :param elementInfo:
+        :return:
+        """
+        self.getElement(elementInfo)
+
+    def getDriver(self):
+        return self.driver

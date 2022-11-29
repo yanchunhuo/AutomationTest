@@ -4,7 +4,7 @@
 from base.app_ui.android.demoProject.app_ui_android_demoProject_read_config import APP_UI_Android_DemoProject_Read_Config
 from appium import webdriver
 from base.read_app_ui_config import Read_APP_UI_Config
-from common.appium.appOperator import AppOperator
+from common.appium.app_operator import App_Operator
 from common.fileTool import FileTool
 from common.httpclient.doRequest import DoRequest
 from init.app_ui.android.demoProject.demoProjectInit import DemoProjectInit
@@ -31,12 +31,13 @@ class APP_UI_Android_demoProject_Client(object):
             self._init(self.demoProject_config.init)
             self._delete_last_device_session(self.device_info['device_desc'])
             self.driver = webdriver.Remote(self._appium_hub, desired_capabilities=self.current_desired_capabilities)
+            self.driver.find_element()
             self._save_last_device_session(self.driver.session_id, self.device_info['device_desc'])
-            self.appOperator = AppOperator(self.driver,self._appium_hub)
+            self.app_operator = App_Operator(self.driver,self._appium_hub)
 
             self.__inited=True
         if is_need_reset_app:
-            self.appOperator.reset_app()
+            self.app_operator.reset_app()
 
     def _init(self,is_init=False):
         print('初始化android基础数据......')

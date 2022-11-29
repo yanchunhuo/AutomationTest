@@ -4,7 +4,7 @@
 # @description 
 # @github https://github.com/yanchunhuo
 # @created 2018-01-19T13:47:34.673Z+08:00
-# @last-modified 2022-11-23T11:38:53.513Z+08:00
+# @last-modified 2022-11-29T13:26:13.148Z+08:00
 #
 
 from base.read_web_ui_config import Read_WEB_UI_Config
@@ -279,7 +279,7 @@ class Browser_Operator:
     def refresh(self)->None:
         self.driver.refresh()
 
-    def uploadFile(self,element:Union[Element_Info,WebElement],filePath:str,highlight_seconds:float=5)->None:
+    def upload_file(self,element:Union[Element_Info,WebElement],filePath:str,highlight_seconds:float=5)->None:
         """适用于元素为input且type="file"的文件上传
 
         Args:
@@ -310,7 +310,7 @@ class Browser_Operator:
     def get_page_source(self)->str:
         return self.driver.page_source
 
-    def get_element_rgb(self,element:Union[Element_Info,WebElement],x_percent:float=0,y_percent:float=0):
+    def get_element_rgb(self,element:Union[Element_Info,WebElement],x_percent:float=0,y_percent:float=0)->list:
         """获得元素上的像素的rgb值,默认返回元素左上角坐标轴
 
         Args:
@@ -390,12 +390,12 @@ class Browser_Operator:
         else:
             return None
         table_data = []
-        table_trs = web_element.find_elements_by_tag_name('tr')
+        table_trs = web_element.find_elements(By.TAG_NAME,'tr')
         try:
             # 为防止表格内的内容变化导致无法获取内容,进行异常捕获
             for tr in table_trs:
                 tr_data=[]
-                tr_tds = tr.find_elements_by_tag_name('td')
+                tr_tds = tr.find_elements(By.TAG_NAME,'td')
                 if data_type.lower()=='text':
                     for td in tr_tds:
                         tr_data.append(td.text)
