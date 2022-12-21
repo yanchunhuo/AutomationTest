@@ -4,7 +4,7 @@
 # @description 
 # @github https://github.com/yanchunhuo
 # @created 2018-01-19T13:47:34.673Z+08:00
-# @last-modified 2022-11-29T13:26:13.148Z+08:00
+# @last-modified 2022-12-21T15:28:05.348Z+08:00
 #
 
 from base.read_web_ui_config import Read_WEB_UI_Config
@@ -511,7 +511,7 @@ class Browser_Operator:
         elif wait_type == Wait_By.VISIBILITY_OF_ELEMENT_LOCATED:
             web_element = WebDriverWait(self.driver,wait_seconds).until(expected_conditions.visibility_of_element_located((locator_type,locator_value)))
         else:
-            # 常规定位方式
+        # 常规定位方式
             web_element=WebDriverWait(self.driver,wait_seconds).until(lambda driver:driver.find_element(locator_type,locator_value))
         if isinstance(web_element,WebElement):
             self.highLight(web_element,highlight_seconds)
@@ -565,7 +565,7 @@ class Browser_Operator:
         elif wait_type == Wait_By.VISIBILITY_OF_ALL_ELEMENTS_LOCATED:
             web_elements = WebDriverWait(self.driver, wait_seconds).until(expected_conditions.visibility_of_all_elements_located((locator_type,locator_value)))
         else:
-            # 常规定位方式
+        # 常规定位方式
             web_elements=WebDriverWait(self.driver,wait_seconds).until(lambda driver:driver.find_elements(locator_type,locator_value))
         for web_element in web_elements:
             if isinstance(web_element,WebElement):
@@ -583,11 +583,8 @@ class Browser_Operator:
         Returns:
             WebElement: _description_
         """
-        if isinstance(parent_element,Element_Info):
-            web_element=self.get_element(parent_element)
-        elif isinstance(parent_element,WebElement):
-            web_element=parent_element
-        else:
+        web_element=self._change_element_to_web_element_type(parent_element)
+        if not web_element:
             return None
         if not isinstance(sub_element,Element_Info):
             return None
@@ -613,11 +610,8 @@ class Browser_Operator:
         Returns:
             List[WebElement]: _description_
         """
-        if isinstance(parent_element,Element_Info):
-            web_element=self.get_element(parent_element)
-        elif isinstance(parent_element,WebElement):
-            web_element=parent_element
-        else:
+        web_element=self._change_element_to_web_element_type(parent_element)
+        if not web_element:
             return None
         if not isinstance(sub_element,Element_Info):
             return None

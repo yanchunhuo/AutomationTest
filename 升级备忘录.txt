@@ -33,6 +33,7 @@
 25、修改page_objects/createElement.py修改为page_objects/create_element.py
 26、修改run_web_ui_test.py的清除driver的session方法；修改status获取方式
 27、修改config/web_ui_config.conf内容
+28、修改common/appium/app_operator.py为common/appium/app_operator.py，同时修改文件内容
 
 
 
