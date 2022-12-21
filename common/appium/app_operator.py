@@ -4,7 +4,7 @@
 # @description 
 # @github https://github.com/yanchunhuo
 # @created 2018-01-19T13:47:34.201Z+08:00
-# @last-modified 2022-12-21T16:13:26.632Z+08:00
+# @last-modified 2022-12-21T18:06:06.044Z+08:00
 #
 
 from appium.webdriver.common.appiumby import AppiumBy
@@ -254,7 +254,8 @@ class App_Operator:
     
     def scroll_to_show(self,element:Union[Element_Info,WebElement],is_top_align:bool=True)->None:
         """仅适用于web,滚动页面直至元素可见
-
+        https://appium.io/docs/en/commands/web/execute/index.html
+        
         Args:
             element (Union[Element_Info,WebElement]): _description_
             is_top_align (bool, optional): 是否元素与窗口顶部对齐，否则与窗口底部对齐. Defaults to True.
@@ -426,7 +427,8 @@ class App_Operator:
 
         Args:
             platform_name (str): android、ios
-            action_type (str, optional): accept、dismiss. Defaults to 'accept'.
+            action_type (str, optional): accept、dismiss、getButtons. Defaults to 'accept'.
+                                            getButtons只支持ios，返回所有按钮名
             button_label (str, optional): _description_. Defaults to None.
         """
         if action_type:
@@ -439,6 +441,7 @@ class App_Operator:
             script_arg.update({'buttonLabel': button_label})
         if platform_name=='android':
             # 仅支持UiAutomator2
+            #  该方法不是百分百可靠，https://github.com/appium/appium-uiautomator2-driver#platform-specific-extensions
             if action_type == 'accept':
                 script = 'mobile:acceptAlert'
             elif action_type == 'dismiss':
@@ -473,7 +476,7 @@ class App_Operator:
                     return True
                 except:
                     return False
-            elif 'espresso' == platform_name.lower():
+            elif 'espresso' == automation_name.lower():
                 script_arg = {'text': text}
                 if is_regexp:
                     script_arg.update({'isRegexp': True})
@@ -532,8 +535,8 @@ class App_Operator:
         """
         return self.driver.current_package
 
-    def execute_javascript(self,script:str)->None:
-        self.driver.execute_script(script)
+    def execute_javascript(self,script:str,*args)->None:
+        self.driver.execute_script(script,*args)
 
     def install_app(self,file_path:str)->None:
         self.driver.install_app(os.path.abspath(file_path))
@@ -1039,7 +1042,7 @@ class App_Operator:
             end_x = dst_x + dst_width * dst_end_x_percent
             end_y = dst_y + dst_height * dst_end_y_percent
             self.driver.execute_script("mobile:dragFromToForDuration",
-                                        {"duration": duration, "element": None, "fromX": start_x, "fromY": start_y,
+                                        {"duration": duration, "elementId": None, "fromX": start_x, "fromY": start_y,
                                          "toX": end_x, "toY": end_y})
 
     def get_element_size_in_pixels(self,element:Union[Element_Info,WebElement])->dict:
