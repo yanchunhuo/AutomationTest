@@ -460,7 +460,7 @@ class AppOperator:
                     return True
                 except:
                     return False
-            elif 'espresso' == platformName.lower():
+            elif 'espresso' == automationName.lower():
                 script_arg = {'text': text}
                 if isRegexp:
                     script_arg.update({'isRegexp': True})
