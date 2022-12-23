@@ -34,10 +34,16 @@
 26、修改run_web_ui_test.py的清除driver的session方法；修改status获取方式
 27、修改config/web_ui_config.conf内容
 28、修改common/appium/app_operator.py为common/appium/app_operator.py，同时修改文件内容
+29、修改base\app_ui\android\demoProject\app_ui_android_demoProject_client.py文件，webdriver.Remote使用options替代capability
 
 
 
-c:\users\john\appdata\roaming\python\python38\site-packages
+【框架升级，待处理】
+1、appium的reset将废弃
+2、c:\users\john\appdata\roaming\python\python38\site-packages 环境路径配置？
+3、获得鸿蒙系统的Android版本：adb shell getprop ro.build.version.release
+4、appium的capability：https://appium.io/docs/en/writing-running-appium/caps/
+5、appium如何在结束后清理session，保证下次创建session能够正常成功，https://appium.io/docs/en/commands/session/delete/index.html
 
 
 【项目业务升级】

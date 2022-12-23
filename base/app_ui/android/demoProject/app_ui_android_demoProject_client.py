@@ -1,8 +1,15 @@
-# -*- coding:utf-8 -*-
-# 作者 yanchunhuo
-# 创建时间 2018/01/19 22:36
-from base.app_ui.android.demoProject.app_ui_android_demoProject_read_config import APP_UI_Android_DemoProject_Read_Config
+#
+# app_ui_android_demoProject_client.py
+# @author yanchunhuo
+# @description 
+# @github https://github.com/yanchunhuo
+# @created 2022-11-07T13:47:34.050Z+08:00
+# @last-modified 2022-12-23T13:19:54.695Z+08:00
+#
+
 from appium import webdriver
+from appium.options.common.base import AppiumOptions
+from base.app_ui.android.demoProject.app_ui_android_demoProject_read_config import APP_UI_Android_DemoProject_Read_Config
 from base.read_app_ui_config import Read_APP_UI_Config
 from common.appium.app_operator import App_Operator
 from common.fileTool import FileTool
@@ -30,8 +37,10 @@ class APP_UI_Android_demoProject_Client(object):
             self._appium_hub='http://'+self.device_info['server_ip']+':%s/wd/hub'%self.device_info['server_port']
             self._init(self.demoProject_config.init)
             self._delete_last_device_session(self.device_info['device_desc'])
-            self.driver = webdriver.Remote(self._appium_hub, desired_capabilities=self.current_desired_capabilities)
-            self.driver.find_element()
+            appiumOptions=AppiumOptions()
+            for key in self.current_desired_capabilities.keys():
+                appiumOptions.set_capability(key,self.current_desired_capabilities[key])
+            self.driver = webdriver.Remote(self._appium_hub,options=appiumOptions)
             self._save_last_device_session(self.driver.session_id, self.device_info['device_desc'])
             self.app_operator = App_Operator(self.driver,self._appium_hub)
 
