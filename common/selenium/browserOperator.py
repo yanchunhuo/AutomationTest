@@ -204,7 +204,7 @@ class BrowserOperator:
     def page_forward(self):
         self._driver.forward()
 
-    def pag_back(self):
+    def page_back(self):
         self._driver.back()
 
     def web_alert(self, action_type='accept'):

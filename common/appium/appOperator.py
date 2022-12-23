@@ -219,7 +219,7 @@ class AppOperator:
         """
         self._driver.forward()
 
-    def pag_back(self):
+    def page_back(self):
         """
         仅适用于web
         :return:
