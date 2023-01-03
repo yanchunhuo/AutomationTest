@@ -4,7 +4,7 @@
 # @description 
 # @github https://github.com/yanchunhuo
 # @created 2018-01-19T13:47:34.201Z+08:00
-# @last-modified 2022-12-21T18:06:06.044Z+08:00
+# @last-modified 2022-12-23T17:11:33.506Z+08:00
 #
 
 from appium.webdriver.common.appiumby import AppiumBy
@@ -17,7 +17,6 @@ from common.httpclient.doRequest import DoRequest
 from page_objects.create_element import Create_Element
 from page_objects.wait_type import Wait_Type as Wait_By
 from page_objects.element_info import Element_Info
-from PIL import Image
 from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.wait import WebDriverWait
@@ -224,7 +223,7 @@ class App_Operator:
         """
         self.driver.forward()
 
-    def pag_back(self)->None:
+    def page_back(self)->None:
         """仅适用于web
         """
         self.driver.back()
@@ -1338,26 +1337,26 @@ class App_Operator:
         relative_type = element.relative_type
 
         # 查找元素,为了保证元素被定位,都进行显式等待,部分返回并非是WebElement对象
-        # 相对位置定位方式
-        if relative_element and relative_type:
-            tmp_element=element
-            tmp_element.relative_element=None
-            tmp_element.relative_type=None
-            tmp_web_element=self.get_element(tmp_element)
-            if relative_type == 'above':
-                relative_locattor=locate_with(relative_element.locator_type,relative_element.locator_value).above(tmp_web_element)
-            elif relative_type == 'below':
-                relative_locattor=locate_with(relative_element.locator_type,relative_element.locator_value).below(tmp_web_element)
-            elif relative_type == 'to_left_of':
-                relative_locattor=locate_with(relative_element.locator_type,relative_element.locator_value).to_left_of(tmp_web_element)
-            elif relative_type == 'to_right_of':
-                relative_locattor=locate_with(relative_element.locator_type,relative_element.locator_value).to_right_of(tmp_web_element)
-            elif relative_type == 'near':
-                relative_locattor=locate_with(relative_element.locator_type,relative_element.locator_value).near(tmp_web_element)
-            else:
-                relative_locattor={}
-            web_element=self.driver.find_element(relative_locattor)
-            return web_element
+        # 相对位置定位方式【appium暂不支持】
+        # if relative_element and relative_type:
+        #     tmp_element=element
+        #     tmp_element.relative_element=None
+        #     tmp_element.relative_type=None
+        #     tmp_web_element=self.get_element(tmp_element)
+        #     if relative_type == 'above':
+        #         relative_locattor=locate_with(relative_element.locator_type,relative_element.locator_value).above(tmp_web_element)
+        #     elif relative_type == 'below':
+        #         relative_locattor=locate_with(relative_element.locator_type,relative_element.locator_value).below(tmp_web_element)
+        #     elif relative_type == 'to_left_of':
+        #         relative_locattor=locate_with(relative_element.locator_type,relative_element.locator_value).to_left_of(tmp_web_element)
+        #     elif relative_type == 'to_right_of':
+        #         relative_locattor=locate_with(relative_element.locator_type,relative_element.locator_value).to_right_of(tmp_web_element)
+        #     elif relative_type == 'near':
+        #         relative_locattor=locate_with(relative_element.locator_type,relative_element.locator_value).near(tmp_web_element)
+        #     else:
+        #         relative_locattor={}
+        #     web_element=self.driver.find_element(relative_locattor)
+        #     return web_element
         # 状态定位方式
         if wait_type == Wait_By.ALERT_IS_PRESENT:
             web_element = WebDriverWait(self.driver,wait_seconds).until(expected_conditions.alert_is_present())

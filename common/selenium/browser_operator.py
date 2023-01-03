@@ -4,7 +4,7 @@
 # @description 
 # @github https://github.com/yanchunhuo
 # @created 2018-01-19T13:47:34.673Z+08:00
-# @last-modified 2022-12-21T15:28:05.348Z+08:00
+# @last-modified 2022-12-23T17:36:02.804Z+08:00
 #
 
 from base.read_web_ui_config import Read_WEB_UI_Config
@@ -247,7 +247,7 @@ class Browser_Operator:
     def page_forward(self)->None:
         self.driver.forward()
 
-    def pag_back(self)->None:
+    def page_back(self)->None:
         self.driver.back()
 
     def web_alert(self, action_type:str='accept')->None:
@@ -308,6 +308,11 @@ class Browser_Operator:
         return self.get_attribute(element,'innerHTML')
 
     def get_page_source(self)->str:
+        """由于Android和IOS没有标准的XML层级，appium在获取XML时是创建一个XML文档，所以该方法较为耗时
+
+        Returns:
+            str: _description_
+        """
         return self.driver.page_source
 
     def get_element_rgb(self,element:Union[Element_Info,WebElement],x_percent:float=0,y_percent:float=0)->list:
