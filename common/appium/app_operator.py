@@ -4,7 +4,7 @@
 # @description 
 # @github https://github.com/yanchunhuo
 # @created 2018-01-19T13:47:34.201Z+08:00
-# @last-modified 2022-12-23T17:11:33.506Z+08:00
+# @last-modified 2023-01-03T18:15:55.862Z+08:00
 #
 
 from appium.webdriver.common.appiumby import AppiumBy
@@ -490,8 +490,7 @@ class App_Operator:
         Returns:
             dict: _description_
         """
-        httpResponseResult=self.doRequest.get('/session/'+self.session_id+'/location')
-        return ujson.loads(httpResponseResult.body)
+        return self.driver.location
 
     def set_geolocation(self,latitude:float,longitude:float,altitude:float)->None:
         """设置定位信息
@@ -501,13 +500,23 @@ class App_Operator:
             longitude (float): 经度 ~180 ~ 180
             altitude (float): 高度
         """
-        geolocation={}
-        location={}
-        location.update({'latitude':latitude})
-        location.update({'longitude':longitude})
-        location.update({'altitude':altitude})
-        geolocation.update({'location':location})
-        self.doRequest.post_with_form('/session/'+self.session_id+'/location',params=ujson.dumps(geolocation))
+        self.driver.set_location(latitude,longitude,altitude)
+        
+    def get_orientation(self)->str:
+        """获得当前设备或者浏览器的方向
+
+        Returns:
+            str: _description_
+        """
+        return self.driver.orientation
+    
+    def set_orientation(self,orientation:str)->None:
+        """_summary_
+
+        Args:
+            orientation (str): LANDSCAPE、PORTRAIT
+        """
+        self.driver.orientation=orientation
 
     def start_activity(self,package_name:str,activity_name:str)->None:
         """启动Android的activity
@@ -616,6 +625,12 @@ class App_Operator:
             label (str): 仅支持Android. Defaults to None.
         """
         self.driver.set_clipboard(content,content_type,label)
+        
+    def get_log_types(self)->list:
+        return self.driver.log_types
+    
+    def get_log(self,log_type:str)->str:
+        return self.driver.get_log(log_type)
 
     def push_file_to_device(self,device_filePath:str,local_filePath:str)->None:
         """上传文件设备
@@ -772,6 +787,22 @@ class App_Operator:
             result_x=x+width/2
             result_y=y+height/2
             return {'x':result_x,'y':result_y}
+    
+    def get_settings(self)->dict:
+        """获得设备的设置
+
+        Returns:
+            dict: _description_
+        """
+        self.driver.get_settings()
+        
+    def update_settings(self,settings:dict)->None:
+        """相关设置项：https://appium.io/docs/en/advanced-concepts/settings/index.html
+
+        Args:
+            settings (dict): _description_
+        """
+        self.driver.update_settings(settings)
 
     def touch_element_left_slide(self,element:Union[Element_Info,WebElement],start_x_percent:float=0.5,start_y_percent:float=0.5,
                                  duration:int=500,edge_type:str='element')->None:
