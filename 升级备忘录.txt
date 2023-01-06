@@ -49,6 +49,7 @@
 8、appium支持图片定位？？？需要调研处理
 8.1、安装cmake：https://cmake.org/download/
 8.2、安装opencv4nodejs：npm i -g opencv4nodejs
+9、autoLaunch设置成FALSE，然后使用start_activity-->noReset
 
 【项目业务升级】
 待完成
