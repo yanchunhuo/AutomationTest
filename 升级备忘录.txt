@@ -33,7 +33,7 @@
 25、修改page_objects/createElement.py修改为page_objects/create_element.py
 26、修改run_web_ui_test.py的清除driver的session方法；修改status获取方式
 27、修改config/web_ui_config.conf内容
-28、修改common/appium/app_operator.py为common/appium/app_operator.py，同时修改文件内容
+28、修改common/appium/appOperator.py为common/appium/app_operator.py，同时修改文件内容
 29、修改base\app_ui\android\demoProject\app_ui_android_demoProject_client.py文件，webdriver.Remote使用options替代capability
 
 
@@ -49,7 +49,8 @@
 8、appium支持图片定位？？？需要调研处理
 8.1、安装cmake：https://cmake.org/download/
 8.2、安装opencv4nodejs：npm i -g opencv4nodejs
-9、autoLaunch设置成FALSE，然后使用start_activity-->noReset
+9、noReset设置成True，然后使用start_activity
+10、capability是否设置adbExecTimeout参数，当在执行命令比较久时可能失败（比如安装应用耗时比较长，可能安装失败），默认为60s
 
 【项目业务升级】
 待完成

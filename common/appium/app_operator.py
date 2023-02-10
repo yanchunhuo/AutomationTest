@@ -4,7 +4,7 @@
 # @description 
 # @github https://github.com/yanchunhuo
 # @created 2018-01-19T13:47:34.201Z+08:00
-# @last-modified 2023-01-03T18:15:55.862Z+08:00
+# @last-modified 2023-02-10T17:51:57.889Z+08:00
 #
 
 from appium.webdriver.common.appiumby import AppiumBy
@@ -33,7 +33,7 @@ import base64
 import ujson
 import os
 
-class App_Operator:
+class AppOperator:
 
     def __init__(self,driver:WebDriver,appium_hub:str):
         self.doRequest=DoRequest(appium_hub)
@@ -547,7 +547,25 @@ class App_Operator:
         self.driver.execute_script(script,*args)
 
     def install_app(self,file_path:str)->None:
-        self.driver.install_app(os.path.abspath(file_path))
+        """_summary_
+
+        Args:
+            file_path (str): 与appium server在同服务器的本地安装包路径或者网络远程地址
+        """
+        if not file_path.startswith('http'):
+            file_path=os.path.abspath(file_path)
+        self.driver.install_app(file_path)
+
+    def is_app_installed(self,bundle_id:str)->bool:
+        """_summary_
+
+        Args:
+            bundle_id (str): iOS：bundleid，Android：package name
+
+        Returns:
+            bool: _description_
+        """
+        return self.driver.is_app_installed(bundle_id)
 
     def remove_app(self,app_id:str)->None:
         self.driver.remove_app(app_id)

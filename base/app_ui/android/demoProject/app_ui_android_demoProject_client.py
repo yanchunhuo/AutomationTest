@@ -4,14 +4,14 @@
 # @description 
 # @github https://github.com/yanchunhuo
 # @created 2022-11-07T13:47:34.050Z+08:00
-# @last-modified 2022-12-23T13:19:54.695Z+08:00
+# @last-modified 2023-02-10T16:22:25.306Z+08:00
 #
 
 from appium import webdriver
 from appium.options.common.base import AppiumOptions
 from base.app_ui.android.demoProject.app_ui_android_demoProject_read_config import APP_UI_Android_DemoProject_Read_Config
 from base.read_app_ui_config import Read_APP_UI_Config
-from common.appium.app_operator import App_Operator
+from common.appium.app_operator import AppOperator
 from common.fileTool import FileTool
 from common.httpclient.doRequest import DoRequest
 from init.app_ui.android.demoProject.demoProjectInit import DemoProjectInit
@@ -42,7 +42,7 @@ class APP_UI_Android_demoProject_Client(object):
                 appiumOptions.set_capability(key,self.current_desired_capabilities[key])
             self.driver = webdriver.Remote(self._appium_hub,options=appiumOptions)
             self._save_last_device_session(self.driver.session_id, self.device_info['device_desc'])
-            self.app_operator = App_Operator(self.driver,self._appium_hub)
+            self.app_operator = AppOperator(self.driver,self._appium_hub)
 
             self.__inited=True
         if is_need_reset_app:
