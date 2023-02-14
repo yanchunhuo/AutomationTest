@@ -4,7 +4,7 @@
 # @description 
 # @github https://github.com/yanchunhuo
 # @created 2018-01-19T13:47:34.201Z+08:00
-# @last-modified 2023-02-10T17:51:57.889Z+08:00
+# @last-modified 2023-02-13T20:01:47.492Z+08:00
 #
 
 from appium.webdriver.common.appiumby import AppiumBy
@@ -567,14 +567,21 @@ class AppOperator:
         """
         return self.driver.is_app_installed(bundle_id)
 
-    def remove_app(self,app_id:str)->None:
-        self.driver.remove_app(app_id)
+    def remove_app(self,app_id:str,keepData:bool=False,timeout:int=20000)->None:
+        """_summary_
+
+        Args:
+            app_id (str): _description_
+            keepData (bool, optional): 仅支持Android. Defaults to False.
+            timeout (int, optional): 卸载超时时间. Defaults to 20000.
+        """
+        self.driver.remove_app(app_id,keepData=keepData,timeout=timeout)
 
     def launch_app(self)->None:
         self.driver.launch_app()
 
     def reset_app(self)->None:
-        """Appium 2.0.0 即将废弃该功能
+        """Appium 2.0.0 即将废弃该功能；不支持Espresso
 
         Returns:
             _type_: _description_
@@ -582,13 +589,15 @@ class AppOperator:
         return self.driver.reset()
 
     def close_app(self)->None:
+        """不支持Espresso
+        """
         self.driver.close_app()
 
-    def background_app(self,seconds:float)->None:
+    def background_app(self,seconds:int)->None:
         """后台运行
 
         Args:
-            seconds (float): -1代表完全停用
+            seconds (int): -1代表完全停用
         """
         self.driver.background_app(seconds)
 
