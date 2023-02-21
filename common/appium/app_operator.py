@@ -4,7 +4,7 @@
 # @description 
 # @github https://github.com/yanchunhuo
 # @created 2018-01-19T13:47:34.201Z+08:00
-# @last-modified 2023-02-13T20:01:47.492Z+08:00
+# @last-modified 2023-02-21T19:59:53.720Z+08:00
 #
 
 from appium.webdriver.common.appiumby import AppiumBy
@@ -610,7 +610,7 @@ class AppOperator:
         self.driver.activate_app(app_id)
 
     def terminate_app(self,app_id:str,timeout:float=None)->None:
-        """
+        """不支持IOS的UIAutomation驱动
 
         Args:
             app_id (str): IOS是bundleId，Android是Package名
@@ -622,7 +622,7 @@ class AppOperator:
             self.driver.terminate_app(app_id)
 
     def get_app_state(self,app_id:str)->int:
-        """_summary_
+        """不支持IOS的UIAutomation驱动
 
         Args:
             app_id (str): IOS是bundleId，Android是Package名
