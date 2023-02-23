@@ -4,7 +4,7 @@
 # @description 
 # @github https://github.com/yanchunhuo
 # @created 2018-01-19T13:47:34.201Z+08:00
-# @last-modified 2023-02-21T19:59:53.720Z+08:00
+# @last-modified 2023-02-23T15:59:07.675Z+08:00
 #
 
 from appium.webdriver.common.appiumby import AppiumBy
@@ -25,7 +25,7 @@ from selenium.webdriver.support.relative_locator import locate_with
 from selenium.webdriver.common.action_chains import ActionChains
 from skimage.io import imread
 from skimage.io import imsave
-from typing import List
+from typing import List,Dict
 from typing import Union
 
 import allure
@@ -542,6 +542,9 @@ class AppOperator:
             str: _description_
         """
         return self.driver.current_package
+    
+    def get_app_strings(self,language: str = None, string_file: str = None)->Dict[str,str]:
+        return self.driver.app_strings()
 
     def execute_javascript(self,script:str,*args)->None:
         self.driver.execute_script(script,*args)
@@ -633,7 +636,7 @@ class AppOperator:
         return self.driver.query_app_state(app_id)
 
     def get_clipboard(self,content_type:str='plaintext')->Union[bytes,str]:
-        """
+        """不支持IOS的UIAutomation驱动；IOS13+真机需要WebDriverAgentRunner运行于前台，才能获得剪切板内容
         
         Args:
             content_type (str, optional): plaintxt、image、url. Defaults to 'plaintext'. Android上仅支持'plaintext'
@@ -642,9 +645,17 @@ class AppOperator:
             Union[bytes,str]: _description_
         """
         return self.driver.get_clipboard(content_type)
+    
+    def get_clipboard_text(self)->str:
+        """不支持IOS的UIAutomation驱动；IOS13+真机需要WebDriverAgentRunner运行于前台，才能获得剪切板内容
+
+        Returns:
+            str: _description_
+        """
+        return self.driver.get_clipboard_text()
 
     def set_clipboard(self,content:bytes,content_type:str='plaintext',label:str=None)->None:
-        """_summary_
+        """不支持IOS的UIAutomation驱动；IOS15+真机需要WebDriverAgentRunner运行于前台，才能获得剪切板内容
 
         Args:
             content (bytes): _description_
@@ -652,6 +663,15 @@ class AppOperator:
             label (str): 仅支持Android. Defaults to None.
         """
         self.driver.set_clipboard(content,content_type,label)
+    
+    def set_clipboard_text(self,text:str,label:str=None)->None:
+        """不支持IOS的UIAutomation驱动；IOS15+真机需要WebDriverAgentRunner运行于前台，才能获得剪切板内容
+
+        Args:
+            text (str): _description_
+            label (str, optional): 仅支持Android. Defaults to None.
+        """
+        self.driver.set_clipboard_text(text,label)
         
     def get_log_types(self)->list:
         return self.driver.log_types
