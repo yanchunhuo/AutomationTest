@@ -4,7 +4,7 @@
 # @description 
 # @github https://github.com/yanchunhuo
 # @created 2018-01-19T13:47:34.201Z+08:00
-# @last-modified 2023-02-23T15:59:07.675Z+08:00
+# @last-modified 2023-02-24T15:19:36.798Z+08:00
 #
 
 from appium.webdriver.common.appiumby import AppiumBy
@@ -679,18 +679,15 @@ class AppOperator:
     def get_log(self,log_type:str)->str:
         return self.driver.get_log(log_type)
 
-    def push_file_to_device(self,device_filePath:str,local_filePath:str)->None:
-        """上传文件设备
+    def push_file_to_device(self,device_filePath:str,local_filePath:str,base64data:str)->None:
+        """上传文件设备，如果local_filePath和base64data均有，则默认使用local_filePath
 
         Args:
             device_filePath (str): _description_
             local_filePath (str): _description_
+            base64data (str): _description_
         """
-        local_filePath=os.path.abspath(local_filePath)
-        with open(local_filePath,'rb') as f:
-            data=base64.b64encode(f.read())
-            f.close()
-        self.driver.push_file(device_filePath,data)
+        self.driver.push_file(device_filePath,base64data,local_filePath)
 
     def pull_file_from_device(self,device_filePath:str,local_filePath:str)->None:
         """从设备上下载文件
@@ -699,9 +696,14 @@ class AppOperator:
             device_filePath (str): _description_
             local_filePath (str): _description_
         """
-        local_filePath = os.path.abspath(local_filePath)
         data=self.driver.pull_file(device_filePath)
         with open(local_filePath,'wb') as f:
+            f.write(base64.b64decode(data))
+            f.close()
+
+    def pull_file_folder(self,device_dirPath:str,local_zip_filePath:str)->None:
+        data=self.driver.pull_folder(device_dirPath)
+        with open(local_zip_filePath,'wb') as f:
             f.write(base64.b64decode(data))
             f.close()
 
@@ -710,14 +712,40 @@ class AppOperator:
         """
         self.driver.shake()
 
-    def lock_screen(self,seconds:float=None)->None:
+    def lock_screen(self,seconds:int=None)->None:
+        """	XCUITest不支持
+
+        Args:
+            seconds (int, optional): 小于等于0，则永久锁屏，除非调用unlock_screen。其他则锁屏对应秒数后自动解锁
+        """
         self.driver.lock(seconds)
 
     def unlock_screen(self)->None:
+        """仅支持Android
+        """
         self.driver.unlock()
+        
+    def is_locked_screen(self)->bool:
+        self.driver.rot
+        return self.driver.is_locked()
+    
+    def rotate(self,x:float,y:float,radius:float,rotation:float,touchCount:int,duration:int)->None:
+        """仅支持IOS的UIAutomation
+
+        Args:
+            x (float): 旋转手势中心的x坐标
+            y (float): 旋转手势中心的y坐标
+            radius (float): 旋转手势中心到外围的距离
+            rotation (float): 旋转手势弧度（360度）
+            touchCount (int): 用户用来做出指定手势的手指数。有效值为1到5
+            duration (int): 旋转花费时长
+        """
+        params={'x':x,'y':y,'radius':radius,'rotation':rotation,'touchCount':touchCount,'duration':duration}
+        self.doRequest.post_with_form('/session/%s/appium/device/rotate'%(self.session_id),params=ujson.dumps(params))
 
     def press_keycode(self,keycode:int)->None:
         """按键盘按键，仅支持Android
+           对照表：https://developer.android.com/reference/android/view/KeyEvent.html 
 
         Args:
             keycode (int): 键盘上每个按键的ascii
@@ -738,9 +766,12 @@ class AppOperator:
         Args:
             key_name (str, optional): _description_. Defaults to None.
             key (str, optional): _description_. Defaults to None.
-            strategy (str, optional): 例如：tapOutside. Defaults to None.
+            strategy (str, optional): 仅支持IOS的UIAutomation，取值：'press', 'pressKey', 'swipeDown', 'tapOut', 'tapOutside', 'default'
         """
         self.driver.hide_keyboard(key_name,key,strategy)
+        
+    def is_keyboard_shown(self)->bool:
+        return self.driver.is_keyboard_shown()
 
     def toggle_airplane_mode(self)->None:
         """切换飞行模式(开启关闭),仅支持Android
@@ -753,7 +784,7 @@ class AppOperator:
         self.doRequest.post_with_form('/session/'+self.session_id+'/appium/device/toggle_data')
 
     def toggle_wifi(self)->None:
-        """切换wifi模式(开启关闭),仅支持Android
+        """切换wifi模式(开启关闭),仅支持Android；从Android Q开始已被限制，使用UI操作进行开启、关闭WiFi
         """
         self.driver.toggle_wifi()
 
@@ -762,8 +793,8 @@ class AppOperator:
         """
         self.driver.toggle_location_services()
 
-    def get_performance_date(self,data_type:str,package_name:str=None,data_read_timeout:float=10)->List[List[str]]:
-        """获得设备性能数据
+    def get_performance_date(self,data_type:str,package_name:str,data_read_timeout:int=10)->List[List[str]]:
+        """获得设备性能数据，仅支持Android
 
         Args:
             data_type (str): cpuinfo、batteryinfo、networkinfo、memoryinfo
@@ -775,6 +806,14 @@ class AppOperator:
         """
         if data_type in self.driver.get_performance_data_types():
             return self.driver.get_performance_data(package_name,data_type,data_read_timeout)
+    
+    def get_performance_data_types(self)->List:
+        """仅支持Android
+
+        Returns:
+            List: _description_
+        """
+        return self.driver.get_performance_data_types()
 
     def start_recording_screen(self)->None:
         """默认录制为3分钟,android最大只能3分钟,ios最大只能10分钟。如果录制产生的视频文件过大无法放到手机内存里会抛异常，所以尽量录制短视频
