@@ -4,7 +4,7 @@
 # @description 
 # @github https://github.com/yanchunhuo
 # @created 2018-01-19T13:47:34.201Z+08:00
-# @last-modified 2023-02-24T15:19:36.798Z+08:00
+# @last-modified 2023-02-27T11:46:49.833Z+08:00
 #
 
 from appium.webdriver.common.appiumby import AppiumBy
@@ -69,6 +69,14 @@ class AppOperator:
             return web_element.text
 
     def click(self,element:Union[Element_Info,WebElement])->None:
+        """点击元素中心点
+            1、如果元素被遮挡，则返回点击中断错误
+            2、如果元素在视图窗口外，则返回元素不可交互错误
+            注：并非所有驱动程序都会自动将元素滚动到视图中，并且可能需要滚动到以与其交互
+
+        Args:
+            element (Union[Element_Info,WebElement]): _description_
+        """
         web_element=self._change_element_to_web_element_type(element)
         if web_element:
             web_element.click()
@@ -814,23 +822,16 @@ class AppOperator:
             List: _description_
         """
         return self.driver.get_performance_data_types()
+    
+    def get_system_bars(self)->Dict:
+        """仅支持Android
 
-    def start_recording_screen(self)->None:
-        """默认录制为3分钟,android最大只能3分钟,ios最大只能10分钟。如果录制产生的视频文件过大无法放到手机内存里会抛异常，所以尽量录制短视频
+        Returns:
+            Dict: _description_
         """
-        self.driver.start_recording_screen(forcedRestart=True)
-
-    def stop_recording_screen(self,fileName='')->None:
-        """停止录像并将视频附加到报告里
-
-        Args:
-            fileName (str, optional): _description_. Defaults to ''.
-        """
-        fileName = DateTimeTool.getNowTime('%Y%m%d%H%M%S%f_') + fileName
-        data=self.driver.stop_recording_screen()
-        allure.attach(name=fileName, body=base64.b64decode(data), attachment_type=allure.attachment_type.MP4)
-
-    def get_device_time(self,format='YYYY-MM-DD HH:mm:ss')->str:
+        return self.driver.get_system_bars()
+    
+    def get_device_time(self,format:str='YYYY-MM-DD HH:mm:ss')->str:
         """获得设备时间
 
         Args:
@@ -840,6 +841,45 @@ class AppOperator:
             _type_: _description_
         """
         return self.driver.get_device_time(format)
+
+    def get_display_density(self)->int:
+        """仅支持Android
+
+        Returns:
+            int: _description_
+        """
+        return self.driver.get_display_density()
+    
+    def get_settings(self)->dict:
+        """获得设备的设置
+
+        Returns:
+            dict: _description_
+        """
+        return self.driver.get_settings()
+        
+    def update_settings(self,settings:dict)->None:
+        """相关设置项：https://appium.io/docs/en/advanced-concepts/settings/index.html
+
+        Args:
+            settings (dict): _description_
+        """
+        self.driver.update_settings(settings)
+
+    def start_recording_screen(self)->None:
+        """默认录制为3分钟,android最大只能3分钟,ios最大只能10分钟。如果录制产生的视频文件过大无法放到手机内存里会抛异常，所以尽量录制短视频
+        """
+        self.driver.start_recording_screen(forcedRestart=True)
+
+    def stop_recording_screen(self,fileName:str='')->None:
+        """停止录像并将视频附加到报告里
+
+        Args:
+            fileName (str, optional): _description_. Defaults to ''.
+        """
+        fileName = DateTimeTool.getNowTime('%Y%m%d%H%M%S%f_') + fileName
+        data=self.driver.stop_recording_screen()
+        allure.attach(name=fileName, body=base64.b64decode(data), attachment_type=allure.attachment_type.MP4)
 
     def get_element_location(self,element:Union[Element_Info,WebElement])->dict:
         """获得元素在屏幕的位置,x、y坐标为元素左上角
@@ -873,22 +913,6 @@ class AppOperator:
             result_x=x+width/2
             result_y=y+height/2
             return {'x':result_x,'y':result_y}
-    
-    def get_settings(self)->dict:
-        """获得设备的设置
-
-        Returns:
-            dict: _description_
-        """
-        self.driver.get_settings()
-        
-    def update_settings(self,settings:dict)->None:
-        """相关设置项：https://appium.io/docs/en/advanced-concepts/settings/index.html
-
-        Args:
-            settings (dict): _description_
-        """
-        self.driver.update_settings(settings)
 
     def touch_element_left_slide(self,element:Union[Element_Info,WebElement],start_x_percent:float=0.5,start_y_percent:float=0.5,
                                  duration:int=500,edge_type:str='element')->None:
@@ -1450,11 +1474,12 @@ class AppOperator:
         wait_type = element.wait_type
         wait_seconds = element.wait_seconds
         wait_expected_value = element.wait_expected_value
-        relative_element = element.relative_element
-        relative_type = element.relative_type
+        
 
         # 查找元素,为了保证元素被定位,都进行显式等待,部分返回并非是WebElement对象
         # 相对位置定位方式【appium暂不支持】
+        # relative_element = element.relative_element
+        # relative_type = element.relative_type
         # if relative_element and relative_type:
         #     tmp_element=element
         #     tmp_element.relative_element=None
@@ -1528,30 +1553,32 @@ class AppOperator:
         locator_value=element.locator_value
         wait_type = element.wait_type
         wait_seconds = element.wait_seconds
-        relative_element = element.relative_element
-        relative_type = element.relative_type
+        
 
         # 查找元素,为了保证元素被定位,都进行显式等待,部分返回并非是WebElement对象
         # 相对位置定位方式
-        if relative_element and relative_type:
-            tmp_element=element
-            tmp_element.relative_element=None
-            tmp_element.relative_type=None
-            tmp_web_element=self.get_element(tmp_element)
-            if relative_type == 'above':
-                relative_locattor=locate_with(relative_element.locator_type,relative_element.locator_value).above(tmp_web_element)
-            elif relative_type == 'below':
-                relative_locattor=locate_with(relative_element.locator_type,relative_element.locator_value).below(tmp_web_element)
-            elif relative_type == 'to_left_of':
-                relative_locattor=locate_with(relative_element.locator_type,relative_element.locator_value).to_left_of(tmp_web_element)
-            elif relative_type == 'to_right_of':
-                relative_locattor=locate_with(relative_element.locator_type,relative_element.locator_value).to_right_of(tmp_web_element)
-            elif relative_type == 'near':
-                relative_locattor=locate_with(relative_element.locator_type,relative_element.locator_value).near(tmp_web_element)
-            else:
-                relative_locattor={}
-            web_elements=self.driver.find_elements(relative_locattor)
-            return web_elements
+        # 相对位置定位方式【appium暂不支持】
+        # relative_element = element.relative_element
+        # relative_type = element.relative_type
+        # if relative_element and relative_type:
+        #     tmp_element=element
+        #     tmp_element.relative_element=None
+        #     tmp_element.relative_type=None
+        #     tmp_web_element=self.get_element(tmp_element)
+        #     if relative_type == 'above':
+        #         relative_locattor=locate_with(relative_element.locator_type,relative_element.locator_value).above(tmp_web_element)
+        #     elif relative_type == 'below':
+        #         relative_locattor=locate_with(relative_element.locator_type,relative_element.locator_value).below(tmp_web_element)
+        #     elif relative_type == 'to_left_of':
+        #         relative_locattor=locate_with(relative_element.locator_type,relative_element.locator_value).to_left_of(tmp_web_element)
+        #     elif relative_type == 'to_right_of':
+        #         relative_locattor=locate_with(relative_element.locator_type,relative_element.locator_value).to_right_of(tmp_web_element)
+        #     elif relative_type == 'near':
+        #         relative_locattor=locate_with(relative_element.locator_type,relative_element.locator_value).near(tmp_web_element)
+        #     else:
+        #         relative_locattor={}
+        #     web_elements=self.driver.find_elements(relative_locattor)
+        #     return web_elements
         # 状态定位方式
         if wait_type == Wait_By.PRESENCE_OF_ALL_ELEMENTS_LOCATED:
             web_elements = WebDriverWait(self.driver, wait_seconds).until(expected_conditions.presence_of_all_elements_located((locator_type, locator_value)))
