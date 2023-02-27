@@ -4,7 +4,7 @@
 # @description 
 # @github https://github.com/yanchunhuo
 # @created 2018-01-19T13:47:34.201Z+08:00
-# @last-modified 2023-02-27T11:46:49.833Z+08:00
+# @last-modified 2023-02-27T14:57:13.429Z+08:00
 #
 
 from appium.webdriver.common.appiumby import AppiumBy
@@ -67,6 +67,11 @@ class AppOperator:
         web_element=self._change_element_to_web_element_type(element)
         if web_element:
             return web_element.text
+        
+    def get_tag_name(self,element:Union[Element_Info,WebElement])->str:
+        web_element=self._change_element_to_web_element_type(element)
+        if web_element:
+            return web_element.tag_name
 
     def click(self,element:Union[Element_Info,WebElement])->None:
         """点击元素中心点
@@ -104,24 +109,26 @@ class AppOperator:
         if web_element:
             web_element.clear()
             web_element.send_keys(text)
+    
+    def clear_text(self,element:Union[Element_Info,WebElement])->None:
+        web_element=self._change_element_to_web_element_type(element)
+        if web_element:
+            web_element.clear()
 
     def is_displayed(self,element:Union[Element_Info,WebElement])->bool:
         web_element=self._change_element_to_web_element_type(element)
         if web_element:
-            flag=web_element.is_displayed()
-            return flag
+            return web_element.is_displayed()
 
     def is_enabled(self,element:Union[Element_Info,WebElement])->bool:
         web_element=self._change_element_to_web_element_type(element)
         if web_element:
-            flag = web_element.is_enabled()
-            return flag
+            return web_element.is_enabled()
 
     def is_selected(self,element:Union[Element_Info,WebElement])->bool:
         web_element=self._change_element_to_web_element_type(element)
         if web_element:
-            flag = web_element.is_selected()
-            return flag
+            return web_element.is_selected()
 
     def select_dropDownBox_by_value(self,element:Union[Element_Info,WebElement],value:str)->None:
         """适用单选下拉框
@@ -1197,6 +1204,21 @@ class AppOperator:
         web_element=self._change_element_to_web_element_type(element)
         if web_element:
             return web_element.size
+        
+    def get_element_rect(self,element:Union[Element_Info,WebElement])->dict:
+        web_element=self._change_element_to_web_element_type(element)
+        if web_element:
+            return web_element.rect
+    
+    def get_element_css_property_value(self,element:Union[Element_Info,WebElement],css_property_name:str)->str:
+        web_element=self._change_element_to_web_element_type(element)
+        if web_element:
+            return web_element.value_of_css_property(css_property_name)
+        
+    def get_location_in_view(self,element:Union[Element_Info,WebElement])->dict:
+        web_element=self._change_element_to_web_element_type(element)
+        if web_element:
+            return web_element.location_in_view
 
     def get_all_contexts(self)->List[str]:
         """获得能够自动化测所有上下文(混合应用中的原生应用和web应用)
