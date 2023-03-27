@@ -1,12 +1,20 @@
-#-*- coding:utf8 -*-
-# 作者 yanchunhuo
-# 创建时间 2018/01/19 22:36
-# github https://github.com/yanchunhuo
+#
+# generate_web_ui_test_report.py
+# @author yanchunhuo
+# @description 
+# @github https://github.com/yanchunhuo
+# @created 2021-04-13T10:59:18.033Z+08:00
+# @last-modified 2023-03-27T18:02:03.136Z+08:00
+#
+
 from base.read_report_config import Read_Report_Config
 from common.strTool import StrTool
 from common.custom_multiprocessing import Custom_Pool
 from common.dateTimeTool import DateTimeTool
+from common.dingding.robot import Robot
+from common.qiyeweixin.robot import Robot as QiWei_Robot
 from common.network import Network
+import argparse
 import platform
 import subprocess
 
@@ -16,11 +24,40 @@ def generate_windows_reports(report_dir,test_time,port):
     open_report_command='start cmd.exe @cmd /c "allure open -p %s %s/report/web_ui_report_%s"'%(port,report_dir,test_time)
     subprocess.check_output(open_report_command,shell=True)
 
-if __name__=='__main__':
+def notice(title: str, markdown_text: str, atMobiles: list = (), isAtAll=True):
     report_config = Read_Report_Config().report_config
-    ieport=report_config.web_ui_ie_port
-    chromeport=report_config.web_ui_chrome_port
-    firefoxport=report_config.web_ui_firefox_port
+    # 钉钉通知
+    dingding_webhooks = report_config.dingding_webhooks
+    dingding_secret_keys = report_config.dingding_secret_keys
+    for i, dingding_webhook in enumerate(dingding_webhooks):
+        dingding_secret_key = dingding_secret_keys[i]
+        robot = Robot(dingding_webhook, dingding_secret_key)
+        robot.send_by_markdown(title, markdown_text, atMobiles, isAtAll)
+    # 企业微信通知
+    qiyeweixin_webhooks = report_config.qiyeweixin_webhooks
+    for i,qiyeweixin_webhook in enumerate(qiyeweixin_webhooks):
+        qiwei_robot=QiWei_Robot(qiyeweixin_webhook)
+        qiwei_robot.send_by_markdown(markdown_text)
+
+if __name__=='__main__':
+    parser=argparse.ArgumentParser()
+    parser.add_argument('-ip', '--ie_port', help='ie生成报告使用的端口', type=str)
+    parser.add_argument('-cp', '--chrome_port', help='chrome生成报告使用的端口', type=str)
+    parser.add_argument('-fp', '--firefox_port', help='firefox生成报告使用的端口', type=str)
+    args=parser.parse_args()
+    report_config = Read_Report_Config().report_config
+    if args.ie_port:
+        ieport=args.ie_port
+    else:
+        ieport=report_config.web_ui_ie_port    
+    if args.chrome_port:
+        chromeport=args.chrome_port
+    else:
+        chromeport=report_config.web_ui_chrome_port
+    if args.firefox_port:
+        firefoxport=args.firefox_port
+    else:
+        firefoxport=report_config.web_ui_firefox_port
     notice_title='WEB UI自动化测试报告'
     test_time=DateTimeTool.getNowTime('%Y_%m_%d_%H_%M_%S_%f')
     notice_markdown_text='* WEB UI生成时间：%s \n'%test_time
@@ -43,6 +80,7 @@ if __name__=='__main__':
                 print('%sallure未查找到监听端口%s的服务' % (DateTimeTool.getNowTime(),ieport))
             print('%s生成ie报告,使用端口%s'%(DateTimeTool.getNowTime(),ieport))
             print('%sie报告地址:http://%s:%s/' % (DateTimeTool.getNowTime(),Network.get_local_ip(), ieport))
+            notice_markdown_text += '* [IE测试报告](http://%s:%s/)\n' % (Network.get_local_ip(), ieport)
             p = p_pool.apply_async(generate_windows_reports,('output/web_ui/ie',test_time,ieport))
         if chromeport:
             # 获得当前监听chrome端口的进程id
@@ -60,6 +98,7 @@ if __name__=='__main__':
                 print('%sallure未查找到监听端口%s的服务' % (DateTimeTool.getNowTime(),chromeport))
             print('%s生成chrome报告,使用端口%s'%(DateTimeTool.getNowTime(),chromeport))
             print('%schrome报告地址:http://%s:%s/' % (DateTimeTool.getNowTime(),Network.get_local_ip(), chromeport))
+            notice_markdown_text += '* [Chrome测试报告](http://%s:%s/)\n' % (Network.get_local_ip(), chromeport)
             p = p_pool.apply_async(generate_windows_reports,('output/web_ui/chrome',test_time,chromeport))
         if firefoxport:
             # 获得当前监听ie端口的进程id
@@ -77,7 +116,9 @@ if __name__=='__main__':
                 print('%sallure未查找到监听端口%s的服务' % (DateTimeTool.getNowTime(),firefoxport))
             print('%s生成firefox报告,使用端口%s'%(DateTimeTool.getNowTime(),firefoxport))
             print('%sfirefox报告地址:http://%s:%s/' % (DateTimeTool.getNowTime(),Network.get_local_ip(), firefoxport))
+            notice_markdown_text += '* [Firefox测试报告](http://%s:%s/)\n' % (Network.get_local_ip(), firefoxport)
             p = p_pool.apply_async(generate_windows_reports,('output/web_ui/firefox',test_time,firefoxport))
+        notice(notice_title, notice_markdown_text)
         p_pool.close()
         p_pool.join()
     else:
@@ -106,6 +147,7 @@ if __name__=='__main__':
                         break
             print('%s生成ie报告,使用端口%s'%(DateTimeTool.getNowTime(),ieport))
             print('%sie报告地址:http://%s:%s/' % (DateTimeTool.getNowTime(),Network.get_local_ip(), ieport))
+            notice_markdown_text += '* [IE测试报告](http://%s:%s/)\n' % (Network.get_local_ip(), ieport)
             generate_report_command='allure generate output/web_ui/ie/report_data -o output/web_ui/ie/report/web_ui_report_%s'%(test_time)
             subprocess.check_output(generate_report_command,shell=True)
             open_report_command='nohup allure open -p %s output/web_ui/ie/report/web_ui_report_%s >logs/generate_web_ui_test_ie_report_%s.log 2>&1 &'%(ieport,test_time,test_time)
@@ -130,6 +172,7 @@ if __name__=='__main__':
                         break
             print('%s生成chrome报告,使用端口%s'%(DateTimeTool.getNowTime(),chromeport))
             print('%schromeport报告地址:http://%s:%s/' % (DateTimeTool.getNowTime(),Network.get_local_ip(), chromeport))
+            notice_markdown_text += '* [Chrome测试报告](http://%s:%s/)\n' % (Network.get_local_ip(), chromeport)
             generate_report_command='allure generate output/web_ui/chrome/report_data -o output/web_ui/chrome/report/web_ui_report_%s'%(test_time)
             subprocess.check_output(generate_report_command,shell=True)
             open_report_command='nohup allure open -p %s output/web_ui/chrome/report/web_ui_report_%s >logs/generate_web_ui_test_chrome_report_%s.log 2>&1 &'%(chromeport,test_time,test_time)
@@ -154,7 +197,9 @@ if __name__=='__main__':
                         break
             print('%s生成firefox报告,使用端口%s'%(DateTimeTool.getNowTime(),firefoxport))
             print('%sfirefoxport报告地址:http://%s:%s/' % (DateTimeTool.getNowTime(),Network.get_local_ip(), firefoxport))
+            notice_markdown_text += '* [Firefox测试报告](http://%s:%s)\n' % (Network.get_local_ip(), firefoxport)
             generate_report_command='allure generate output/web_ui/firefox/report_data -o output/web_ui/firefox/report/web_ui_report_%s'%(test_time)
             subprocess.check_output(generate_report_command,shell=True)
             open_report_command='nohup allure open -p %s output/web_ui/firefox/report/web_ui_report_%s >logs/generate_web_ui_test_firefox_report_%s.log 2>&1 &'%(firefoxport,test_time,test_time)
             subprocess.check_output(open_report_command,shell=True)
+        notice(notice_title, notice_markdown_text)

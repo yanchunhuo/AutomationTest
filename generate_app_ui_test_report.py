@@ -1,16 +1,23 @@
-#-*- coding:utf8 -*-
-# 作者 yanchunhuo
-# 创建时间 2018/01/19 22:36
-# github https://github.com/yanchunhuo
+#
+# generate_app_ui_test_report.py
+# @author yanchunhuo
+# @description 
+# @github https://github.com/yanchunhuo
+# @created 2021-04-13T10:59:18.000Z+08:00
+# @last-modified 2023-03-27T18:01:19.731Z+08:00
+#
+
 from base.read_report_config import Read_Report_Config
 from common.custom_multiprocessing import Custom_Pool
 from common.dateTimeTool import DateTimeTool
+from common.dingding.robot import Robot
+from common.qiyeweixin.robot import Robot as QiWei_Robot
 from common.network import Network
 from common.strTool import StrTool
+import argparse
 import os
 import platform
 import subprocess
-
 
 def generate_windows_reports(report_dir,test_time,port):
     generate_report_command='allure generate %s/report_data -o %s/report/app_ui_report_%s'%(report_dir,report_dir,test_time)
@@ -18,9 +25,30 @@ def generate_windows_reports(report_dir,test_time,port):
     open_report_command='start cmd.exe @cmd /c "allure open -p %s %s/report/app_ui_report_%s"'%(port,report_dir,test_time)
     subprocess.check_output(open_report_command,shell=True)
 
-if __name__ == '__main__':
+def notice(title: str, markdown_text: str, atMobiles: list = (), isAtAll=True):
     report_config = Read_Report_Config().report_config
-    start_port = report_config.app_ui_start_port
+    # 钉钉通知report_config
+    dingding_webhooks = report_config.dingding_webhooks
+    dingding_secret_keys = report_config.dingding_secret_keys
+    for i, dingding_webhook in enumerate(dingding_webhooks):
+        dingding_secret_key = dingding_secret_keys[i]
+        robot = Robot(dingding_webhook, dingding_secret_key)
+        robot.send_by_markdown(title, markdown_text, atMobiles, isAtAll)
+    # 企业微信通知
+    qiyeweixin_webhooks = report_config.qiyeweixin_webhooks
+    for i,qiyeweixin_webhook in enumerate(qiyeweixin_webhooks):
+        qiwei_robot=QiWei_Robot(qiyeweixin_webhook)
+        qiwei_robot.send_by_markdown(markdown_text)
+
+if __name__ == '__main__':
+    parser=argparse.ArgumentParser()
+    parser.add_argument('-sp', '--start_port', help='生成报告使用的开始端口，多份报告每次加1', type=str)
+    args=parser.parse_args()
+    if args.start_port:
+        start_port=args.start_port
+    else:
+        report_config = Read_Report_Config().report_config
+        start_port = report_config.app_ui_start_port
     notice_title = 'APP UI自动化测试报告'
     test_time=DateTimeTool.getNowTime('%Y_%m_%d_%H_%M_%S_%f')
     notice_markdown_text = '* APP UI生成时间：%s \n' % test_time
@@ -49,7 +77,10 @@ if __name__ == '__main__':
                 print('%sallure未查找到监听端口%s的服务' %(DateTimeTool.getNowTime(),port))
             print('%s生成报告%s/report/app_ui_report_%s,使用端口%s'%(DateTimeTool.getNowTime(),report_dirs[i],test_time,port))
             print('%s报告地址:http://%s:%s/' % (DateTimeTool.getNowTime(),Network.get_local_ip(), port))
+            notice_markdown_text += '* [%s测试报告](http://%s:%s/)\n' % (
+                report_dirs[i].split('/')[-2] + '/' + report_dirs[i].split('/')[-1], Network.get_local_ip(), port)
             p = p_pool.apply_async(generate_windows_reports, (report_dirs[i],test_time,port))
+        notice(notice_title, notice_markdown_text)
         p_pool.close()
         p_pool.join()
     else:
@@ -80,7 +111,10 @@ if __name__ == '__main__':
                         break
             print('%s生成报告%s/report/app_ui_report_%s,使用端口%s'%(DateTimeTool.getNowTime(),report_dirs[i],test_time,port))
             print('%s报告地址:http://%s:%s/' % (DateTimeTool.getNowTime(),Network.get_local_ip(), port))
+            notice_markdown_text += '* [%s测试报告](http://%s:%s/)\n' % (
+                report_dirs[i].split('/')[-2] + '/' + report_dirs[i].split('/')[-1], Network.get_local_ip(), port)
             generate_report_command='allure generate %s/report_data -o %s/report/app_ui_report_%s'%(report_dirs[i],test_time)
             subprocess.check_output(generate_report_command,shell=True)
             open_report_command='nohup allure open -p %s %s/report/app_ui_report_%s >logs/generate_app_ui_test_report_%s.log 2>&1 &'%(port,report_dirs[i],test_time,test_time)
             subprocess.check_output(open_report_command,shell=True)
+        notice(notice_title, notice_markdown_text)
