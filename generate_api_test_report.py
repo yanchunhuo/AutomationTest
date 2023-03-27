@@ -4,7 +4,7 @@
 # @description 
 # @github https://github.com/yanchunhuo
 # @created 2021-04-13T10:59:17.953Z+08:00
-# @last-modified 2023-03-27T18:10:43.670Z+08:00
+# @last-modified 2023-03-27T18:22:14.789Z+08:00
 #
 from base.read_report_config import Read_Report_Config
 from common.dateTimeTool import DateTimeTool
@@ -30,9 +30,7 @@ if __name__ == '__main__':
     else:
         report_config = Read_Report_Config().report_config
         port = report_config.api_port
-    notice_title = 'API自动化测试报告'
     test_time=DateTimeTool.getNowTime('%Y_%m_%d_%H_%M_%S_%f')
-    notice_markdown_text = '* API生成时间：%s \n' % test_time
     if 'Windows' == platform.system():
         get_allure_process_id_command = 'netstat -ano|findstr "0.0.0.0:%s"' % port
         try:

@@ -4,7 +4,7 @@
 # @description 
 # @github https://github.com/yanchunhuo
 # @created 2021-04-13T10:59:18.033Z+08:00
-# @last-modified 2023-03-27T18:11:59.376Z+08:00
+# @last-modified 2023-03-27T18:22:38.030Z+08:00
 #
 
 from base.read_report_config import Read_Report_Config
@@ -41,9 +41,7 @@ if __name__=='__main__':
         firefoxport=args.firefox_port
     else:
         firefoxport=report_config.web_ui_firefox_port
-    notice_title='WEB UI自动化测试报告'
     test_time=DateTimeTool.getNowTime('%Y_%m_%d_%H_%M_%S_%f')
-    notice_markdown_text='* WEB UI生成时间：%s \n'%test_time
     if 'Windows' == platform.system():
         # 初始化进程池
         p_pool = Custom_Pool(3)

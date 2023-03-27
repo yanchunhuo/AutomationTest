@@ -4,7 +4,7 @@
 # @description 
 # @github https://github.com/yanchunhuo
 # @created 2021-04-13T10:59:18.000Z+08:00
-# @last-modified 2023-03-27T18:10:34.649Z+08:00
+# @last-modified 2023-03-27T18:22:27.819Z+08:00
 #
 
 from base.read_report_config import Read_Report_Config
@@ -32,9 +32,7 @@ if __name__ == '__main__':
     else:
         report_config = Read_Report_Config().report_config
         start_port = report_config.app_ui_start_port
-    notice_title = 'APP UI自动化测试报告'
     test_time=DateTimeTool.getNowTime('%Y_%m_%d_%H_%M_%S_%f')
-    notice_markdown_text = '* APP UI生成时间：%s \n' % test_time
     report_dirs = []
     devices_dirs = os.listdir('output/app_ui/')
     for device_dir in devices_dirs:
