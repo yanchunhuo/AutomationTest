@@ -1,16 +1,21 @@
-#-*- coding:utf8 -*-
-# 作者 yanchunhuo
-# 创建时间 2018/01/19 22:36
-# github https://github.com/yanchunhuo
+#
+# generate_app_ui_test_report.py
+# @author yanchunhuo
+# @description 
+# @github https://github.com/yanchunhuo
+# @created 2021-04-13T10:59:18.000Z+08:00
+# @last-modified 2023-03-27T18:10:34.649Z+08:00
+#
+
 from base.read_report_config import Read_Report_Config
 from common.custom_multiprocessing import Custom_Pool
 from common.dateTimeTool import DateTimeTool
 from common.network import Network
 from common.strTool import StrTool
+import argparse
 import os
 import platform
 import subprocess
-
 
 def generate_windows_reports(report_dir,test_time,port):
     generate_report_command='allure generate %s/report_data -o %s/report/app_ui_report_%s'%(report_dir,report_dir,test_time)
@@ -19,8 +24,14 @@ def generate_windows_reports(report_dir,test_time,port):
     subprocess.check_output(open_report_command,shell=True)
 
 if __name__ == '__main__':
-    report_config = Read_Report_Config().report_config
-    start_port = report_config.app_ui_start_port
+    parser=argparse.ArgumentParser()
+    parser.add_argument('-sp', '--start_port', help='生成报告使用的开始端口，多份报告每次加1', type=str)
+    args=parser.parse_args()
+    if args.start_port:
+        start_port=args.start_port
+    else:
+        report_config = Read_Report_Config().report_config
+        start_port = report_config.app_ui_start_port
     notice_title = 'APP UI自动化测试报告'
     test_time=DateTimeTool.getNowTime('%Y_%m_%d_%H_%M_%S_%f')
     notice_markdown_text = '* APP UI生成时间：%s \n' % test_time

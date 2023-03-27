@@ -1,12 +1,18 @@
-#-*- coding:utf8 -*-
-# 作者 yanchunhuo
-# 创建时间 2018/01/19 22:36
-# github https://github.com/yanchunhuo
+#
+# generate_web_ui_test_report.py
+# @author yanchunhuo
+# @description 
+# @github https://github.com/yanchunhuo
+# @created 2021-04-13T10:59:18.033Z+08:00
+# @last-modified 2023-03-27T18:11:59.376Z+08:00
+#
+
 from base.read_report_config import Read_Report_Config
 from common.strTool import StrTool
 from common.custom_multiprocessing import Custom_Pool
 from common.dateTimeTool import DateTimeTool
 from common.network import Network
+import argparse
 import platform
 import subprocess
 
@@ -17,10 +23,24 @@ def generate_windows_reports(report_dir,test_time,port):
     subprocess.check_output(open_report_command,shell=True)
 
 if __name__=='__main__':
+    parser=argparse.ArgumentParser()
+    parser.add_argument('-ip', '--ie_port', help='ie生成报告使用的端口', type=str)
+    parser.add_argument('-cp', '--chrome_port', help='chrome生成报告使用的端口', type=str)
+    parser.add_argument('-fp', '--firefox_port', help='firefox生成报告使用的端口', type=str)
+    args=parser.parse_args()
     report_config = Read_Report_Config().report_config
-    ieport=report_config.web_ui_ie_port
-    chromeport=report_config.web_ui_chrome_port
-    firefoxport=report_config.web_ui_firefox_port
+    if args.ie_port:
+        ieport=args.ie_port
+    else:
+        ieport=report_config.web_ui_ie_port    
+    if args.chrome_port:
+        chromeport=args.chrome_port
+    else:
+        chromeport=report_config.web_ui_chrome_port
+    if args.firefox_port:
+        firefoxport=args.firefox_port
+    else:
+        firefoxport=report_config.web_ui_firefox_port
     notice_title='WEB UI自动化测试报告'
     test_time=DateTimeTool.getNowTime('%Y_%m_%d_%H_%M_%S_%f')
     notice_markdown_text='* WEB UI生成时间：%s \n'%test_time
