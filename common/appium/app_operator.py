@@ -4,7 +4,7 @@
 # @description 
 # @github https://github.com/yanchunhuo
 # @created 2018-01-19T13:47:34.201Z+08:00
-# @last-modified 2023-02-27T14:57:13.429Z+08:00
+# @last-modified 2023-04-06T17:49:24.554Z+08:00
 #
 
 from appium.webdriver.common.appiumby import AppiumBy
@@ -21,7 +21,7 @@ from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions
-from selenium.webdriver.support.relative_locator import locate_with
+# from selenium.webdriver.support.relative_locator import locate_with
 from selenium.webdriver.common.action_chains import ActionChains
 from skimage.io import imread
 from skimage.io import imsave
