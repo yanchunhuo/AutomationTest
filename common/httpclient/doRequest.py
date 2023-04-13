@@ -25,6 +25,9 @@ class DoRequest(object):
 
     def updateHeaders(self, headers):
         self._headers.update(headers)
+        
+    def removeHeader(self,key):
+        self._headers.pop(key)
 
     def getHeaders(self):
         return self._headers
