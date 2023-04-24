@@ -4,7 +4,7 @@
 # @description 
 # @github https://github.com/yanchunhuo
 # @created 2018-01-19T13:47:34.201Z+08:00
-# @last-modified 2023-04-06T17:49:24.554Z+08:00
+# @last-modified 2023-04-24T16:23:10.640Z+08:00
 #
 
 from appium.webdriver.common.appiumby import AppiumBy
@@ -43,7 +43,9 @@ class AppOperator:
         # 获得设备支持的性能数据类型
         self.performance_types=ujson.loads(self.doRequest.post_with_form('/session/'+self.session_id+'/appium/performanceData/types').body)['value']
         # 获取当前窗口大小
-        self.windows_size=self.get_window_size()
+        self.window_size=self.get_window_size()
+        # 获得当前窗口的位置
+        self.windows_rect=self.get_window_rect()
 
     def _change_element_to_web_element_type(self,element:Union[Element_Info,WebElement])->WebElement:
         if isinstance(element, Element_Info):
@@ -364,6 +366,10 @@ class AppOperator:
         top = web_element.location['y']
         right = web_element.location['x'] + web_element.size['width']
         bottom = web_element.location['y'] + web_element.size['height']
+        window_left=self.windows_rect['x']
+        window_top=self.windows_rect['y']
+        window_right=left+self.windows_rect['width']
+        window_bottom=top+self.windows_rect['height']
         # 进行屏幕截图
         image_file_name = DateTimeTool.getNowTime('%Y%m%d%H%M%S%f_') + '%s.png'%image_file_name
         if not os.path.exists('output/tmp/app_ui/'):
@@ -371,7 +377,11 @@ class AppOperator:
         image_file_name = os.path.abspath('output/tmp/app_ui/' + image_file_name)
         self.driver.get_screenshot_as_file(image_file_name)
         ndarray=imread(image_file_name)
-        # 图片裁切并保存
+        # 裁切应用区域图片并保存
+        new_ndarray=ndarray[window_top:window_bottom,window_left:window_right]
+        imsave(image_file_name,new_ndarray)
+        # 裁切元素区域图片并保存
+        ndarray=imread(image_file_name)
         new_ndarray=ndarray[top:bottom,left:right]
         imsave(image_file_name,new_ndarray)
         return image_file_name
@@ -435,6 +445,9 @@ class AppOperator:
 
     def get_window_size(self)->dict:
         return self.driver.get_window_size()
+    
+    def get_window_rect(self)->dict:
+        return self.driver.get_window_rect()
 
     def app_alert(self, platform_name:str,action_type:str='accept',button_label:str=None)->None:
         """"仅适用于app
@@ -951,7 +964,7 @@ class AppOperator:
                 end_y=y+height*0.5
             elif edge_type.lower()=='screen':
                 end_x = 0+0.01
-                end_y = self.windows_size['height'] * 0.5
+                end_y = self.window_size['height'] * 0.5
             else:
                 end_x=start_x
                 end_y=end_x
@@ -985,8 +998,8 @@ class AppOperator:
                 end_x = x + width*0.99
                 end_y = y + height * 0.5
             elif edge_type.lower()=='screen':
-                end_x = self.windows_size['width'] * 0.99
-                end_y = self.windows_size['height'] * 0.5
+                end_x = self.window_size['width'] * 0.99
+                end_y = self.window_size['height'] * 0.5
             else:
                 end_x=start_x
                 end_y=end_x
@@ -1020,7 +1033,7 @@ class AppOperator:
                 end_x = x + width * 0.5
                 end_y = y+0.01
             elif edge_type.lower()=='screen':
-                end_x = self.windows_size['width'] * 0.5
+                end_x = self.window_size['width'] * 0.5
                 end_y = 0+0.01
             else:
                 end_x=start_x
@@ -1055,8 +1068,8 @@ class AppOperator:
                 end_x = x + width * 0.5
                 end_y = y + height*0.99
             elif edge_type.lower()=='screen':
-                end_x = self.windows_size['width'] * 0.5
-                end_y = self.windows_size['height'] * 0.99
+                end_x = self.window_size['width'] * 0.5
+                end_y = self.window_size['height'] * 0.99
             else:
                 end_x=start_x
                 end_y=end_x
@@ -1421,10 +1434,10 @@ class AppOperator:
             start_x_percent=0.99
         if start_y_percent>=1:
             start_y_percent=0.99
-        start_x=self.windows_size['width']*start_x_percent
-        start_y=self.windows_size['height']*start_y_percent
+        start_x=self.window_size['width']*start_x_percent
+        start_y=self.window_size['height']*start_y_percent
         end_x=0
-        end_y=self.windows_size['height']*0.5
+        end_y=self.window_size['height']*0.5
         self.driver.swipe(start_x,start_y,end_x,end_y,duration)
 
     def touch_right_slide(self,start_x_percent:float=0.5,start_y_percent:float=0.5,duration:int=500)->None:
@@ -1439,10 +1452,10 @@ class AppOperator:
             start_x_percent=0.99
         if start_y_percent>=1:
             start_y_percent=0.99
-        start_x=self.windows_size['width']*start_x_percent
-        start_y=self.windows_size['height']*start_y_percent
-        end_x=self.windows_size['width']*0.99
-        end_y=self.windows_size['height']*0.5
+        start_x=self.window_size['width']*start_x_percent
+        start_y=self.window_size['height']*start_y_percent
+        end_x=self.window_size['width']*0.99
+        end_y=self.window_size['height']*0.5
         self.driver.swipe(start_x,start_y,end_x,end_y,duration)
 
     def touch_up_slide(self,start_x_percent:float=0.5,start_y_percent:float=0.5,duration:int=500)->None:
@@ -1457,9 +1470,9 @@ class AppOperator:
             start_x_percent=0.99
         if start_y_percent>=1:
             start_y_percent=0.99
-        start_x=self.windows_size['width']*start_x_percent
-        start_y=self.windows_size['height']*start_y_percent
-        end_x=self.windows_size['width']*0.5
+        start_x=self.window_size['width']*start_x_percent
+        start_y=self.window_size['height']*start_y_percent
+        end_x=self.window_size['width']*0.5
         end_y=0
         self.driver.swipe(start_x,start_y,end_x,end_y,duration)
 
@@ -1475,10 +1488,10 @@ class AppOperator:
             start_x_percent=0.99
         if start_y_percent>=1:
             start_y_percent=0.99
-        start_x=self.windows_size['width']*start_x_percent
-        start_y=self.windows_size['height']*start_y_percent
-        end_x=self.windows_size['width']*0.5
-        end_y=self.windows_size['height']*0.99
+        start_x=self.window_size['width']*start_x_percent
+        start_y=self.window_size['height']*start_y_percent
+        end_x=self.window_size['width']*0.5
+        end_y=self.window_size['height']*0.99
         self.driver.swipe(start_x,start_y,end_x,end_y,duration)
 
     def get_element(self,element:Element_Info)->WebElement:
