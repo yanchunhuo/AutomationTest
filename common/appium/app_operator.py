@@ -4,7 +4,7 @@
 # @description 
 # @github https://github.com/yanchunhuo
 # @created 2018-01-19T13:47:34.201Z+08:00
-# @last-modified 2023-04-24T16:23:10.640Z+08:00
+# @last-modified 2023-04-24T16:32:15.704Z+08:00
 #
 
 from appium.webdriver.common.appiumby import AppiumBy
@@ -45,7 +45,7 @@ class AppOperator:
         # 获取当前窗口大小
         self.window_size=self.get_window_size()
         # 获得当前窗口的位置
-        self.windows_rect=self.get_window_rect()
+        self.window_rect=self.get_window_rect()
 
     def _change_element_to_web_element_type(self,element:Union[Element_Info,WebElement])->WebElement:
         if isinstance(element, Element_Info):
@@ -366,10 +366,10 @@ class AppOperator:
         top = web_element.location['y']
         right = web_element.location['x'] + web_element.size['width']
         bottom = web_element.location['y'] + web_element.size['height']
-        window_left=self.windows_rect['x']
-        window_top=self.windows_rect['y']
-        window_right=left+self.windows_rect['width']
-        window_bottom=top+self.windows_rect['height']
+        window_left=self.window_rect['x']
+        window_top=self.window_rect['y']
+        window_right=left+self.window_rect['width']
+        window_bottom=top+self.window_rect['height']
         # 进行屏幕截图
         image_file_name = DateTimeTool.getNowTime('%Y%m%d%H%M%S%f_') + '%s.png'%image_file_name
         if not os.path.exists('output/tmp/app_ui/'):
