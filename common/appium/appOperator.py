@@ -5,6 +5,7 @@
 
 from appium.webdriver.common.touch_action import TouchAction
 from appium.webdriver.common.multi_action import MultiAction
+from appium.webdriver.webdriver import WebDriver
 from appium.webdriver.webelement import WebElement
 from common.dateTimeTool import DateTimeTool
 from common.httpclient.doRequest import DoRequest
@@ -31,7 +32,7 @@ class AppOperator:
     类中的element参数可以有appium.webdriver.webelement.WebElement和pojo.elementInfo.ElementInfo类型
     """
 
-    def __init__(self,driver,appium_hub):
+    def __init__(self,driver:WebDriver,appium_hub):
         self._doRequest=DoRequest(appium_hub)
         self._doRequest.setHeaders({'Content-Type':'application/json'})
         self._driver=driver
