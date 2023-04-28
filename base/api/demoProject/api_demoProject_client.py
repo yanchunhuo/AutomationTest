@@ -15,9 +15,9 @@ class API_DemoProject_Client(object):
             cls.__instance=object.__new__(cls)
         return cls.__instance
 
-    def __init__(self):
+    def __init__(self,config_file_path:str=None,env:str=None):
         if self.__inited is None:
-            self.demoProjectConfig=API_DemoProject_Read_Config().config
+            self.demoProjectConfig=API_DemoProject_Read_Config(config_file_path,env).config
             self.demoProjectDBClients=API_DemoProject_DB_Clients()
             self.doRequest=DoRequest(self.demoProjectConfig.url)
 
