@@ -4,7 +4,7 @@
 # @description 
 # @github https://github.com/yanchunhuo
 # @created 2022-11-07T13:47:34.050Z+08:00
-# @last-modified 2023-04-28T11:40:52.654Z+08:00
+# @last-modified 2023-04-28T13:33:22.367Z+08:00
 #
 
 from appium import webdriver
@@ -52,7 +52,7 @@ class APP_UI_Android_demoProject_Client(object):
         elif is_need_kill_app:
             # appium启动是非重置或者非第一次appium启动，则要进行重启进程
             if self.__is_first==False or self.noReset==True:
-                self.app_operator.start_activity(self.current_desired_capabilities['appPackage'],self.current_desired_capabilities['appActivity'])
+                self.app_operator.start_activity('com.moji.mjweather','com.moji.mjweather.MainActivity')
     
         self.__is_first=False
 
