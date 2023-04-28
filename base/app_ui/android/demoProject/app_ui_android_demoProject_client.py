@@ -20,23 +20,33 @@ class APP_UI_Android_demoProject_Client(object):
             cls.__instance=object.__new__(cls)
         return cls.__instance
 
-    def __init__(self,is_need_reset_app=False):
+    def __init__(self,is_need_reset_app=False,is_need_kill_app=False):
         if self.__inited is None:
-
+            self.__inited=True
+            self.__is_first=True
             self.config = Read_APP_UI_Config().app_ui_config
             self.device_info=FileTool.readJsonFromFile('config/app_ui_tmp/'+str(os.getppid()))
             self.demoProject_config = APP_UI_Android_DemoProject_Read_Config('config/demoProject/%s'%self.device_info['app_ui_config']).config
             self.current_desired_capabilities = FileTool.readJsonFromFile('config/app_ui_tmp/' + str(os.getppid()) + '_current_desired_capabilities')
+            self.fullReset = self.current_desired_capabilities['fullReset']
+            self.noReset = self.current_desired_capabilities['noReset']
             self._appium_hub='http://'+self.device_info['server_ip']+':%s/wd/hub'%self.device_info['server_port']
             self._init(self.demoProject_config.init)
             self._delete_last_device_session(self.device_info['device_desc'])
             self.driver = webdriver.Remote(self._appium_hub, desired_capabilities=self.current_desired_capabilities)
             self._save_last_device_session(self.driver.session_id, self.device_info['device_desc'])
             self.appOperator = AppOperator(self.driver,self._appium_hub)
-
-            self.__inited=True
+            
         if is_need_reset_app:
-            self.appOperator.reset_app()
+            # appium启动是非重置或者非第一次appium启动，则要进行重置
+            if self.__is_first==False or self.noReset==True:
+                self.appOperator.reset_app()
+        elif is_need_kill_app:
+            # appium启动是非重置或者非第一次appium启动，则要进行重启进程
+            if self.__is_first==False or self.noReset==True:
+                self.appOperator.start_activity(self.current_desired_capabilities['appPackage'],self.current_desired_capabilities['appActivity'])
+    
+        self.__is_first=False
 
     def _init(self,is_init=False):
         print('初始化android基础数据......')

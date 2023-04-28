@@ -30,6 +30,7 @@ class APP_UI_Devices_Info:
         self.apps_urls = []
         self.noSigns = []
         self.fullResets = []
+        self.noResets = []
 
     def get_devices_info(self):
         devices_info = []
@@ -112,6 +113,11 @@ class APP_UI_Devices_Info:
                     if 'true' == self.fullResets[i].strip().lower():
                         fullReset = True
                     desired_capabilities.update({'fullReset': fullReset})
+                if len(self.noResets):
+                    noReset = False
+                    if 'true' == self.noResets[i].strip().lower():
+                        noReset = True
+                    desired_capabilities.update({'noReset': noReset})
                 a_devices_desired_capabilities.append(desired_capabilities)
             device_info.update({'capabilities': a_devices_desired_capabilities})
             # 完成一台设备构建
