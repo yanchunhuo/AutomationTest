@@ -44,7 +44,7 @@ class APP_UI_Android_demoProject_Client(object):
         elif is_need_kill_app:
             # appium启动是非重置或者非第一次appium启动，则要进行重启进程
             if self.__is_first==False or self.noReset==True:
-                self.appOperator.start_activity(self.current_desired_capabilities['appPackage'],self.current_desired_capabilities['appActivity'])
+                self.appOperator.start_activity('com.moji.mjweather','com.moji.mjweather.MainActivity')
     
         self.__is_first=False
 
