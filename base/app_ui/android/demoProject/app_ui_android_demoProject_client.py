@@ -4,7 +4,7 @@
 # @description 
 # @github https://github.com/yanchunhuo
 # @created 2022-11-07T13:47:34.050Z+08:00
-# @last-modified 2023-02-10T16:22:25.306Z+08:00
+# @last-modified 2023-04-28T11:40:52.654Z+08:00
 #
 
 from appium import webdriver
@@ -27,9 +27,10 @@ class APP_UI_Android_demoProject_Client(object):
             cls.__instance=object.__new__(cls)
         return cls.__instance
 
-    def __init__(self,is_need_reset_app=False):
+    def __init__(self,is_need_reset_app=False,is_need_kill_app=False):
         if self.__inited is None:
-
+            self.__inited=True
+            self.__is_first=True
             self.config = Read_APP_UI_Config().app_ui_config
             self.device_info=FileTool.readJsonFromFile('config/app_ui_tmp/'+str(os.getppid()))
             self.demoProject_config = APP_UI_Android_DemoProject_Read_Config('config/demoProject/%s'%self.device_info['app_ui_config']).config
@@ -44,9 +45,16 @@ class APP_UI_Android_demoProject_Client(object):
             self._save_last_device_session(self.driver.session_id, self.device_info['device_desc'])
             self.app_operator = AppOperator(self.driver,self._appium_hub)
 
-            self.__inited=True
         if is_need_reset_app:
-            self.app_operator.reset_app()
+            # appium启动是非重置或者非第一次appium启动，则要进行重置
+            if self.__is_first==False or self.noReset==True:
+                self.app_operator.reset_app()
+        elif is_need_kill_app:
+            # appium启动是非重置或者非第一次appium启动，则要进行重启进程
+            if self.__is_first==False or self.noReset==True:
+                self.app_operator.start_activity(self.current_desired_capabilities['appPackage'],self.current_desired_capabilities['appActivity'])
+    
+        self.__is_first=False
 
     def _init(self,is_init=False):
         print('初始化android基础数据......')

@@ -56,4 +56,5 @@ class Read_APP_UI_Devices_Info(object):
         devices_info.apps_urls = get_lambda(config.get('devices_info', 'apps_urls', fallback=''))
         devices_info.noSigns = get_lambda(config.get('devices_info','noSigns',fallback=''))
         devices_info.fullResets = get_lambda(config.get('devices_info', 'fullResets', fallback=''))
+        devices_info.noResets = get_lambda(config.get('devices_info', 'noResets', fallback=''))
         return devices_info.get_devices_info()

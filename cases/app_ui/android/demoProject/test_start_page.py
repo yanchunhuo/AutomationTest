@@ -8,7 +8,7 @@ import logging
 import pytest
 class TestStartPage:
     def setup_class(self):
-        self.demoProjectClient = APP_UI_Android_demoProject_Client(is_need_reset_app=True)
+        self.demoProjectClient = APP_UI_Android_demoProject_Client(is_need_kill_app=True)
         self.startPage=StartPage(self.demoProjectClient.app_operator)
 
     @pytest.fixture(autouse=True)

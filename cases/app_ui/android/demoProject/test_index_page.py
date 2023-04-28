@@ -9,7 +9,7 @@ import time
 
 class TestIndexPage:
     def setup_class(self):
-        self.demoProjectClient = APP_UI_Android_demoProject_Client(is_need_reset_app=True)
+        self.demoProjectClient = APP_UI_Android_demoProject_Client(is_need_kill_app=True)
         self.startPage=StartPage(self.demoProjectClient.app_operator)
         self.startPage.click_start()
         self.indexPage=self.startPage.choice_a_city()
