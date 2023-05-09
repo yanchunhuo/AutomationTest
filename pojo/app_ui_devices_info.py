@@ -12,6 +12,7 @@ class APP_UI_Devices_Info:
         self.server_ports = []
         self.server_ips = []
         self.system_auth_alert_labels = []
+        self.is_enable_system_auth_check = []
         self.udids = []
         self.platformNames = []
         self.automationNames = []
@@ -46,6 +47,7 @@ class APP_UI_Devices_Info:
             device_info.update({'server_ip': self.server_ips[i].strip()})
             if self.system_auth_alert_labels:
                 device_info.update({'system_auth_alert_label': self.system_auth_alert_labels[i]})
+            device_info.update({'is_enable_system_auth_check': self.is_enable_system_auth_check[i]})
             # 构建desired_capabilities
             a_device_capabilities_num = 0
             a_device_appActivitys = []
