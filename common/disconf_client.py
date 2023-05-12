@@ -4,7 +4,7 @@
 from common.httpclient.doRequest import DoRequest
 import ujson
 
-class Disconf_Client:
+class DisconfClient:
     def __init__(self,url:str,username:str,password:str,is_verify_ssl_cer=True):
         self.url=url
         self.username=username
