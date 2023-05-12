@@ -2,7 +2,7 @@
 # @author yanchunhuo
 # @description 
 # @created 2021-04-25T15:04:47.417Z+08:00
-# @last-modified 2021-09-06T19:04:38.869Z+08:00
+# @last-modified 2023-05-12T11:11:53.394Z+08:00
 # github https://github.com/yanchunhuo
 from common.httpclient.doRequest import DoRequest
 from urllib.parse import urljoin
@@ -11,7 +11,7 @@ import ujson
 """
 本工具支持gitlab的API版本为V4
 """
-class Gitlab_Client:
+class GitlabClient:
     def __init__(self,url:str,access_token:str):
         self.url=url
         self.access_token=access_token
