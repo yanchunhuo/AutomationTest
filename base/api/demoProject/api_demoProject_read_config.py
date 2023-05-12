@@ -26,8 +26,8 @@ class API_DemoProject_Read_Config(object):
         if self.__inited is None:
             if config_file_path is None:
                 if env is None:
-                    if os.path.exists('config/api_tmp/env.json'):
-                        env_info=FileTool.readJsonFromFile('config/api_tmp/env.json')
+                    if os.path.exists('config/tmp/env.json'):
+                        env_info=FileTool.readJsonFromFile('config/tmp/env.json')
                         env=env_info['env']
                     else:
                         env='test'
