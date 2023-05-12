@@ -4,7 +4,7 @@
 # @description 
 # @github https://github.com/yanchunhuo
 # @created 2021-04-13T10:59:57.605Z+08:00
-# @last-modified 2023-04-28T14:31:57.172Z+08:00
+# @last-modified 2023-05-12T11:04:36.647Z+08:00
 #
 from common.fileTool import FileTool
 from pojo.api.demoProject.demoProjectConfig import DemoProjectConfig
@@ -31,8 +31,8 @@ class API_DemoProject_Read_Config(object):
         if self.__inited is None:
             if config_file_path is None:
                 if env is None:
-                    if os.path.exists('config/api_tmp/env.json'):
-                        env_info=FileTool.readJsonFromFile('config/api_tmp/env.json')
+                    if os.path.exists('config/tmp/env.json'):
+                        env_info=FileTool.readJsonFromFile('config/tmp/env.json')
                         env=env_info['env']
                     else:
                         env='test'

@@ -4,7 +4,7 @@
 # @description 
 # @github https://github.com/yanchunhuo
 # @created 2021-04-13T10:59:18.120Z+08:00
-# @last-modified 2023-03-27T17:25:02.909Z+08:00
+# @last-modified 2023-05-12T11:04:28.256Z+08:00
 #
 from common.dateTimeTool import DateTimeTool
 from common.fileTool import FileTool
@@ -50,13 +50,13 @@ if __name__=='__main__':
     if args.dir:
         dir=args.dir
     # 存储要运行的环境信息
-    if os.path.exists('config/api_tmp'):
-        FileTool.truncateDir('config/api_tmp/')
+    if os.path.exists('config/tmp'):
+        FileTool.truncateDir('config/tmp/')
     else:
-        os.mkdir('config/api_tmp')
+        os.mkdir('config/tmp')
     if args.env:
         env=args.env
-        FileTool.writeObjectIntoFile({'env':args.env},'config/api_tmp/env.json')
+        FileTool.writeObjectIntoFile({'env':args.env},'config/tmp/env.json')
     # 判断关键字参数
     if args.keyword:
         pytest_execute_params.append('-k')
