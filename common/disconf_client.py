@@ -5,16 +5,13 @@ from common.httpclient.doRequest import DoRequest
 import ujson
 
 class DisconfClient:
-    def __init__(self,url:str,username:str,password:str,is_verify_ssl_cer=True):
+    def __init__(self,url:str,is_verify_ssl_cer=True):
         self.url=url
-        self.username=username
-        self.password=password
         self.doRequest=DoRequest(self.url)
         self.doRequest.setVerify(is_verify_ssl_cer)
-        self._login()
 
-    def _login(self):
-        params = {'name': 'admin_test', 'password': 'Pwddistest', 'remember': '1'}
+    def login(self,username:str,password:str):
+        params = {'name': username, 'password': password, 'remember': '1'}
         httpResponseResult=self.doRequest.post_with_form('/api/account/signin',params)
         return ujson.loads(httpResponseResult.body)
 
