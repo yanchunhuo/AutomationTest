@@ -5,7 +5,7 @@
 import base64
 import hashlib
 
-class Base_Encrypt_Tool:
+class BaseEncryptTool:
     
     @classmethod
     def md5Encode(cls, text):
