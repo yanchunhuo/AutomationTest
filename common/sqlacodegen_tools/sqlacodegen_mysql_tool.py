@@ -3,12 +3,12 @@
 # @author yanchunhuo
 # @description 
 # @created 2022-07-21T17:00:26.678Z+08:00
-# @last-modified 2022-07-25T19:57:33.428Z+08:00
+# @last-modified 2024-02-03T11:32:27.160Z+08:00
 # github https://github.com/yanchunhuo
 import platform
 import subprocess
 
-class Sqlacodegen_Mysql_Tool:
+class SqlacodegenMysqlTool:
     def __init__(self,host:str=None,port:str=None,username:str=None,password:str=None,db:str=None,driver_type='pymysql') -> None:
         """_summary_
 

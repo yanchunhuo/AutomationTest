@@ -7,8 +7,8 @@
 # @last-modified 2022-11-14T10:52:40.462Z+08:00
 #
 
-from common.dateTimeTool import DateTimeTool
-from common.fileTool import FileTool
+from common.date_time_tool import DateTimeTool
+from common.file_tool import FileTool
 from mitmproxy.http import HTTPFlow
 import os
 

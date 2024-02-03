@@ -1,11 +1,14 @@
-# -*- coding:utf-8 -*-
-# 作者 yanchunhuo
-# 创建时间 2018/01/19 22:36
+#
+# read_api_config.py
+# @author yanchunhuo
+# @description 
+# @created 2023-09-25T09:31:03.633Z+08:00
+# @last-modified 2024-02-03T10:33:15.738Z+08:00
 # github https://github.com/yanchunhuo
 
 from ruamel import yaml
 
-class ReadWebUiConfig(object):
+class ReadAPIConfig(object):
     __instance=None
     __inited=None
 
@@ -16,5 +19,6 @@ class ReadWebUiConfig(object):
 
     def __init__(self):
         if self.__inited is None:
-            self.web_ui_config=yaml.safe_load(open('config/web_ui_config.yaml','r',encoding='utf-8'))
+            self.config=yaml.safe_load(open('config/api_config.yaml','r',encoding='utf-8'))
+            
             self.__inited=True

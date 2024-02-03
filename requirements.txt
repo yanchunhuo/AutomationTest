@@ -1,26 +1,30 @@
 # Must be installed first
+bcrypt==4.0.1 # Python>=3.6;The mitmproxy depends on, and the installation of a specific version is compatible
 markupsafe==2.0.1 # Python>=3.6;The mitmproxy depends on, and the installation of a specific version is compatible
 # Base libs
 Appium-Python-Client==2.7.1 # Python3.7~3.9
+beautifulsoup4==4.12.2 # Python>=3.6
 JPype1==1.4.1 # Python3.7~3.10
 Js2Py==0.74 # Python3
+lxml==4.9.3 # Python>=3.6
 mitmproxy==5.3.0 # Python3.6~3.9
 opencv-python==4.6.0.66 # Python3.6~3.10
 paramiko==2.11.1 # Python3.6~3.9
 pycryptodome==3.15.0 # Python3.5~3.10
 PyHamcrest==2.0.4 # Python3.6~3.11
 python-binary-memcached==0.31.1 # Python3.4~3.9
+PyJWT==2.8.0 # Python>=3.7
 requests==2.28.1 # Python3.7~3.11
 scikit-image==0.19.3 # Python3.7~3.10
 selenium==4.6.0 # Python3.7~3.9
 ujson==5.5.0 # Python3.7~3.11
 # About pytest
 pytest==7.2.0 # Python3.7~3.10
-pytest-xdist==3.0.2 # Python3.6~3.10
+pytest-xdist==3.2.1 # Python3.6~3.10
 allure-pytest==2.11.1 # Python3
 pytest-rerunfailures==10.2 # Python3.6~3.10
 # About database
 PyMySQL==1.0.2 # Python3.6~3.9
 redis==4.3.4 # Python3.6~3.11
-sqlacodegen==3.0.0b3 # Python3.7~3.10
+sqlacodegen==3.0.0rc3 # Python3.7~3.10
 SQLAlchemy==1.4.44 # Python3.6~3.11

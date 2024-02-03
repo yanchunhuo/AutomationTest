@@ -1,8 +1,8 @@
 # 作者 yanchunhuo
 # 创建时间 2018/01/19 22:36
 # github https://github.com/yanchunhuo
-from common.dateTimeTool import DateTimeTool
-from common.fileTool import FileTool
+from common.date_time_tool import DateTimeTool
+from common.file_tool import FileTool
 import os
 import subprocess
 import platform

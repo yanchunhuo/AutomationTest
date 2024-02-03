@@ -12,8 +12,8 @@ from appium.options.common.base import AppiumOptions
 from base.app_ui.android.demoProject.app_ui_android_demoProject_read_config import APP_UI_Android_DemoProject_Read_Config
 from base.read_app_ui_config import Read_APP_UI_Config
 from common.appium.app_operator import AppOperator
-from common.fileTool import FileTool
-from common.httpclient.doRequest import DoRequest
+from common.file_tool import FileTool
+from common.httpclient.do_request import DoRequest
 from init.app_ui.android.demoProject.demoProjectInit import DemoProjectInit
 import os
 

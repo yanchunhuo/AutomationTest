@@ -1,0 +1,28 @@
+# 是否需要初始化maven，需要执行Java代码，则需启用
+is_init_maven: False
+
+server:
+  selenium_hub: http://127.0.0.1:4444
+
+browser:
+  # 需要测试的浏览器,支持:edge、chrome、firefox、safari
+  # 格式test_browsers=firefox||chrome||edge
+  test_browsers: edge
+  # 当前测试的浏览器,该选项由脚本动态管理,可不填写
+  current_browser: edge
+  # 浏览器文件下载存放的目录,目录路径应该在浏览器所在服务器中存在
+  download_dir: /root/Downloads/
+  # chrome浏览器是否使用无头浏览器模式
+  is_chrome_headless: false
+  # firefox浏览器是否使用无头浏览器模式
+  is_firefox_headless: false
+  # edge浏览器是否使用无头浏览器模式
+  is_edge_headless: false
+  # 设置浏览器代理服务器地址，无则放空
+  proxy_host: 127.0.0.1
+  # 设置浏览器代理服务器端口，无则放空
+  proxy_port: 8088
+
+test:
+  # 测试并发数,由于ie浏览器并发下经常定位不到,故测试ie浏览器时建议设置为1
+  test_workers: 1

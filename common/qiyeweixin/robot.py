@@ -7,8 +7,8 @@
 # https://developer.work.weixin.qq.com/document/path/91770
 
 
-from common.dateTimeTool import DateTimeTool
-from common.httpclient.doRequest import DoRequest
+from common.date_time_tool import DateTimeTool
+from common.httpclient.do_request import DoRequest
 import ujson
 
 class Robot:

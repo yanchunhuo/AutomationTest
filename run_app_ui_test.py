@@ -4,11 +4,10 @@
 # github https://github.com/yanchunhuo
 from base.read_app_ui_config import Read_APP_UI_Config
 from base.read_app_ui_devices_info import Read_APP_UI_Devices_Info
-from common.httpclient.doRequest import DoRequest
-from common.dateTimeTool import DateTimeTool
-from common.fileTool import FileTool
+from common.httpclient.do_request import DoRequest
+from common.date_time_tool import DateTimeTool
+from common.file_tool import FileTool
 from common.custom_multiprocessing import Custom_Pool
-from common.pytest import deal_pytest_ini_file
 from init.java.java_maven_init import java_maven_init
 from init.httpserver.http_server_init import http_server_init
 from init.mitmproxy.mitmproxy_init import mitmproxy_init
@@ -107,9 +106,6 @@ if __name__=='__main__':
 
     if not args.test_type:
         sys.exit('请指定测试类型,查看帮助:python run_app_ui_test.py --help')
-
-    # 处理pytest文件
-    deal_pytest_ini_file()
 
     # 初始化java依赖的libs
     java_maven_init()

@@ -3,13 +3,13 @@
 # @author yanchunhuo
 # @description 
 # @created 2022-07-25T19:23:33.845Z+08:00
-# @last-modified 2022-07-25T19:57:36.776Z+08:00
+# @last-modified 2024-02-03T11:32:43.549Z+08:00
 # github https://github.com/yanchunhuo
 
 import platform
 import subprocess
 
-class Sqlacodegen_Sqlite_Tool:
+class SqlacodegenSqliteTool:
     def __init__(self,file_path) -> None:
         """_summary_
 

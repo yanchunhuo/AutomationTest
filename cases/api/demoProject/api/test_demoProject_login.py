@@ -2,7 +2,7 @@
 # 作者 yanchunhuo
 # 创建时间 2018/01/19 22:36
 # github https://github.com/yanchunhuo
-from common.dateTimeTool import DateTimeTool
+from common.date_time_tool import DateTimeTool
 from common.hamcrest.hamcrest import assert_that
 from base.api.demoProject.api_demoProject_client import API_DemoProject_Client
 import logging

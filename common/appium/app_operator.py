@@ -4,7 +4,7 @@
 # @description 
 # @github https://github.com/yanchunhuo
 # @created 2018-01-19T13:47:34.201Z+08:00
-# @last-modified 2023-04-24T16:32:15.704Z+08:00
+# @last-modified 2024-02-03T11:21:32.780Z+08:00
 #
 
 from appium.webdriver.common.appiumby import AppiumBy
@@ -12,11 +12,11 @@ from appium.webdriver.common.touch_action import TouchAction
 from appium.webdriver.common.multi_action import MultiAction
 from appium.webdriver.webdriver import WebDriver
 from appium.webdriver.webelement import WebElement
-from common.dateTimeTool import DateTimeTool
-from common.httpclient.doRequest import DoRequest
-from page_objects.create_element import Create_Element
-from page_objects.wait_type import Wait_Type as Wait_By
-from page_objects.element_info import Element_Info
+from common.date_time_tool import DateTimeTool
+from common.httpclient.do_request import DoRequest
+from page_objects.create_element import CreateElement
+from page_objects.wait_type import WaitType as Wait_By
+from page_objects.element_info import ElementInfo
 from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.wait import WebDriverWait
@@ -47,8 +47,8 @@ class AppOperator:
         # 获得当前窗口的位置
         self.window_rect=self.get_window_rect()
 
-    def _change_element_to_web_element_type(self,element:Union[Element_Info,WebElement])->WebElement:
-        if isinstance(element, Element_Info):
+    def _change_element_to_web_element_type(self,element:Union[ElementInfo,WebElement])->WebElement:
+        if isinstance(element, ElementInfo):
             web_element=self.get_element(element)
         elif isinstance(element,WebElement):
             web_element=element
@@ -65,34 +65,34 @@ class AppOperator:
     def get_title(self)->str:
         return self.driver.title
 
-    def get_text(self,element:Union[Element_Info,WebElement])->str:
+    def get_text(self,element:Union[ElementInfo,WebElement])->str:
         web_element=self._change_element_to_web_element_type(element)
         if web_element:
             return web_element.text
         
-    def get_tag_name(self,element:Union[Element_Info,WebElement])->str:
+    def get_tag_name(self,element:Union[ElementInfo,WebElement])->str:
         web_element=self._change_element_to_web_element_type(element)
         if web_element:
             return web_element.tag_name
 
-    def click(self,element:Union[Element_Info,WebElement])->None:
+    def click(self,element:Union[ElementInfo,WebElement])->None:
         """点击元素中心点
             1、如果元素被遮挡，则返回点击中断错误
             2、如果元素在视图窗口外，则返回元素不可交互错误
             注：并非所有驱动程序都会自动将元素滚动到视图中，并且可能需要滚动到以与其交互
 
         Args:
-            element (Union[Element_Info,WebElement]): _description_
+            element (Union[ElementInfo,WebElement]): _description_
         """
         web_element=self._change_element_to_web_element_type(element)
         if web_element:
             web_element.click()
         
-    def click_web_element(self,element:Union[Element_Info,WebElement])->None:
+    def click_web_element(self,element:Union[ElementInfo,WebElement])->None:
         """由于混合应用存在点击无效的情况，故混合应用的点击采用selenium的tab操作确保能够正常点击
 
         Args:
-            element (Union[Element_Info,WebElement]): _description_
+            element (Union[ElementInfo,WebElement]): _description_
         """
         
         web_element=self._change_element_to_web_element_type(element)
@@ -101,42 +101,42 @@ class AppOperator:
             actions.click(web_element)
             actions.tap(web_element).perform()
 
-    def submit(self,element:Union[Element_Info,WebElement])->None:
+    def submit(self,element:Union[ElementInfo,WebElement])->None:
         web_element=self._change_element_to_web_element_type(element)
         if web_element:
             web_element.submit()
 
-    def send_text(self,element:Union[Element_Info,WebElement],text:str)->None:
+    def send_text(self,element:Union[ElementInfo,WebElement],text:str)->None:
         web_element=self._change_element_to_web_element_type(element)
         if web_element:
             web_element.clear()
             web_element.send_keys(text)
     
-    def clear_text(self,element:Union[Element_Info,WebElement])->None:
+    def clear_text(self,element:Union[ElementInfo,WebElement])->None:
         web_element=self._change_element_to_web_element_type(element)
         if web_element:
             web_element.clear()
 
-    def is_displayed(self,element:Union[Element_Info,WebElement])->bool:
+    def is_displayed(self,element:Union[ElementInfo,WebElement])->bool:
         web_element=self._change_element_to_web_element_type(element)
         if web_element:
             return web_element.is_displayed()
 
-    def is_enabled(self,element:Union[Element_Info,WebElement])->bool:
+    def is_enabled(self,element:Union[ElementInfo,WebElement])->bool:
         web_element=self._change_element_to_web_element_type(element)
         if web_element:
             return web_element.is_enabled()
 
-    def is_selected(self,element:Union[Element_Info,WebElement])->bool:
+    def is_selected(self,element:Union[ElementInfo,WebElement])->bool:
         web_element=self._change_element_to_web_element_type(element)
         if web_element:
             return web_element.is_selected()
 
-    def select_dropDownBox_by_value(self,element:Union[Element_Info,WebElement],value:str)->None:
+    def select_dropDownBox_by_value(self,element:Union[ElementInfo,WebElement],value:str)->None:
         """适用单选下拉框
 
         Args:
-            element (Union[Element_Info,WebElement]): _description_
+            element (Union[ElementInfo,WebElement]): _description_
             value (str): _description_
         """
         web_element=self._change_element_to_web_element_type(element)
@@ -144,11 +144,11 @@ class AppOperator:
             web_element = Select(web_element)
             web_element.select_by_value(value)
 
-    def select_dropDownBox_by_text(self,element:Union[Element_Info,WebElement],text:str)->None:
+    def select_dropDownBox_by_text(self,element:Union[ElementInfo,WebElement],text:str)->None:
         """适用单选下拉框
 
         Args:
-            element (Union[Element_Info,WebElement]): _description_
+            element (Union[ElementInfo,WebElement]): _description_
             text (str): _description_
         """
         web_element=self._change_element_to_web_element_type(element)
@@ -156,7 +156,7 @@ class AppOperator:
             web_element = Select(web_element)
             web_element.select_by_visible_text(text)
 
-    def select_dropDownBox_by_index(self,element:Union[Element_Info,WebElement],index:int)->None:
+    def select_dropDownBox_by_index(self,element:Union[ElementInfo,WebElement],index:int)->None:
         """适用单选下拉框,下标从0开始
 
         Args:
@@ -168,11 +168,11 @@ class AppOperator:
             web_element = Select(web_element)
             web_element.select_by_index(index)
 
-    def select_dropDownBox_by_values(self,element:Union[Element_Info,WebElement],values:List[str])->None:
+    def select_dropDownBox_by_values(self,element:Union[ElementInfo,WebElement],values:List[str])->None:
         """适用多选下拉框
 
         Args:
-            element (Union[Element_Info,WebElement]): _description_
+            element (Union[ElementInfo,WebElement]): _description_
             values (List[str]): _description_
         """
         web_element=self._change_element_to_web_element_type(element)
@@ -182,11 +182,11 @@ class AppOperator:
             for value in values:
                 web_element.select_by_value(value)
 
-    def select_dropDownBox_by_texts(self,element:Union[Element_Info,WebElement],texts:List[str])->None:
+    def select_dropDownBox_by_texts(self,element:Union[ElementInfo,WebElement],texts:List[str])->None:
         """适用多选下拉框
 
         Args:
-            element (Union[Element_Info,WebElement]): _description_
+            element (Union[ElementInfo,WebElement]): _description_
             texts (List[str]): _description_
         """
         web_element=self._change_element_to_web_element_type(element)
@@ -196,11 +196,11 @@ class AppOperator:
             for text in texts:
                 web_element.select_by_visible_text(text)
 
-    def select_dropDownBox_by_indexs(self,element:Union[Element_Info,WebElement],indexs:List[int])->None:
+    def select_dropDownBox_by_indexs(self,element:Union[ElementInfo,WebElement],indexs:List[int])->None:
         """适用多选下拉框，下标从0开始
 
         Args:
-            element (Union[Element_Info,WebElement]): _description_
+            element (Union[ElementInfo,WebElement]): _description_
             indexs (List[int]): _description_
         """
         web_element=self._change_element_to_web_element_type(element)
@@ -268,12 +268,12 @@ class AppOperator:
         alert=self.driver.switch_to.alert
         return alert.text
     
-    def scroll_to_show(self,element:Union[Element_Info,WebElement],is_top_align:bool=True)->None:
+    def scroll_to_show(self,element:Union[ElementInfo,WebElement],is_top_align:bool=True)->None:
         """仅适用于web,滚动页面直至元素可见
         https://appium.io/docs/en/commands/web/execute/index.html
         
         Args:
-            element (Union[Element_Info,WebElement]): _description_
+            element (Union[ElementInfo,WebElement]): _description_
             is_top_align (bool, optional): 是否元素与窗口顶部对齐，否则与窗口底部对齐. Defaults to True.
         """
         web_element = self._change_element_to_web_element_type(element)
@@ -290,11 +290,11 @@ class AppOperator:
     def refresh(self)->None:
         self.driver.refresh()
 
-    def upload_file(self,element:Union[Element_Info,WebElement],filePath)->None:
+    def upload_file(self,element:Union[ElementInfo,WebElement],filePath)->None:
         """仅适用于web，适用于元素为input且type="file"的文件上传
 
         Args:
-            element (Union[Element_Info,WebElement]): _description_
+            element (Union[ElementInfo,WebElement]): _description_
             filePath (_type_): _description_
         """
         web_element=self._change_element_to_web_element_type(element)
@@ -306,20 +306,20 @@ class AppOperator:
         """
         self.driver.switch_to.parent_frame()
 
-    def get_property(self,element:Union[Element_Info,WebElement],property_name:str)->str:
+    def get_property(self,element:Union[ElementInfo,WebElement],property_name:str)->str:
         web_element=self._change_element_to_web_element_type(element)
         if web_element:
             return web_element.get_property(property_name)
 
-    def get_attribute(self,element:Union[Element_Info,WebElement],attribute_name:str)->str:
+    def get_attribute(self,element:Union[ElementInfo,WebElement],attribute_name:str)->str:
         web_element=self._change_element_to_web_element_type(element)
         if web_element:
             return web_element.get_attribute(attribute_name)
 
-    def get_element_outer_html(self,element:Union[Element_Info,WebElement])->str:
+    def get_element_outer_html(self,element:Union[ElementInfo,WebElement])->str:
         return self.get_attribute(element,'outerHTML')
 
-    def get_element_inner_html(self, element:Union[Element_Info,WebElement])->str:
+    def get_element_inner_html(self, element:Union[ElementInfo,WebElement])->str:
         return self.get_attribute(element,'innerHTML')
 
     def get_page_source(self)->str:
@@ -330,11 +330,11 @@ class AppOperator:
         """
         return self.driver.page_source
 
-    def get_element_rgb(self,element:Union[Element_Info,WebElement],x_percent:float=0,y_percent:float=0)->list:
+    def get_element_rgb(self,element:Union[ElementInfo,WebElement],x_percent:float=0,y_percent:float=0)->list:
         """获得元素上的rgb值,默认返回元素左上角坐标轴
 
         Args:
-            element (Union[Element_Info,WebElement]): _description_
+            element (Union[ElementInfo,WebElement]): _description_
             x_percent (float, optional): x轴百分比位置,范围0~1. Defaults to 0.
             y_percent (float, optional): y轴百分比位置,范围0~1. Defaults to 0.
 
@@ -351,11 +351,11 @@ class AppOperator:
             pix_y=pix_y-1
         return list(ndarray[pix_y,pix_x])
 
-    def save_element_image(self, element:Union[Element_Info,WebElement], image_file_name:str)->str:
+    def save_element_image(self, element:Union[ElementInfo,WebElement], image_file_name:str)->str:
         """_summary_
 
         Args:
-            element (Union[Element_Info,WebElement]): _description_
+            element (Union[ElementInfo,WebElement]): _description_
             image_file_name (str): _description_
 
         Returns:
@@ -386,11 +386,11 @@ class AppOperator:
         imsave(image_file_name,new_ndarray)
         return image_file_name
 
-    def get_captcha(self,element:Union[Element_Info,WebElement],language:str='eng')->str:
+    def get_captcha(self,element:Union[ElementInfo,WebElement],language:str='eng')->str:
         """识别图片验证码，如需使用该方法必须配置jpype1、字体库等依赖环境
     
         Args:
-            element (Union[Element_Info,WebElement]): 验证码图片元素
+            element (Union[ElementInfo,WebElement]): 验证码图片元素
             language (str, optional): eng:英文,chi_sim:中文. Defaults to 'eng'.
 
         Returns:
@@ -404,17 +404,17 @@ class AppOperator:
         captcha=captcha.replace(' ','')
         return captcha
 
-    def get_table_data(self,element:Union[Element_Info,WebElement],data_type:str='text')->List[List[str]]:
+    def get_table_data(self,element:Union[ElementInfo,WebElement],data_type:str='text')->List[List[str]]:
         """以二维数组返回表格每一行的每一列的数据[[row1][row2][colume1,clume2]]
 
         Args:
-            element (Union[Element_Info,WebElement]): _description_
+            element (Union[ElementInfo,WebElement]): _description_
             data_type (str, optional): text-返回表格文本内容,html-返回表格html内容,webElement-返回表格元素. Defaults to 'text'.
 
         Returns:
             List[List[str]]: _description_
         """
-        if isinstance(element, Element_Info):
+        if isinstance(element, ElementInfo):
             # 由于表格定位经常会出现【StaleElementReferenceException: Message: stale element reference: element is not attached to the page document 】异常错误,
             # 解决此异常只需要用显示等待，保证元素存在即可，显示等待类型中visibility_of_all_elements_located有实现StaleElementReferenceException异常捕获,
             # 所以强制设置表格定位元素时使用VISIBILITY_OF
@@ -496,7 +496,7 @@ class AppOperator:
             return False
         if 'android' == platform_name.lower():
             if 'uiautomator2' == automation_name.lower():
-                toast_element = Create_Element.create(AppiumBy.XPATH, ".//*[contains(@text,'%s')]" % text, None,
+                toast_element = CreateElement.create(AppiumBy.XPATH, ".//*[contains(@text,'%s')]" % text, None,
                                                      Wait_By.PRESENCE_OF_ELEMENT_LOCATED, wait_seconds=wait_seconds)
                 try:
                     self.get_element(toast_element)
@@ -901,11 +901,11 @@ class AppOperator:
         data=self.driver.stop_recording_screen()
         allure.attach(name=fileName, body=base64.b64decode(data), attachment_type=allure.attachment_type.MP4)
 
-    def get_element_location(self,element:Union[Element_Info,WebElement])->dict:
+    def get_element_location(self,element:Union[ElementInfo,WebElement])->dict:
         """获得元素在屏幕的位置,x、y坐标为元素左上角
 
         Args:
-            element (Union[Element_Info,WebElement]): _description_
+            element (Union[ElementInfo,WebElement]): _description_
 
         Returns:
             dict: _description_
@@ -914,11 +914,11 @@ class AppOperator:
         if web_element:
             return web_element.location
 
-    def get_element_center_location(self,element:Union[Element_Info,WebElement])->dict:
+    def get_element_center_location(self,element:Union[ElementInfo,WebElement])->dict:
         """获得元素中心的x、y坐标
 
         Args:
-            element (Union[Element_Info,WebElement]): _description_
+            element (Union[ElementInfo,WebElement]): _description_
 
         Returns:
             dict: _description_
@@ -934,12 +934,12 @@ class AppOperator:
             result_y=y+height/2
             return {'x':result_x,'y':result_y}
 
-    def touch_element_left_slide(self,element:Union[Element_Info,WebElement],start_x_percent:float=0.5,start_y_percent:float=0.5,
+    def touch_element_left_slide(self,element:Union[ElementInfo,WebElement],start_x_percent:float=0.5,start_y_percent:float=0.5,
                                  duration:int=500,edge_type:str='element')->None:
         """通过元素宽度、高度的百分比值的位置点击滑动到元素或者屏幕的左边缘
 
         Args:
-            element (Union[Element_Info,WebElement]): _description_
+            element (Union[ElementInfo,WebElement]): _description_
             start_x_percent (float, optional): 相对元素宽度的百分比，范围0~1. Defaults to 0.5.
             start_y_percent (float, optional): 相对元素高度的百分比，范围0~1. Defaults to 0.5.
             duration (float, optional): 毫秒. Defaults to 500.
@@ -970,12 +970,12 @@ class AppOperator:
                 end_y=end_x
             self.driver.swipe(start_x=start_x,start_y=start_y,end_x=end_x,end_y=end_y,duration=duration)
 
-    def touch_element_right_slide(self,element:Union[Element_Info,WebElement],start_x_percent:float=0.5,start_y_percent:float=0.5,
+    def touch_element_right_slide(self,element:Union[ElementInfo,WebElement],start_x_percent:float=0.5,start_y_percent:float=0.5,
                                   duration:int=500,edge_type:str='element')->None:
         """通过元素宽度、高度的百分比值的位置点击滑动到元素或者屏幕的右边缘
 
         Args:
-            element (Union[Element_Info,WebElement]): _description_
+            element (Union[ElementInfo,WebElement]): _description_
             start_x_percent (float, optional): 相对元素宽度的百分比，范围0~1. Defaults to 0.5.
             start_y_percent (float, optional): 相对元素高度的百分比，范围0~1. Defaults to 0.5.
             duration (float, optional): 毫秒. Defaults to 500.
@@ -1005,12 +1005,12 @@ class AppOperator:
                 end_y=end_x
             self.driver.swipe(start_x=start_x,start_y=start_y,end_x=end_x,end_y=end_y,duration=duration)
 
-    def touch_element_up_slide(self,element:Union[Element_Info,WebElement],start_x_percent:float=0.5,start_y_percent:float=0.5,
+    def touch_element_up_slide(self,element:Union[ElementInfo,WebElement],start_x_percent:float=0.5,start_y_percent:float=0.5,
                                duration:int=500,edge_type:str='element')->None:
         """通过元素宽度、高度的百分比值的位置点击滑动到元素或者屏幕的上边缘
         
         Args:
-            element (Union[Element_Info,WebElement]): _description_
+            element (Union[ElementInfo,WebElement]): _description_
             start_x_percent (float, optional): 相对元素宽度的百分比，范围0~1. Defaults to 0.5.
             start_y_percent (float, optional): 相对元素高度的百分比，范围0~1. Defaults to 0.5.
             duration (float, optional): 毫秒. Defaults to 500.
@@ -1040,12 +1040,12 @@ class AppOperator:
                 end_y=end_x
             self.driver.swipe(start_x=start_x,start_y=start_y,end_x=end_x,end_y=end_y,duration=duration)
 
-    def touch_element_down_slide(self,element:Union[Element_Info,WebElement],start_x_percent:float=0.5,start_y_percent:float=0.5,
+    def touch_element_down_slide(self,element:Union[ElementInfo,WebElement],start_x_percent:float=0.5,start_y_percent:float=0.5,
                                  duration:int=500,edge_type:str='element')->None:
         """通过元素宽度、高度的百分比值的位置点击滑动到元素或者屏幕的下边缘
 
         Args:
-            element (Union[Element_Info,WebElement]): _description_
+            element (Union[ElementInfo,WebElement]): _description_
             start_x_percent (float, optional): 相对元素宽度的百分比，范围0~1. Defaults to 0.5.
             start_y_percent (float, optional): 相对元素高度的百分比，范围0~1. Defaults to 0.5.
             duration (float, optional): 毫秒. Defaults to 500.
@@ -1075,14 +1075,14 @@ class AppOperator:
                 end_y=end_x
             self.driver.swipe(start_x=start_x,start_y=start_y,end_x=end_x,end_y=end_y,duration=duration)
 
-    def touch_a_element_to_another_element_slide(self,src_element:Union[Element_Info,WebElement],dst_element:Union[Element_Info,WebElement],
+    def touch_a_element_to_another_element_slide(self,src_element:Union[ElementInfo,WebElement],dst_element:Union[ElementInfo,WebElement],
                                                  src_start_x_percent:float=0.5,src_start_y_percent:float=0.5,dst_end_x_percent:float=0.5,
                                                  dst_end_y_percent:float=0.5,duration:int=500)->None:
         """通过一个元素宽度、高度的百分比值的位置点击滑动到另一个元素宽度、高度的百分比值的位置
 
         Args:
-            src_element (Union[Element_Info,WebElement]): 开始的元素
-            dst_element (Union[Element_Info,WebElement]): 结束的元素
+            src_element (Union[ElementInfo,WebElement]): 开始的元素
+            dst_element (Union[ElementInfo,WebElement]): 结束的元素
             src_start_x_percent (float, optional): 相对元素宽度的百分比，范围0~1. Defaults to 0.5.
             src_start_y_percent (float, optional): 相对元素高度的百分比，范围0~1. Defaults to 0.5.
             dst_end_x_percent (float, optional): 相对元素宽度的百分比，范围0~1. Defaults to 0.5.
@@ -1117,14 +1117,14 @@ class AppOperator:
             end_y=dst_y+dst_height*dst_end_y_percent
             self.driver.swipe(start_x=start_x, start_y=start_y, end_x=end_x, end_y=end_y, duration=duration)
 
-    def touch_a_element_move_to_another_element(self, src_element:Union[Element_Info,WebElement], dst_element:Union[Element_Info,WebElement],
+    def touch_a_element_move_to_another_element(self, src_element:Union[ElementInfo,WebElement], dst_element:Union[ElementInfo,WebElement],
                                                 src_start_x_percent:float=0.5,src_start_y_percent:float=0.5,dst_end_x_percent:float=0.5,
                                                 dst_end_y_percent=0.5,long_press:bool=True,duration:int=0)->None:
         """通过一个元素宽度、高度的百分比值的位置点击移动到另一个元素宽度、高度的百分比值的位置
 
         Args:
-            src_element (Union[Element_Info,WebElement]): 开始的元素
-            dst_element (Union[Element_Info,WebElement]): 结束的元素
+            src_element (Union[ElementInfo,WebElement]): 开始的元素
+            dst_element (Union[ElementInfo,WebElement]): 结束的元素
             src_start_x_percent (float, optional): 相对元素宽度的百分比，范围0~1. Defaults to 0.5.
             src_start_y_percent (float, optional): 相对元素高度的百分比，范围0~1. Defaults to 0.5.
             dst_end_x_percent (float, optional): 相对元素宽度的百分比，范围0~1. Defaults to 0.5.
@@ -1160,15 +1160,15 @@ class AppOperator:
             end_y = dst_y + dst_height * dst_end_y_percent
             self.touch_move_to(start_x, start_y, end_x, end_y, long_press, duration)
 
-    def touch_a_element_drag_to_another_element(self, src_element:Union[Element_Info,WebElement], dst_element:Union[Element_Info,WebElement],
+    def touch_a_element_drag_to_another_element(self, src_element:Union[ElementInfo,WebElement], dst_element:Union[ElementInfo,WebElement],
                                                 src_start_x_percent:float=0.5,src_start_y_percent:float=0.5,dst_end_x_percent:float=0.5,
                                                 dst_end_y_percent:float=0.5, duration:float=0.5)->None:
         """
         【仅适用IOS】通过一个元素宽度、高度的百分比值的位置点击拖拽到另一个元素宽度、高度的百分比值的位置 
 
         Args:
-            src_element (Union[Element_Info,WebElement]): 开始的元素
-            dst_element (Union[Element_Info,WebElement]): 结束的元素
+            src_element (Union[ElementInfo,WebElement]): 开始的元素
+            dst_element (Union[ElementInfo,WebElement]): 结束的元素
             src_start_x_percent (float, optional): 相对元素宽度的百分比，范围0~1. Defaults to 0.5.
             src_start_y_percent (float, optional): 相对元素高度的百分比，范围0~1. Defaults to 0.5.
             dst_end_x_percent (float, optional): 相对元素宽度的百分比，范围0~1. Defaults to 0.5.
@@ -1205,11 +1205,11 @@ class AppOperator:
                                         {"duration": duration, "elementId": None, "fromX": start_x, "fromY": start_y,
                                          "toX": end_x, "toY": end_y})
 
-    def get_element_size_in_pixels(self,element:Union[Element_Info,WebElement])->dict:
+    def get_element_size_in_pixels(self,element:Union[ElementInfo,WebElement])->dict:
         """返回元素的像素大小
 
         Args:
-            element (Union[Element_Info,WebElement]): _description_
+            element (Union[ElementInfo,WebElement]): _description_
 
         Returns:
             dict: _description_
@@ -1218,17 +1218,17 @@ class AppOperator:
         if web_element:
             return web_element.size
         
-    def get_element_rect(self,element:Union[Element_Info,WebElement])->dict:
+    def get_element_rect(self,element:Union[ElementInfo,WebElement])->dict:
         web_element=self._change_element_to_web_element_type(element)
         if web_element:
             return web_element.rect
     
-    def get_element_css_property_value(self,element:Union[Element_Info,WebElement],css_property_name:str)->str:
+    def get_element_css_property_value(self,element:Union[ElementInfo,WebElement],css_property_name:str)->str:
         web_element=self._change_element_to_web_element_type(element)
         if web_element:
             return web_element.value_of_css_property(css_property_name)
         
-    def get_location_in_view(self,element:Union[Element_Info,WebElement])->dict:
+    def get_location_in_view(self,element:Union[ElementInfo,WebElement])->dict:
         web_element=self._change_element_to_web_element_type(element)
         if web_element:
             return web_element.location_in_view
@@ -1259,13 +1259,13 @@ class AppOperator:
         context.update({'name':context_name})
         self.doRequest.post_with_form('/session/'+self.session_id+'/context',params=ujson.dumps(context))
 
-    def mouse_move_to(self,element:Union[Element_Info,WebElement],xoffset:int=0,yoffset:int=0)->None:
+    def mouse_move_to(self,element:Union[ElementInfo,WebElement],xoffset:int=0,yoffset:int=0)->None:
         """移动鼠标到指定位置(仅适用于Windows、mac)
         1、如果xoffset和yoffset都为0,则鼠标移动到指定元素的左上角
         2、如果element、xoffset和yoffset都不为0,则根据元素的左上角做x和y的偏移移动鼠标
 
         Args:
-            element (Union[Element_Info,WebElement]): _description_
+            element (Union[ElementInfo,WebElement]): _description_
             xoffset (int, optional): _description_. Defaults to 0.
             yoffset (int, optional): _description_. Defaults to 0.
         """
@@ -1336,13 +1336,13 @@ class AppOperator:
         """
         self.driver.tap([(x,y)],duration)
 
-    def touch_tap(self,element:Union[Element_Info,WebElement],xoffset:int=None,yoffset:int=None,count:int=1,is_perfrom:bool=True)->TouchAction:
+    def touch_tap(self,element:Union[ElementInfo,WebElement],xoffset:int=None,yoffset:int=None,count:int=1,is_perfrom:bool=True)->TouchAction:
         """触屏点击
         1、如果xoffset和yoffset都None,则在指定元素的正中间进行点击
         2、如果element、xoffset和yoffset都不为None,则根据元素的左上角做x和y的偏移然后进行点击
 
         Args:
-            element (Union[Element_Info,WebElement]): _description_
+            element (Union[ElementInfo,WebElement]): _description_
             xoffset (int, optional): _description_. Defaults to None.
             yoffset (int, optional): _description_. Defaults to None.
             count (int, optional): 点击次数. Defaults to 1.
@@ -1359,14 +1359,14 @@ class AppOperator:
                 actions.perform()
             return actions
 
-    def touch_long_press(self,element:Union[Element_Info,WebElement],xoffset:int=None,yoffset:int=None,duration:int=1000,
+    def touch_long_press(self,element:Union[ElementInfo,WebElement],xoffset:int=None,yoffset:int=None,duration:int=1000,
                          is_perfrom=True)->TouchAction:
         """触屏长按
         1、如果xoffset和yoffset都None,则在指定元素的正中间进行长按
         2、如果element、xoffset和yoffset都不为None,则根据元素的左上角做x和y的偏移然后进行长按
 
         Args:
-            element (Union[Element_Info,WebElement]): _description_
+            element (Union[ElementInfo,WebElement]): _description_
             xoffset (int, optional): _description_. Defaults to None.
             yoffset (int, optional): _description_. Defaults to None.
             duration (int, optional): 毫秒. Defaults to 1000.
@@ -1393,7 +1393,7 @@ class AppOperator:
         multiActions.add(*touch_actions)
         multiActions.perform()
 
-    def touch_slide(self,start_element:Union[Element_Info,WebElement]=None,start_x:int=0, start_y:int=0, end_element:Union[Element_Info,WebElement]=None,
+    def touch_slide(self,start_element:Union[ElementInfo,WebElement]=None,start_x:int=0, start_y:int=0, end_element:Union[ElementInfo,WebElement]=None,
                     end_x:int=0, end_y:int=0, duration:int=0)->None:
         """
         滑动屏幕,在指定时间内从一个位置滑动到另外一个位置
@@ -1401,10 +1401,10 @@ class AppOperator:
         2、如果end_element不为None,滑动结束到元素的中间位置
 
         Args:
-            start_element (Union[Element_Info,WebElement], optional): _description_. Defaults to None.
+            start_element (Union[ElementInfo,WebElement], optional): _description_. Defaults to None.
             start_x (int, optional): _description_. Defaults to 0.
             start_y (int, optional): _description_. Defaults to 0.
-            end_element (Union[Element_Info,WebElement], optional): _description_. Defaults to None.
+            end_element (Union[ElementInfo,WebElement], optional): _description_. Defaults to None.
             end_x (int, optional): _description_. Defaults to 0.
             end_y (int, optional): _description_. Defaults to 0.
             duration (int, optional): 毫秒. Defaults to 0.
@@ -1494,11 +1494,11 @@ class AppOperator:
         end_y=self.window_size['height']*0.99
         self.driver.swipe(start_x,start_y,end_x,end_y,duration)
 
-    def get_element(self,element:Element_Info)->WebElement:
+    def get_element(self,element:ElementInfo)->WebElement:
         """定位单个元素
 
         Args:
-            element (Element_Info): _description_
+            element (ElementInfo): _description_
 
         Returns:
             WebElement: _description_
@@ -1574,11 +1574,11 @@ class AppOperator:
             web_element=WebDriverWait(self.driver,wait_seconds).until(lambda driver:driver.find_element(locator_type,locator_value))
         return web_element
 
-    def get_elements(self,element:Element_Info)->List[WebElement]:
+    def get_elements(self,element:ElementInfo)->List[WebElement]:
         """定位多个元素
 
         Args:
-            element (Element_Info): _description_
+            element (ElementInfo): _description_
 
         Returns:
             List[WebElement]: _description_
@@ -1624,12 +1624,12 @@ class AppOperator:
             web_elements=WebDriverWait(self.driver,wait_seconds).until(lambda driver:driver.find_elements(locator_type,locator_value))
         return web_elements
 
-    def get_sub_element(self,parent_element:Union[Element_Info,WebElement],sub_element:Element_Info)->WebElement:
+    def get_sub_element(self,parent_element:Union[ElementInfo,WebElement],sub_element:ElementInfo)->WebElement:
         """获得元素的单个子元素
 
         Args:
-            parent_element (Union[Element_Info,WebElement]): _description_
-            sub_element (Element_Info): _description_
+            parent_element (Union[ElementInfo,WebElement]): _description_
+            sub_element (ElementInfo): _description_
 
         Returns:
             WebElement: _description_
@@ -1637,7 +1637,7 @@ class AppOperator:
         web_element=self._change_element_to_web_element_type(parent_element)
         if not web_element:
             return None
-        if not isinstance(sub_element,Element_Info):
+        if not isinstance(sub_element,ElementInfo):
             return None
 
         # 通过父元素查找子元素
@@ -1649,12 +1649,12 @@ class AppOperator:
         sub_web_element = WebDriverWait(web_element, wait_seconds).until(lambda web_element: web_element.find_element(locator_type,locator_value))
         return sub_web_element
 
-    def get_sub_elements(self, parent_element:Union[Element_Info,WebElement], sub_element:Element_Info)->List[WebElement]:
+    def get_sub_elements(self, parent_element:Union[ElementInfo,WebElement], sub_element:ElementInfo)->List[WebElement]:
         """获得元素的多个子元素
 
         Args:
-            parent_element (Union[Element_Info,WebElement]): _description_
-            sub_element (Element_Info): _description_
+            parent_element (Union[ElementInfo,WebElement]): _description_
+            sub_element (ElementInfo): _description_
 
         Returns:
             List[WebElement]: _description_
@@ -1662,7 +1662,7 @@ class AppOperator:
         web_element=self._change_element_to_web_element_type(parent_element)
         if not web_element:
             return None
-        if not isinstance(sub_element,Element_Info):
+        if not isinstance(sub_element,ElementInfo):
             return None
 
         # 通过父元素查找多个子元素
@@ -1674,7 +1674,7 @@ class AppOperator:
         sub_web_elements = WebDriverWait(web_element, wait_seconds).until(lambda web_element: web_element.find_elements(locator_type,locator_value))
         return sub_web_elements
 
-    def explicit_wait_page_title(self,element:Element_Info)->None:
+    def explicit_wait_page_title(self,element:ElementInfo)->None:
         """
         仅适用于web
         显式等待页面title

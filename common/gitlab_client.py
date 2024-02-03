@@ -4,7 +4,7 @@
 # @created 2021-04-25T15:04:47.417Z+08:00
 # @last-modified 2023-05-12T11:11:53.394Z+08:00
 # github https://github.com/yanchunhuo
-from common.httpclient.doRequest import DoRequest
+from common.httpclient.do_request import DoRequest
 from urllib.parse import urljoin
 import ujson
 

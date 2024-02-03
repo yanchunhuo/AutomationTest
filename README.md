@@ -6,8 +6,11 @@
 * 本项目支持接口自动化测试、app ui自动化测试、web ui自动化测试、性能测试
 * 本项目由以下工具组成
     * allure-pytest：pytest的一个插件，用于生成测试报告，http://allure.qatools.ru/
+    * Appium：移动端的自动化测试框架，https://github.com/appium/appium
+    * beautifulsoup4：页面解析库，https://www.crummy.com/software/BeautifulSoup/
     * JPype1：用于执行java代码，https://github.com/jpype-project/jpype
     * Js2Py：用于执行js代码，https://github.com/PiotrDabkowski/Js2Py
+    * lxml：用于beautifulsoup4页面解析引擎，https://lxml.de/
     * mitmproxy：用于HTTP/1、HTTP/2和WebSockets的交互式、支持SSL/TLS的拦截代理，https://mitmproxy.org/
     * paramiko：ssh客户端，https://github.com/paramiko/paramiko
     * pycryptodome：加密库，https://github.com/Legrandin/pycryptodome/
@@ -17,6 +20,7 @@
     * pytest-rerunfailures：pytest的一个插件，用于重跑测试用例，https://github.com/pytest-dev/pytest-rerunfailures
     * pytest-xdist：pytest的一个插件,可多进程同时执行测试用例，https://github.com/pytest-dev/pytest-xdist
     * python-binary-memcached：用于操作memcached，https://github.com/jaysonsantos/python-binary-memcached
+    * PyJWT：JWT的实现，https://github.com/jpadilla/pyjwt
     * redis：redis客户端，https://github.com/redis/redis-py
     * requests：http请求框架，http://docs.python-requests.org/en/master/
     * scikit-image：图形处理，https://github.com/scikit-image/scikit-image
@@ -24,9 +28,9 @@
     * sqlacodegen：用于根据数据库表结构生成python对象，https://github.com/agronholm/sqlacodegen
     * SQLAlchemy：SQL工具包及对象关系映射（ORM）工具，https://github.com/sqlalchemy/sqlalchemy
     * ujson：一个用纯C编写的超快JSON编码器和解码器
-    * Appium：移动端的自动化测试框架，https://github.com/appium/appium
     * tess4j：java的图片识别工具，https://github.com/nguyenq/tess4j/
 * 当前仅支持Python3.7、Python3.8、Python3.9
+    * 建议安装：V3.9.13版本
 * 项目如需执行java代码(即使用jpype1)，则项目目录所在的路径不可包含中文
 * dubbo当前支持V2.6.0
 
@@ -40,9 +44,11 @@
 * Linux-CentOS：
     * yum install gcc-c++ python-devel python3-devel
         * 说明：gcc-c++、python-devel、python3-devel是Jpype1依赖所需
-<!-- * Windows：
-    * 安装Visual Studio Community 2019，下载地址：https://my.visualstudio.com/Downloads?q=visual%20studio%202019&wt.mc_id=o~msft~vscom~older-downloads
-        * 说明：Visual Studio Community 2019是Jpype1依赖所需 -->
+* Windows：
+    * 安装Microsoft Visual C++ 2015-2022 Redistributable
+        * 下载页面：https://learn.microsoft.com/en-GB/cpp/windows/latest-supported-vc-redist?view=msvc-170
+            * 下载地址：https://aka.ms/vs/17/release/vc_redist.x64.exe
+        * 说明：Microsoft Visual C++ 2015-2022 Redistributable是mitmproxy依赖所需
 
 #### 1.2、安装jdk11
 * 安装jdk11，并配置JAVA_HOME系统环境变量
@@ -52,6 +58,7 @@
 * 配置jar包依赖配置文件为：config/java/pom.xml
 
 #### 1.4、安装python依赖模块
+* python -m pip install --upgrade pip3
 * pip3 install -r requirements.txt
 
 #### 1.5、安装allure
@@ -74,15 +81,16 @@
     * 下载selenium-server-4.6.0.jar
     * 下载地址：https://github.com/SeleniumHQ/selenium/releases
     * 以管理员身份启动服务:java -jar selenium-server-4.6.0.jar standalone --log selenium.log
-        * 其他可选项说明：java -jar selenium-server-4.5.3.jar standalone --help
+        * 其他可选项说明：java -jar selenium-server-4.6.0.jar standalone --help
 * 下载浏览器驱动
-    * 谷歌浏览器：https://chromedriver.storage.googleapis.com/index.html
+    * 谷歌浏览器：https://googlechromelabs.github.io/chrome-for-testing/known-good-versions-with-downloads.json
         * 驱动支持的最低浏览器版本：https://raw.githubusercontent.com/appium/appium-chromedriver/master/config/mapping.json
     * 火狐浏览器：https://github.com/mozilla/geckodriver/
         * 驱动支持的浏览器版本：https://firefox-source-docs.mozilla.org/testing/geckodriver/geckodriver/Support.html
     * Edge浏览器：https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/
     * Safari浏览器：操作系统内置，无需下载配置。启用在命令行执行：safaridriver --enable
     * 将驱动所在目录加入到selenium server服务器系统环境变量:export PATH=/home/john/selenium/:$PATH
+    * 注意：请勿重命名驱动文件名
 
 ===========================================================
 * Linux-Ubuntu:
@@ -229,7 +237,7 @@
 
 ## 二、修改配置
 * vim config/app_ui_config.conf 配置app ui自动化的测试信息
-* vim config/web_ui_config.conf 配置web ui自动化的测试信息
+* vim config/web_ui_config.yaml 配置web ui自动化的测试信息
 * vim config/projectName/projectName.conf 配置测试项目的信息
 * 修改性能测试负载机的系统最大打开文件数,避免并发用户数大于最大打开文件数
 
@@ -352,10 +360,6 @@
     * 视频录制统一对单个单个case进行，保证录制时间不超过3分钟，且录制文件不要过大，否则会引起手机内存无法存储视频
             * 确认手机是否能进行视频录制执行命令adb shell screenrecord /sdcard/test.mp4，能正常执行即可
     * 设备屏幕坐标系原点都在最左上角，往右x轴递增，往下y轴递增
-
-# [进交流群]()
-![avatar](https://github.com/yanchunhuo/resources/blob/master/wechat.png)
-
 
 [![Stargazers over time](https://starchart.cc/yanchunhuo/AutomationTest.svg)](https://starchart.cc/yanchunhuo/AutomationTest)
 

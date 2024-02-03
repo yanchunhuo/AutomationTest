@@ -3,10 +3,10 @@
 # @author yanchunhuo
 # @description 
 # @created 2022-08-04T09:52:09.525Z+08:00
-# @last-modified 2023-03-28T13:15:45.271Z+08:00
+# @last-modified 2024-02-03T11:37:52.408Z+08:00
 # github https://github.com/yanchunhuo
 
-class Base_DB:
+class BaseDB:
     def __init__(self,db_session,model) -> None:
         self.db_session=db_session
         self.model=model

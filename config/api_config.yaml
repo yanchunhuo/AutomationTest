@@ -1,0 +1,2 @@
+# 是否需要初始化maven，需要执行Java代码，则需启用
+is_init_maven: False

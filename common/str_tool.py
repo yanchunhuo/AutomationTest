@@ -18,7 +18,7 @@ class StrTool:
     ch_end = 0x9FA5
 
     @classmethod
-    def getStringWithLBRB(cls, sourceStr, lbStr, rbStr, offset=0):
+    def get_str_with_lb_rb(cls, sourceStr, lbStr, rbStr, offset=0):
         """
         根据字符串左右边界获取内容
         offset:要获得匹配的第几个数据,默认第一个
@@ -40,7 +40,7 @@ class StrTool:
                 return None
 
     @classmethod
-    def addUUID(cls,prefix:str=None,suffix:str=None,separator:str='_'):
+    def add_uuid(cls,prefix:str=None,suffix:str=None,separator:str='_'):
         """_summary_
 
         Args:
@@ -59,7 +59,7 @@ class StrTool:
         return result
 
     @classmethod
-    def objectToJsonStr(cls, object):
+    def object_to_json_str(cls, object):
         """
         将类对象转为json字符串
         :param object:
@@ -69,7 +69,7 @@ class StrTool:
         return json.dumps(object,default=lambda o: o.__dict__)
 
     @classmethod
-    def objectToJson(cls, object):
+    def object_to_json(cls, object):
         """
         将类对象转为json
         :param object:
@@ -79,7 +79,7 @@ class StrTool:
         return ujson.loads(json.dumps(object,default=lambda o: o.__dict__))
 
     @classmethod
-    def getSpecifiedStr(cls, length, char):
+    def get_specified_str(cls, length, char):
         """
         根据字符获取指定长度的字符串
         :param length:
@@ -92,7 +92,7 @@ class StrTool:
         return result
 
     @classmethod
-    def addFix(cls, sourceStr, isPre=False, preStr='', isSuffix=False, suffixStr=''):
+    def add_fix(cls, sourceStr, isPre=False, preStr='', isSuffix=False, suffixStr=''):
         """
         字符串加前后缀
         :param sourceStr:
@@ -114,7 +114,7 @@ class StrTool:
             return sourceStr
 
     @classmethod
-    def getRandomChar(cls):
+    def get_random_char(cls):
         """
         随机获取a-zA-Z的单个字符
         :return:
@@ -123,7 +123,7 @@ class StrTool:
         return random.choice(str)
 
     @classmethod
-    def replaceContentWithLBRB(cls, content, new, lbStr, rbStr, replaceOffset=0):
+    def replace_content_with_lb_rb(cls, content, new, lbStr, rbStr, replaceOffset=0):
         """
         根据左右字符串匹配要替换的内容，支持多处匹配只替换一处的功能
         :param content:
@@ -178,7 +178,7 @@ class StrTool:
         return index
 
     @classmethod
-    def getRandomText(cls, length, ch_percent=90, en_percent=5, digits_percent=3, punctuation_percent=2,
+    def get_random_text(cls, length, ch_percent=90, en_percent=5, digits_percent=3, punctuation_percent=2,
                       whitespace_percent=0):
         """
         获取指定长度文本内容，可设置中文、英文、数字、标点符号、空白字符现的概率
@@ -209,7 +209,7 @@ class StrTool:
         return result
 
     @classmethod
-    def contentToDict(cls, content: str,result_enter_type:str='\r\n'):
+    def content_to_dict(cls, content: str,result_enter_type:str='\r\n'):
         """
         将包含换行符的字符串内容转为字典，目前仅支持格式:key=value
         @param content:
@@ -232,9 +232,9 @@ class StrTool:
         return result_dict
 
     @classmethod
-    def dictToContent(cls, content_dict:dict,result_enter_type:str='\r\n'):
+    def dict_to_content(cls, content_dict:dict,result_enter_type:str='\r\n'):
         """
-        将def contentToDict(cls, content: str,result_enter_type:str='\r\n')返回的结果拼接为content
+        将def content_to_dict(cls, content: str,result_enter_type:str='\r\n')返回的结果拼接为content
         key和value使用=拼接
         @param content_dict:
         @param result_enter_type:存储的换行类型，包括\r\n、\n、\r

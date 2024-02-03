@@ -4,11 +4,11 @@
 # @description 
 # @github https://github.com/yanchunhuo
 # @created 2021-04-13T10:59:18.120Z+08:00
-# @last-modified 2023-05-12T11:06:36.895Z+08:00
+# @last-modified 2024-02-03T11:28:43.044Z+08:00
 #
-from common.dateTimeTool import DateTimeTool
-from common.fileTool import FileTool
-from common.pytest import deal_pytest_ini_file
+from base.read_api_config import ReadAPIConfig
+from common.date_time_tool import DateTimeTool
+from common.file_tool import FileTool
 from init.api.api_init import api_init
 from init.java.java_maven_init import java_maven_init
 import argparse
@@ -28,16 +28,14 @@ if __name__=='__main__':
     
     args=parser.parse_args()
 
-    # 处理pytest文件
-    deal_pytest_ini_file()
-
     # 初始化java依赖的libs
-    java_maven_init()
+    if ReadAPIConfig().config['is_init_maven']:
+        java_maven_init()
 
     # 初始化
-    print('%s开始初始化......'%DateTimeTool.getNowTime())
+    print('%s开始初始化......'%DateTimeTool.get_now_time())
     api_init()
-    print('%s初始化完成......'%DateTimeTool.getNowTime())
+    print('%s初始化完成......'%DateTimeTool.get_now_time())
 
     # 执行pytest前的参数准备
     pytest_execute_params=['-c', 'config/pytest.ini', '-v', '--alluredir', 'output/api/report_data/']
@@ -51,12 +49,12 @@ if __name__=='__main__':
         dir=args.dir
     # 存储要运行的环境信息
     if os.path.exists('config/tmp'):
-        FileTool.truncateDir('config/tmp/')
+        FileTool.truncate_dir('config/tmp/')
     else:
         os.mkdir('config/tmp')
     if args.env:
         env=args.env
-        FileTool.writeObjectIntoFile({'env':args.env},'config/tmp/env.json')
+        FileTool.write_object_into_file({'env':args.env},'config/tmp/env.json')
     # 判断关键字参数
     if args.keyword:
         pytest_execute_params.append('-k')
@@ -81,5 +79,11 @@ if __name__=='__main__':
     
     pytest_execute_params.append(dir)
 
-    print('%s开始测试......'%DateTimeTool.getNowTime())
+    print('%s开始测试......'%DateTimeTool.get_now_time())
     exit_code=pytest.main(pytest_execute_params)
+    # 存储运行结果信息
+    if os.path.exists('output/api/tmp'):
+        FileTool.truncate_dir('output/api/tmp')
+    else:
+        os.mkdir('output/api/tmp')
+    FileTool.write_object_into_file({'result':exit_code.numerator},'output/api/tmp/result.json')

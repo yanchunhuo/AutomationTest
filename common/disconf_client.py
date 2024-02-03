@@ -1,7 +1,7 @@
 # @Author  : yanchunhuo
 # @Time    : 2020/7/21 10:24
 # github https://github.com/yanchunhuo
-from common.httpclient.doRequest import DoRequest
+from common.httpclient.do_request import DoRequest
 import ujson
 
 class DisconfClient:

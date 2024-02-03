@@ -10,7 +10,7 @@ from pojo.xmind.xmindData import XmindData
 from pojo.xmind.sheet import Sheet
 from pojo.xmind.rootTopic import RootTopic
 from pojo.xmind.secondTopic import SecondTopic
-from common.strTool import StrTool
+from common.str_tool import StrTool
 import xmind
 import os
 

@@ -3,7 +3,7 @@
 # 创建时间 2018/01/19 22:36
 # github https://github.com/yanchunhuo
 from base.api.demoProject.api_demoProject_read_config import API_DemoProject_Read_Config
-from common.httpclient.doRequest import DoRequest
+from common.httpclient.do_request import DoRequest
 
 class API_DemoProject_Client(object):
     __instance=None

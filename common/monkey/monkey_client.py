@@ -5,7 +5,7 @@
 # @created 2021-05-18T21:08:38.694Z+08:00
 # @last-modified 2021-06-09T21:51:42.306Z+08:00
 # github https://github.com/yanchunhuo
-from common.dateTimeTool import DateTimeTool
+from common.date_time_tool import DateTimeTool
 import platform
 import subprocess
 

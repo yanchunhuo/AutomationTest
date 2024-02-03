@@ -6,8 +6,8 @@
 # @last-modified 2022-02-07T18:55:03.094Z+08:00
 #
 
-from common.dateTimeTool import DateTimeTool
-from common.httpclient.doRequest import DoRequest
+from common.date_time_tool import DateTimeTool
+from common.httpclient.do_request import DoRequest
 import hmac
 import hashlib
 import base64

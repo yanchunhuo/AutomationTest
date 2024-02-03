@@ -4,10 +4,10 @@
 # @description 
 # @github https://github.com/yanchunhuo
 # @created 2018-01-19T13:47:34.931Z+08:00
-# @last-modified 2022-11-22T17:43:37.844Z+08:00
+# @last-modified 2024-02-03T11:25:02.506Z+08:00
 #
 
-class Wait_Type:
+class WaitType:
     ALERT_IS_PRESENT = 'alert_is_present'
     ELEMENT_ATTRIBUTE_TO_INCLUDE = 'element_attribute_to_include'
     ELEMENT_LOCATED_TO_BE_SELECTED = 'element_located_to_be_selected'

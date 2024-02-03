@@ -1,0 +1,6 @@
+# 是否本地启动抓包工具mitmproxy
+is_start_local_mitmproxy: True
+# 代理监听的端口，如果不设置，默认为8080
+proxy_port: 8088
+# 是否跳过ssl验证
+ssl_insecure: True

@@ -3,11 +3,11 @@
 # @author yanchunhuo
 # @description 
 # @created 2022-07-25T19:32:07.806Z+08:00
-# @last-modified 2022-07-25T19:58:23.123Z+08:00
+# @last-modified 2024-02-03T11:34:05.339Z+08:00
 # github https://github.com/yanchunhuo
 
 
-from common.sqlalchemy_tools.sqlalchemy_sqlite_tool import SQLAlchemy_Sqlite_Tool
+from common.sqlalchemy_tools.sqlalchemy_sqlite_tool import SQLAlchemySqliteTool
 
 class DemoProject_Sessions(object):
     __instance = None
@@ -20,6 +20,6 @@ class DemoProject_Sessions(object):
 
     def __init__(self,):
         if self.__inited is None:            
-            self.db_demoProject_session=SQLAlchemy_Sqlite_Tool('models/demoProject/demoProject.db').get_session()
+            self.db_demoProject_session=SQLAlchemySqliteTool('models/demoProject/demoProject.db').get_session()
                         
         self.__inited = True

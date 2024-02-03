@@ -4,13 +4,13 @@
 # @description 
 # @github https://github.com/yanchunhuo
 # @created 2018-01-19T13:47:34.673Z+08:00
-# @last-modified 2022-12-23T17:36:02.804Z+08:00
+# @last-modified 2024-02-03T10:52:58.285Z+08:00
 #
 
-from base.read_web_ui_config import Read_WEB_UI_Config
-from common.dateTimeTool import DateTimeTool
-from page_objects.wait_type import Wait_Type as Wait_By
-from page_objects.element_info import Element_Info
+from base.read_web_ui_config import ReadWebUiConfig
+from common.date_time_tool import DateTimeTool
+from page_objects.wait_type import WaitType as Wait_By
+from page_objects.element_info import ElementInfo
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions
@@ -35,11 +35,11 @@ import os
 class Browser_Operator:
     
     def __init__(self,driver:WebDriver):
-        self.config = Read_WEB_UI_Config().web_ui_config
+        self.config = ReadWebUiConfig().web_ui_config
         self.driver=driver
 
-    def _change_element_to_web_element_type(self,element:Union[Element_Info,WebElement],highlight_seconds:float=5)->WebElement:
-        if isinstance(element, Element_Info):
+    def _change_element_to_web_element_type(self,element:Union[ElementInfo,WebElement],highlight_seconds:float=5)->WebElement:
+        if isinstance(element, ElementInfo):
             element=self.get_element(element,highlight_seconds)
         return element
     
@@ -75,61 +75,61 @@ class Browser_Operator:
     def get_title(self)->str:
         return self.driver.title
 
-    def get_text(self,element:Union[Element_Info,WebElement],highlight_seconds:float=5)->str:
+    def get_text(self,element:Union[ElementInfo,WebElement],highlight_seconds:float=5)->str:
         web_element=self._change_element_to_web_element_type(element,highlight_seconds)
         if web_element:
             return web_element.text
     
-    def get_element_rect(self,element:Union[Element_Info,WebElement],highlight_seconds:float=5)->dict:
+    def get_element_rect(self,element:Union[ElementInfo,WebElement],highlight_seconds:float=5)->dict:
         web_element=self._change_element_to_web_element_type(element,highlight_seconds)
         if web_element:
             return web_element.rect
 
-    def click(self,element:Union[Element_Info,WebElement],highlight_seconds:float=5)->None:
+    def click(self,element:Union[ElementInfo,WebElement],highlight_seconds:float=5)->None:
         web_element = self._change_element_to_web_element_type(element,highlight_seconds)
         if web_element:
             web_element.click()
 
-    def submit(self,element:Union[Element_Info,WebElement],highlight_seconds=5)->None:
+    def submit(self,element:Union[ElementInfo,WebElement],highlight_seconds=5)->None:
         web_element = self._change_element_to_web_element_type(element,highlight_seconds)
         if web_element:
             web_element.submit()
 
-    def send_text(self,element:Union[Element_Info,WebElement],text:str,highlight_seconds:float=5)->None:
+    def send_text(self,element:Union[ElementInfo,WebElement],text:str,highlight_seconds:float=5)->None:
         text=text
         web_element = self._change_element_to_web_element_type(element,highlight_seconds)
         if web_element:
             web_element.clear()
             web_element.send_keys(text)
 
-    def send_keys(self,element:Union[Element_Info,WebElement],keys:str,highlight_seconds:float=5)->None:
+    def send_keys(self,element:Union[ElementInfo,WebElement],keys:str,highlight_seconds:float=5)->None:
         web_element = self._change_element_to_web_element_type(element,highlight_seconds)
         if web_element:
             web_element.send_keys(keys)
 
-    def is_displayed(self,element:Union[Element_Info,WebElement],highlight_seconds:float=5)->bool:
+    def is_displayed(self,element:Union[ElementInfo,WebElement],highlight_seconds:float=5)->bool:
         web_element = self._change_element_to_web_element_type(element,highlight_seconds)
         if web_element:
             flag=web_element.is_displayed()
             return flag
 
-    def is_enabled(self,element:Union[Element_Info,WebElement],highlight_seconds:float=5)->bool:
+    def is_enabled(self,element:Union[ElementInfo,WebElement],highlight_seconds:float=5)->bool:
         web_element = self._change_element_to_web_element_type(element,highlight_seconds)
         if web_element:
             flag = web_element.is_enabled()
             return flag
 
-    def is_selected(self,element:Union[Element_Info,WebElement],highlight_seconds:float=5)->bool:
+    def is_selected(self,element:Union[ElementInfo,WebElement],highlight_seconds:float=5)->bool:
         web_element = self._change_element_to_web_element_type(element,highlight_seconds)
         if web_element:
             flag = web_element.is_selected()
             return flag
 
-    def select_dropDownBox_by_value(self,element:Union[Element_Info,WebElement],value:str,highlight_seconds:float=5)->None:
+    def select_dropDownBox_by_value(self,element:Union[ElementInfo,WebElement],value:str,highlight_seconds:float=5)->None:
         """适用单选下拉框
 
         Args:
-            element (Union[Element_Info,WebElement]): _description_
+            element (Union[ElementInfo,WebElement]): _description_
             value (str): _description_
             highlight_seconds (float, optional): _description_. Defaults to 5.
         """
@@ -138,11 +138,11 @@ class Browser_Operator:
             web_element=Select(web_element)
             web_element.select_by_value(value)            
 
-    def select_dropDownBox_by_text(self,element:Union[Element_Info,WebElement],text:str,highlight_seconds:float=5)->None:
+    def select_dropDownBox_by_text(self,element:Union[ElementInfo,WebElement],text:str,highlight_seconds:float=5)->None:
         """适用单选下拉框
 
         Args:
-            element (Union[Element_Info,WebElement]): _description_
+            element (Union[ElementInfo,WebElement]): _description_
             text (str): _description_
             highlight_seconds (float, optional): _description_. Defaults to 5.
         """
@@ -152,11 +152,11 @@ class Browser_Operator:
             web_element=Select(web_element)
             web_element.select_by_visible_text(text)
 
-    def select_dropDownBox_by_index(self,element:Union[Element_Info,WebElement],index,highlight_seconds:float=5)->None:
+    def select_dropDownBox_by_index(self,element:Union[ElementInfo,WebElement],index,highlight_seconds:float=5)->None:
         """适用单选下拉框,下标从0开始
 
         Args:
-            element (Union[Element_Info,WebElement]): _description_
+            element (Union[ElementInfo,WebElement]): _description_
             index (_type_): _description_
             highlight_seconds (float, optional): _description_. Defaults to 5.
         """
@@ -165,11 +165,11 @@ class Browser_Operator:
             web_element=Select(web_element)
             web_element.select_by_index(index)
 
-    def select_dropDownBox_by_values(self,element:Union[Element_Info,WebElement],values:list,highlight_seconds:float=5)->None:
+    def select_dropDownBox_by_values(self,element:Union[ElementInfo,WebElement],values:list,highlight_seconds:float=5)->None:
         """适用多选下拉框
 
         Args:
-            element (Union[Element_Info,WebElement]): _description_
+            element (Union[ElementInfo,WebElement]): _description_
             values (list): _description_
             highlight_seconds (float, optional): _description_. Defaults to 5.
         """
@@ -180,11 +180,11 @@ class Browser_Operator:
             for value in values:
                 web_element.select_by_value(value)
 
-    def select_dropDownBox_by_texts(self,element:Union[Element_Info,WebElement],texts:list,highlight_seconds:float=5)->None:
+    def select_dropDownBox_by_texts(self,element:Union[ElementInfo,WebElement],texts:list,highlight_seconds:float=5)->None:
         """适用多选下拉框
 
         Args:
-            element (Union[Element_Info,WebElement]): _description_
+            element (Union[ElementInfo,WebElement]): _description_
             texts (list): _description_
             highlight_seconds (float, optional): _description_. Defaults to 5.
         """
@@ -195,11 +195,11 @@ class Browser_Operator:
             for text in texts:
                 web_element.select_by_visible_text(text)
 
-    def select_dropDownBox_by_indexs(self,element:Union[Element_Info,WebElement],indexs:list,highlight_seconds:float=5)->None:
+    def select_dropDownBox_by_indexs(self,element:Union[ElementInfo,WebElement],indexs:list,highlight_seconds:float=5)->None:
         """适用多选下拉框，下标从0开始
 
         Args:
-            element (Union[Element_Info,WebElement]): _description_
+            element (Union[ElementInfo,WebElement]): _description_
             indexs (list): _description_
             highlight_seconds (float, optional): _description_. Defaults to 5.
         """
@@ -273,17 +273,17 @@ class Browser_Operator:
         alert.send_keys(text)
 
     def get_screenshot(self,fileName:str)->None:
-        fileName=DateTimeTool.getNowTime('%Y%m%d%H%M%S%f_')+fileName
+        fileName=DateTimeTool.get_now_time('%Y%m%d%H%M%S%f_')+fileName
         allure.attach(name=fileName,body=self.driver.get_screenshot_as_png(),attachment_type=allure.attachment_type.PNG)
 
     def refresh(self)->None:
         self.driver.refresh()
 
-    def upload_file(self,element:Union[Element_Info,WebElement],filePath:str,highlight_seconds:float=5)->None:
+    def upload_file(self,element:Union[ElementInfo,WebElement],filePath:str,highlight_seconds:float=5)->None:
         """适用于元素为input且type="file"的文件上传
 
         Args:
-            element (Union[Element_Info,WebElement]): _description_
+            element (Union[ElementInfo,WebElement]): _description_
             filePath (str): _description_
             highlight_seconds (float, optional): _description_. Defaults to 5.
         """
@@ -291,20 +291,20 @@ class Browser_Operator:
         if web_element:
             web_element.send_keys(os.path.abspath(filePath))
 
-    def get_property(self,element:Union[Element_Info,WebElement],property_name:str,highlight_seconds:float=5) -> Union[str,bool,WebElement,dict]:
+    def get_property(self,element:Union[ElementInfo,WebElement],property_name:str,highlight_seconds:float=5) -> Union[str,bool,WebElement,dict]:
         web_element = self._change_element_to_web_element_type(element,highlight_seconds)
         if web_element:
             return web_element.get_property(property_name)
 
-    def get_attribute(self,element:Union[Element_Info,WebElement],attribute_name:str,highlight_seconds:float=5)->Any:
+    def get_attribute(self,element:Union[ElementInfo,WebElement],attribute_name:str,highlight_seconds:float=5)->Any:
         web_element = self._change_element_to_web_element_type(element,highlight_seconds)
         if web_element:
             return web_element.get_attribute(attribute_name)
 
-    def get_element_outer_html(self,element:Union[Element_Info,WebElement])->str:
+    def get_element_outer_html(self,element:Union[ElementInfo,WebElement])->str:
         return self.get_attribute(element,'outerHTML')
 
-    def get_element_inner_html(self, element:Union[Element_Info,WebElement])->str:
+    def get_element_inner_html(self, element:Union[ElementInfo,WebElement])->str:
         return self.get_attribute(element,'innerHTML')
 
     def get_page_source(self)->str:
@@ -315,11 +315,11 @@ class Browser_Operator:
         """
         return self.driver.page_source
 
-    def get_element_rgb(self,element:Union[Element_Info,WebElement],x_percent:float=0,y_percent:float=0)->list:
+    def get_element_rgb(self,element:Union[ElementInfo,WebElement],x_percent:float=0,y_percent:float=0)->list:
         """获得元素上的像素的rgb值,默认返回元素左上角坐标轴
 
         Args:
-            element (Union[Element_Info,WebElement]): _description_
+            element (Union[ElementInfo,WebElement]): _description_
             x_percent (float, optional): x轴百分比位置,范围0~1 Defaults to 0.
             y_percent (float, optional): y轴百分比位置,范围0~1. Defaults to 0.
 
@@ -336,18 +336,18 @@ class Browser_Operator:
             pix_y=pix_y-1
         return list(ndarray[pix_y,pix_x])
 
-    def save_element_image(self, element:Union[Element_Info,WebElement], image_file_name:str, highlight_seconds:float=0)->str:
+    def save_element_image(self, element:Union[ElementInfo,WebElement], image_file_name:str, highlight_seconds:float=0)->str:
         web_element = self._change_element_to_web_element_type(element, highlight_seconds)
         left = web_element.location['x']
         top = web_element.location['y']
         right = web_element.location['x'] + web_element.size['width']
         bottom = web_element.location['y'] + web_element.size['height']
         # 进行屏幕截图
-        image_file_name = DateTimeTool.getNowTime('%Y%m%d%H%M%S%f_') + '%s.png'%image_file_name
-        if not os.path.exists('output/tmp/web_ui/'+self.config.current_browser):
-            os.mkdir('output/tmp/web_ui/'+self.config.current_browser)
+        image_file_name = DateTimeTool.get_now_time('%Y%m%d%H%M%S%f_') + '%s.png'%image_file_name
+        if not os.path.exists('output/tmp/web_ui/'+self.config['browser']['current_browser']):
+            os.mkdir('output/tmp/web_ui/'+self.config['browser']['current_browser'])
         image_file_name = os.path.abspath(
-            'output/tmp/web_ui/' + self.config.current_browser + '/' + image_file_name)
+            'output/tmp/web_ui/' + self.config['browser']['current_browser'] + '/' + image_file_name)
         self.driver.get_screenshot_as_file(image_file_name)
         ndarray=imread(image_file_name)
         # 图片裁切并保存
@@ -355,7 +355,7 @@ class Browser_Operator:
         imsave(image_file_name,new_ndarray)
         return image_file_name
 
-    def get_captcha(self, element:Union[Element_Info,WebElement], language='eng')->str:
+    def get_captcha(self, element:Union[ElementInfo,WebElement], language='eng')->str:
         """识别图片验证码，如需使用该方法必须配置jpype1、字体库等依赖环境
 
         Args:
@@ -374,17 +374,17 @@ class Browser_Operator:
         captcha = captcha.replace(' ', '')
         return captcha
 
-    def get_table_data(self,element:Union[Element_Info,WebElement],data_type:str='text')->List[list]:
+    def get_table_data(self,element:Union[ElementInfo,WebElement],data_type:str='text')->List[list]:
         """以二维数组返回表格每一行的每一列的数据[[row1][row2][colume1,clume2]]
 
         Args:
-            element (Union[Element_Info,WebElement]): _description_
+            element (Union[ElementInfo,WebElement]): _description_
             data_type (str, optional): text-返回表格文本内容,html-返回表格html内容,web_element-返回表格元素. Defaults to 'text'.
 
         Returns:
             _type_: _description_
         """        
-        if isinstance(element, Element_Info):
+        if isinstance(element, ElementInfo):
             # 由于表格定位经常会出现【StaleElementReferenceException: Message: stale element reference: element is not attached to the page document 】异常错误,
             # 解决此异常只需要用显示等待，保证元素存在即可，显示等待类型中visibility_of_all_elements_located有实现StaleElementReferenceException异常捕获,
             # 所以强制设置表格定位元素时使用VISIBILITY_OF
@@ -414,11 +414,11 @@ class Browser_Operator:
             print('获取表格内容异常:'+e.msg)
         return table_data
 
-    def scroll_to_show(self,element:Union[Element_Info,WebElement],highlight_seconds:float=5,is_top_align:bool=True)->None:
+    def scroll_to_show(self,element:Union[ElementInfo,WebElement],highlight_seconds:float=5,is_top_align:bool=True)->None:
         """滚动页面直至元素可见
 
         Args:
-            element (Union[Element_Info,WebElement]): _description_
+            element (Union[ElementInfo,WebElement]): _description_
             highlight_seconds (float, optional): _description_. Defaults to 5.
             is_top_align (bool, optional):  是否元素与窗口顶部对齐，否则与窗口底部对齐. Defaults to True.
         """
@@ -430,19 +430,23 @@ class Browser_Operator:
                 self.driver.execute_script("arguments[0].scrollIntoView(false);", web_element)
     
     def move_by_offset(self,x:float,y:float)->None:
-        """鼠标左键点击，x为横坐标，y为纵坐标
+        """移动鼠标到指定坐标，x为横坐标，y为纵坐标
 
         Args:
             x (float): _description_
             y (float): _description_
         """
-        ActionChains(self.driver).move_by_offset(x,y).click().perform()
+        return ActionChains(self.driver).move_by_offset(x,y).perform()
+        
+    def move_to_element(self,element:Union[ElementInfo,WebElement],highlight_seconds:float=0)->None:
+        web_element = self._change_element_to_web_element_type(element,highlight_seconds)
+        ActionChains(self.driver).move_to_element(web_element).perform()
 
-    def get_element(self,element:Element_Info,highlight_seconds:float=5)->WebElement:
+    def get_element(self,element:ElementInfo,highlight_seconds:float=5)->WebElement:
         """定位单个元素
 
         Args:
-            element (Element_Info): _description_
+            element (ElementInfo): _description_
             highlight_seconds (float, optional): _description_. Defaults to 5.
 
         Returns:
@@ -522,11 +526,11 @@ class Browser_Operator:
             self.highLight(web_element,highlight_seconds)
         return web_element
 
-    def get_elements(self,element:Element_Info,highlight_seconds:float=5)->List[WebElement]:
+    def get_elements(self,element:ElementInfo,highlight_seconds:float=5)->List[WebElement]:
         """定位多个元素
 
         Args:
-            element (Element_Info): _description_
+            element (ElementInfo): _description_
             highlight_seconds (float, optional): _description_. Defaults to 5.
 
         Returns:
@@ -577,12 +581,12 @@ class Browser_Operator:
                 self.highLight(web_element,highlight_seconds)
         return web_elements
 
-    def get_sub_element(self,parent_element:Union[Element_Info,WebElement],sub_element:Element_Info,highlight_seconds:float=5)->WebElement:
+    def get_sub_element(self,parent_element:Union[ElementInfo,WebElement],sub_element:ElementInfo,highlight_seconds:float=5)->WebElement:
         """获得元素的单个子元素
 
         Args:
-            parent_element (Union[Element_Info,WebElement]): _description_
-            sub_element (Element_Info): _description_
+            parent_element (Union[ElementInfo,WebElement]): _description_
+            sub_element (ElementInfo): _description_
             highlight_seconds (float, optional): _description_. Defaults to 5.
 
         Returns:
@@ -591,7 +595,7 @@ class Browser_Operator:
         web_element=self._change_element_to_web_element_type(parent_element)
         if not web_element:
             return None
-        if not isinstance(sub_element,Element_Info):
+        if not isinstance(sub_element,ElementInfo):
             return None
 
         # 通过父元素查找子元素
@@ -604,12 +608,12 @@ class Browser_Operator:
             self.highLight(sub_web_element,highlight_seconds)
         return sub_web_element
 
-    def get_sub_elements(self, parent_element:Union[Element_Info,WebElement], sub_element:Element_Info,highlight_seconds:float=5)->List[WebElement]:
+    def get_sub_elements(self, parent_element:Union[ElementInfo,WebElement], sub_element:ElementInfo,highlight_seconds:float=5)->List[WebElement]:
         """获得元素的多个子元素
 
         Args:
-            parent_element (Union[Element_Info,WebElement]): _description_
-            sub_element (Element_Info): _description_
+            parent_element (Union[ElementInfo,WebElement]): _description_
+            sub_element (ElementInfo): _description_
             highlight_seconds (float, optional): _description_. Defaults to 5.
 
         Returns:
@@ -618,7 +622,7 @@ class Browser_Operator:
         web_element=self._change_element_to_web_element_type(parent_element)
         if not web_element:
             return None
-        if not isinstance(sub_element,Element_Info):
+        if not isinstance(sub_element,ElementInfo):
             return None
 
         # 通过父元素查找多个子元素
@@ -633,11 +637,11 @@ class Browser_Operator:
                 self.highLight(sub_web_element,highlight_seconds)
         return sub_web_elements
 
-    def explicit_wait_page_title(self,element:Element_Info)->None:
+    def explicit_wait_page_title(self,element:ElementInfo)->None:
         """显式等待页面title
 
         Args:
-            element (Element_Info): _description_
+            element (ElementInfo): _description_
         """
         self.get_element(element)
 
@@ -654,4 +658,7 @@ class Browser_Operator:
             print('高亮StaleElementReferenceException异常:'+e.msg)
 
     def close(self)->None:
+        self.driver.close()
+    
+    def quit(self)->None:
         self.driver.quit()
