@@ -4,6 +4,7 @@
 # github https://github.com/yanchunhuo
 import base64
 import hashlib
+from typing import Union
 
 class BaseEncryptTool:
     
@@ -19,12 +20,23 @@ class BaseEncryptTool:
         return m.hexdigest()
     
     @classmethod
-    def base64Encode(cls,text,encoding='utf-8'):
-        return base64.b64encode(bytes(text,encoding=encoding))
+    def base64_encode(cls,data:Union[str,bytes],encoding='utf-8'):
+        """_summary_
+
+        Args:
+            data (Union[str | bytes]): 需要编码的数据
+            encoding (str, optional): 当data为text时生效. Defaults to 'utf-8'.
+
+        Returns:
+            _type_: _description_
+        """
+        if isinstance(data,str):
+            data=bytes(data,encoding=encoding)
+        return base64.b64encode(data).decode('utf-8')
 
     @classmethod
-    def base64Decode(cls,base64Text):
-        return base64.b64decode(base64Text)
+    def base64_decode(cls,base64_text:str):
+        return base64.b64decode(base64_text)
     
     @classmethod
     def hash_code(cls, text: str):
