@@ -3,7 +3,7 @@
 # @author yanchunhuo
 # @description 
 # @created 2018-01-19T22:10:09.163Z+08:00
-# @last-modified 2024-07-19T19:35:50.845Z+08:00
+# @last-modified 2024-07-19T19:48:30.876Z+08:00
 # github https://github.com/yanchunhuo
 
 from curlify2 import Curlify
@@ -177,8 +177,8 @@ class DoRequest(object):
                 for key,value in files.items():
                     self._curl_command += f" -F '{key}={value.name}'"
 
-            if files:
-                payload = urllib.parse.urlencode(files, doseq=True)
+            if params:
+                payload = urllib.parse.urlencode(params, doseq=True)
                 self._curl_command += f" --data '{payload}'"
         self._curl_command = self._curl_command.encode('latin1').decode('unicode_escape')
 
