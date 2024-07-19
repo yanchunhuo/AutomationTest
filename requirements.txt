@@ -4,6 +4,7 @@ markupsafe==2.0.1 # Python>=3.6;The mitmproxy depends on, and the installation o
 # Base libs
 Appium-Python-Client==2.7.1 # Python3.7~3.9
 beautifulsoup4==4.12.2 # Python>=3.6
+curlify2==2.0.0 # Python3.6~3.11
 JPype1==1.4.1 # Python3.7~3.10
 Js2Py==0.74 # Python3
 lxml==4.9.3 # Python>=3.6
