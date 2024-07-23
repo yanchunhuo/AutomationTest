@@ -3,7 +3,7 @@
 # @author yanchunhuo
 # @description 
 # @created 2018-01-19T22:10:09.163Z+08:00
-# @last-modified 2024-07-19T19:48:30.876Z+08:00
+# @last-modified 2024-07-23T14:36:39.584Z+08:00
 # github https://github.com/yanchunhuo
 
 from curlify2 import Curlify
@@ -189,8 +189,8 @@ class DoRequest(object):
         :return:
         """
         if truncate:
-            if len(self._curl_command) > 1000:
-                return self._curl_command[:1000] + '...太长了截断'
+            if len(self._curl_command) > 5000:
+                return self._curl_command[:5000] + '...太长了截断'
         return self._curl_command
     def changeUrl(self, url):
         self._url = url
