@@ -3,7 +3,7 @@
 # @author yanchunhuo
 # @description 
 # @created 2018-01-19T22:10:09.163Z+08:00
-# @last-modified 2024-07-23T14:36:39.584Z+08:00
+# @last-modified 2024-07-25T10:36:52.431Z+08:00
 # github https://github.com/yanchunhuo
 
 from curlify2 import Curlify
@@ -13,6 +13,7 @@ from urllib.parse import urlencode
 import urllib
 import requests
 import ujson
+
 
 class DoRequest(object):
     def __init__(self, url=None, encoding='utf-8', pool_connections=10, pool_maxsize=10, max_retries=2, timeout=30,
@@ -28,7 +29,14 @@ class DoRequest(object):
         httpAdapter = HTTPAdapter(pool_connections=pool_connections, pool_maxsize=pool_maxsize, max_retries=max_retries)
         self._session.mount('http://', httpAdapter)
         self._session.mount('https://', httpAdapter)
-        self._curl_command=None
+        self._curl_command = None
+        self._response = None
+
+    def get_url(self):
+        return self._url
+
+    def get_response(self):
+        return self._response
 
     def setHeaders(self, headers):
         self._headers = headers
@@ -65,21 +73,21 @@ class DoRequest(object):
             url = self._url + path
         else:
             url = path
-        r = self._session.post(url=url, data=params, headers=self._headers, cookies=self._cookies,
-                               timeout=self._timeout,
-                               proxies=self._proxies, verify=self._verify, **kwargs)
-        return self._dealResponseResult(r,params=params)
+        self._response = self._session.post(url=url, data=params, headers=self._headers, cookies=self._cookies,
+                                            timeout=self._timeout,
+                                            proxies=self._proxies, verify=self._verify, **kwargs)
+        return self._dealResponseResult(params=params)
 
     def post_with_json(self, path, params=None, **kwargs):
         if not path.startswith('http'):
             url = self._url + path
         else:
             url = path
-        r = self._session.post(url=url, json=params, headers=self._headers, cookies=self._cookies,
-                               timeout=self._timeout,
-                               proxies=self._proxies, verify=self._verify, **kwargs)
+        self._response = self._session.post(url=url, json=params, headers=self._headers, cookies=self._cookies,
+                                            timeout=self._timeout,
+                                            proxies=self._proxies, verify=self._verify, **kwargs)
 
-        return self._dealResponseResult(r,params=params)
+        return self._dealResponseResult(params=params)
 
     def post_with_file(self, path, filePath, params=None, fileKey='file', **kwargs):
         if not path.startswith('http'):
@@ -87,38 +95,41 @@ class DoRequest(object):
         else:
             url = path
         files = {fileKey: open(filePath, 'rb')}
-        r = self._session.post(url=url, data=params, files=files, headers=self._headers, cookies=self._cookies,
-                               timeout=self._timeout, proxies=self._proxies, verify=self._verify, **kwargs)
+        self._response = self._session.post(url=url, data=params, files=files, headers=self._headers,
+                                            cookies=self._cookies,
+                                            timeout=self._timeout, proxies=self._proxies, verify=self._verify, **kwargs)
 
-        return self._dealResponseResult(r,params=params,files=files)
+        return self._dealResponseResult(params=params, files=files)
 
     def put(self, path, params=None, **kwargs):
         if not path.startswith('http'):
             url = self._url + path
         else:
             url = path
-        r = self._session.put(url=url, data=params, headers=self._headers, cookies=self._cookies, timeout=self._timeout,
-                              proxies=self._proxies, verify=self._verify, **kwargs)
-        return self._dealResponseResult(r,params=params)
+        self._response = self._session.put(url=url, data=params, headers=self._headers, cookies=self._cookies,
+                                           timeout=self._timeout,
+                                           proxies=self._proxies, verify=self._verify, **kwargs)
+        return self._dealResponseResult(params=params)
 
     def get(self, path, params=None, **kwargs):
         if not path.startswith('http'):
             url = self._url + path
         else:
             url = path
-        r = self._session.get(url=url, params=params, headers=self._headers, cookies=self._cookies,
-                              timeout=self._timeout,
-                              proxies=self._proxies, verify=self._verify, **kwargs)
-        return self._dealResponseResult(r,params=params)
+        self._response = self._session.get(url=url, params=params, headers=self._headers, cookies=self._cookies,
+                                           timeout=self._timeout,
+                                           proxies=self._proxies, verify=self._verify, **kwargs)
+        return self._dealResponseResult(params=params)
 
     def delete(self, path, **kwargs):
         if not path.startswith('http'):
             url = self._url + path
         else:
             url = path
-        r = self._session.delete(url=url, headers=self._headers, cookies=self._cookies, timeout=self._timeout,
-                                 proxies=self._proxies, verify=self._verify, **kwargs)
-        return self._dealResponseResult(r)
+        self._response = self._session.delete(url=url, headers=self._headers, cookies=self._cookies,
+                                              timeout=self._timeout,
+                                              proxies=self._proxies, verify=self._verify, **kwargs)
+        return self._dealResponseResult()
 
     def getFile(self, path, storeFilePath, params=None, **kwargs):
         """
@@ -132,36 +143,35 @@ class DoRequest(object):
             url = self._url + path
         else:
             url = path
-        r = self._session.get(url=url, params=params, headers=self._headers, cookies=self._cookies,
-                              timeout=self._timeout, proxies=self._proxies, verify=self._verify, **kwargs)
+        self._response = self._session.get(url=url, params=params, headers=self._headers, cookies=self._cookies,
+                                           timeout=self._timeout, proxies=self._proxies, verify=self._verify, **kwargs)
         httpResponseResult = HttpResponseResult()
-        httpResponseResult.status_code = r.status_code
+        httpResponseResult.status_code = self._response.status_code
         httpResponseResult.headers = self._session.headers.__str__()
         self.updateCookies(self._session.cookies.get_dict())
         httpResponseResult.cookies = ujson.dumps(self.getCookies())
         with open(storeFilePath, "wb") as f:
-            f.write(r.content)
-        self._deal_curl_info(r,params=params)
+            f.write(self._response.content)
+        self._deal_curl_info(self._response, params=params)
         return httpResponseResult
 
-    def _dealResponseResult(self, r,params=None,files=None):
+    def _dealResponseResult(self, params=None, files=None):
         """
         将请求结果封装到HttpResponseResult
         :param r: requests请求响应
         :return:
         """
-        self._response = r
-        r.encoding = self._encoding
+        self._response.encoding = self._encoding
         httpResponseResult = HttpResponseResult()
-        httpResponseResult.status_code = r.status_code
-        httpResponseResult.headers = r.headers.__str__()
+        httpResponseResult.status_code = self._response.status_code
+        httpResponseResult.headers = self._response.headers.__str__()
         self.updateCookies(self._session.cookies.get_dict())
         httpResponseResult.cookies = ujson.dumps(self.getCookies())
-        httpResponseResult.body = r.content.decode(self._encoding)
-        self._deal_curl_info(r,params=params,files=files)
+        httpResponseResult.body = self._response.content.decode(self._encoding)
+        self._deal_curl_info(self._response, params=params, files=files)
         return httpResponseResult
-    
-    def _deal_curl_info(self,response,params=None,files=None):
+
+    def _deal_curl_info(self, response, params=None, files=None):
         try:
             self._curl_command = Curlify(response.request, compressed=True).to_curl()
         except UnicodeDecodeError as e:
@@ -174,7 +184,7 @@ class DoRequest(object):
                 self._curl_command += f" -H '{header}: {value}'"
 
             if files:
-                for key,value in files.items():
+                for key, value in files.items():
                     self._curl_command += f" -F '{key}={value.name}'"
 
             if params:
@@ -192,6 +202,7 @@ class DoRequest(object):
             if len(self._curl_command) > 5000:
                 return self._curl_command[:5000] + '...太长了截断'
         return self._curl_command
+
     def changeUrl(self, url):
         self._url = url
 
