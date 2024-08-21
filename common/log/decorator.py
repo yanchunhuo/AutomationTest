@@ -3,22 +3,24 @@
 # @author yanchunhuo
 # @description 
 # @created 2024-07-25T10:37:58.417Z+08:00
-# @last-modified 2024-07-25T10:44:56.394Z+08:00
+# @last-modified 2024-08-21T19:06:57.749Z+08:00
 # github https://github.com/yanchunhuo
 
 from common.date_time_tool import DateTimeTool
+from ujson import JSONDecodeError
 from urllib.parse import urlparse, parse_qs
 import inspect
 import ujson
+
 
 def api_log(api=None, print_params=True, print_response=True, ensure_ascii=False):
     """
 
     Args:
-        api: do_request实例
+        api: 应用实例
         print_params: 是否打印请求参数
         print_response: 是否打印响应结果
-        ensure_ascii: json数据中非ASCII字符是否被转义未ASCII字符形式
+        ensure_ascii: 打印的值是否转义
 
     Returns:
 
@@ -45,6 +47,7 @@ def api_log(api=None, print_params=True, print_response=True, ensure_ascii=False
             if print_params:
                 response = getattr(self, api).get_response()
                 params = response.request.body
+
                 if params is None:
                     if response.request.method in ['GET', 'DELETE']:
                         url = response.request.url
@@ -53,9 +56,17 @@ def api_log(api=None, print_params=True, print_response=True, ensure_ascii=False
                     else:
                         params = None
                 else:
-                    try:
-                        params = ujson.loads(params.decode('utf-8'))
-                    except UnicodeDecodeError as e:
+                    if isinstance(params, bytes):
+                        try:
+                            params = ujson.loads(params.decode('utf-8'))
+                        except Exception as e:
+                            params = params
+                    elif isinstance(params, str):
+                        try:
+                            params = ujson.loads(params)
+                        except JSONDecodeError as e:
+                            params = params
+                    else:
                         params = params
                 print('%s%s【请求参数】:%s' % (
                     DateTimeTool.get_now_time(), title, params))
