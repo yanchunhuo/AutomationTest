@@ -6,7 +6,7 @@ JPype1==0.7.5
 paramiko==2.4.3
 Pillow==5.3.0
 scikit-image==0.16.2
-opencv-python==4.2.0.32
+opencv-python==4.8.1.78
 ujson==4.3.0
 locust==1.6.0
 mitmproxy==5.0.1
