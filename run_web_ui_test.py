@@ -26,6 +26,7 @@ if __name__=='__main__':
     parser.add_argument('-r', '--reruns', help='失败重跑次数,默认为0',type=str)
     parser.add_argument('-lf', '--lf', help='是否运行上一次失败的用例,1:是、0:否,默认为0',type=str)
     parser.add_argument('-clr', '--clr', help='是否清空已有测试结果,1:是、0:否,默认为0', type=str)
+    parser.add_argument('-coce','--coce',help='收集用例失败是否继续执行,1:是、0:否,默认为0',type=str)
     args=parser.parse_args()
 
     mitmproxy_config=ReadMitmproxyConfig().mitmproxy_config
@@ -103,6 +104,9 @@ if __name__=='__main__':
         if args.clr:
             if int(args.clr):
                 pytest_execute_params.append('--clean-alluredir')
+        if args.coce:
+            if int(args.coce):
+                pytest_execute_params.append('--continue-on-collection-errors')
         pytest_execute_params.append(dir)
         tmp_exit_code = pytest.main(pytest_execute_params)
         if not tmp_exit_code==0:

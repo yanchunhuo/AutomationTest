@@ -3,7 +3,7 @@
 # @author yanchunhuo
 # @description 
 # @created 2021-05-20T17:15:52.185Z+08:00
-# @last-modified 2024-02-03T10:35:18.922Z+08:00
+# @last-modified 2024-09-13T14:50:36.900Z+08:00
 # github https://github.com/yanchunhuo
 from common.date_time_tool import DateTimeTool
 import argparse
@@ -18,6 +18,7 @@ if __name__=='__main__':
     parser.add_argument('-r', '--reruns', help='失败重跑次数,默认为0',type=str)
     parser.add_argument('-lf', '--lf', help='是否运行上一次失败的用例,1:是、0:否,默认为0',type=str)
     parser.add_argument('-clr', '--clr', help='是否清空已有测试结果,1:是、0:否,默认为0', type=str)
+    parser.add_argument('-coce','--coce',help='收集用例失败是否继续执行,1:是、0:否,默认为0',type=str)
     args=parser.parse_args()
 
     # 执行pytest前的参数准备
@@ -51,6 +52,9 @@ if __name__=='__main__':
     if args.clr:
         if int(args.clr):
             pytest_execute_params.append('--clean-alluredir')
+    if args.coce:
+        if int(args.coce):
+            pytest_execute_params.append('--continue-on-collection-errors')
     pytest_execute_params.append(dir)
 
     print('%s开始测试......'%DateTimeTool.getNowTime())

@@ -21,7 +21,7 @@ import ujson
 def pytest_main(pytest_execute_params):
     exit_code = pytest.main(pytest_execute_params)
 
-def start_app_device_test(index,device_info,keyword,dir,markexpr,capture,reruns,lf,clr):
+def start_app_device_test(index,device_info,keyword,dir,markexpr,capture,reruns,lf,clr,coce):
     for path, dirs, files in os.walk('config/app_ui_tmp'):
         for file in files:
             if(int(file)==index):
@@ -83,6 +83,9 @@ def start_app_device_test(index,device_info,keyword,dir,markexpr,capture,reruns,
         if clr:
             if int(clr):
                 pytest_execute_params.append('--clean-alluredir')
+        if coce:
+            if int(coce):
+                pytest_execute_params.append('--continue-on-collection-errors')
         pytest_execute_params.append(dir)
         # 构建孙进程
         process = multiprocessing.Process(target=pytest_main,args=(pytest_execute_params,))
@@ -102,6 +105,7 @@ if __name__=='__main__':
     parser.add_argument('-tt', '--test_type', help='【必填】测试类型,phone、windows',type=str)
     parser.add_argument('-dif', '--devices_info_file', help='【必填】多设备并行信息文件，当--test_type为phone时，此选项需提供',type=str)
     parser.add_argument('-clr', '--clr', help='是否清空已有测试结果,1:是、0:否,默认为0', type=str)
+    parser.add_argument('-coce','--coce',help='收集用例失败是否继续执行,1:是、0:否,默认为0',type=str)
     args=parser.parse_args()
 
     if not args.test_type:
@@ -123,6 +127,7 @@ if __name__=='__main__':
     reruns=args.reruns
     lf=args.lf
     clr=args.clr
+    coce=args.coce
     test_type=args.test_type.lower()
     devices_info_file=args.devices_info_file
     if test_type=='phone':
@@ -173,6 +178,9 @@ if __name__=='__main__':
         if clr:
             if int(clr):
                 pytest_execute_params.append('--clean-alluredir')
+        if coce:
+            if int(coce):
+                pytest_execute_params.append('--continue-on-collection-errors')
         pytest_execute_params.append(dir)
         exit_code = pytest.main(pytest_execute_params)
 

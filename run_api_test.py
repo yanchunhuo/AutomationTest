@@ -4,7 +4,7 @@
 # @description 
 # @github https://github.com/yanchunhuo
 # @created 2021-04-13T10:59:18.120Z+08:00
-# @last-modified 2024-02-03T11:28:43.044Z+08:00
+# @last-modified 2024-09-13T14:50:26.965Z+08:00
 #
 from base.read_api_config import ReadAPIConfig
 from common.date_time_tool import DateTimeTool
@@ -18,6 +18,7 @@ import pytest
 if __name__=='__main__':
     parser=argparse.ArgumentParser()
     parser.add_argument('-clr', '--clr', help='是否清空已有测试结果,1:是、0:否,默认为0', type=str)
+    parser.add_argument('-coce','--coce',help='收集用例失败是否继续执行,1:是、0:否,默认为0',type=str)
     parser.add_argument('-d','--dir',help='指定要测试的目录',type=str)
     parser.add_argument('-e','--env',help='指定测试环境,test:测试环境、release:正式环境')
     parser.add_argument('-k','--keyword',help='只执行匹配关键字的用例，会匹配文件名、类名、方法名',type=str)
@@ -45,6 +46,9 @@ if __name__=='__main__':
     if args.clr:
         if int(args.clr):
             pytest_execute_params.append('--clean-alluredir')
+    if args.coce:
+        if int(args.coce):
+            pytest_execute_params.append('--continue-on-collection-errors')
     if args.dir:
         dir=args.dir
     # 存储要运行的环境信息
