@@ -4,10 +4,9 @@
 # @description 
 # @github https://github.com/yanchunhuo
 # @created 2018-01-19T13:47:34.673Z+08:00
-# @last-modified 2024-02-03T10:52:58.285Z+08:00
+# @last-modified 2024-10-23T16:17:50.393Z+08:00
 #
 
-from base.read_web_ui_config import ReadWebUiConfig
 from common.date_time_tool import DateTimeTool
 from page_objects.wait_type import WaitType as Wait_By
 from page_objects.element_info import ElementInfo
@@ -35,7 +34,6 @@ import os
 class Browser_Operator:
     
     def __init__(self,driver:WebDriver):
-        self.config = ReadWebUiConfig().web_ui_config
         self.driver=driver
 
     def _change_element_to_web_element_type(self,element:Union[ElementInfo,WebElement],highlight_seconds:float=5)->WebElement:
@@ -344,10 +342,10 @@ class Browser_Operator:
         bottom = web_element.location['y'] + web_element.size['height']
         # 进行屏幕截图
         image_file_name = DateTimeTool.get_now_time('%Y%m%d%H%M%S%f_') + '%s.png'%image_file_name
-        if not os.path.exists('output/tmp/web_ui/'+self.config['browser']['current_browser']):
-            os.mkdir('output/tmp/web_ui/'+self.config['browser']['current_browser'])
+        if not os.path.exists('output/tmp/web_ui/'+self.driver.name):
+            os.mkdir('output/tmp/web_ui/'+self.driver.name)
         image_file_name = os.path.abspath(
-            'output/tmp/web_ui/' + self.config['browser']['current_browser'] + '/' + image_file_name)
+            'output/tmp/web_ui/' + self.driver.name + '/' + image_file_name)
         self.driver.get_screenshot_as_file(image_file_name)
         ndarray=imread(image_file_name)
         # 图片裁切并保存

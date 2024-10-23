@@ -85,6 +85,8 @@
 * 下载浏览器驱动
     * 谷歌浏览器：https://googlechromelabs.github.io/chrome-for-testing/known-good-versions-with-downloads.json
         * 驱动支持的最低浏览器版本：https://raw.githubusercontent.com/appium/appium-chromedriver/master/config/mapping.json
+        * 其他下载地址（115之前版本）：https://registry.npmmirror.com/binary.html?path=chromedriver
+        * 其他下载地址（115之后版本），直接替换浏览器版本号进行下载：https://storage.googleapis.com/chrome-for-testing-public/122.0.6261.111/win64/chromedriver-win64.zip
     * 火狐浏览器：https://github.com/mozilla/geckodriver/
         * 驱动支持的浏览器版本：https://firefox-source-docs.mozilla.org/testing/geckodriver/geckodriver/Support.html
     * Edge浏览器：https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/
