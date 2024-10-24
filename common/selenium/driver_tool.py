@@ -4,7 +4,7 @@
 # @description 
 # @github https://github.com/yanchunhuo
 # @created 2018-01-19T13:47:34.673Z+08:00
-# @last-modified 2024-10-23T16:18:20.322Z+08:00
+# @last-modified 2024-10-24T10:47:22.625Z+08:00
 #
 
 from base.read_web_ui_config import ReadWebUiConfig
@@ -80,6 +80,13 @@ class DriverTool:
             chrome_options.accept_insecure_certs=True
             if cls.web_ui_config['browser']['proxy_host'] and cls.web_ui_config['browser']['proxy_port']:
                 chrome_options.add_argument('--proxy-server=http://%s:%s'%(cls.web_ui_config['browser']['proxy_host'],cls.web_ui_config['browser']['proxy_port']))
+            # 取消chrome受自动控制提示
+            chrome_options.add_experimental_option("excludeSwitches", ['enable-automation'])
+            # 关闭保存密码弹窗
+            prefs = {}
+            prefs['credentials_enable_service'] = False
+            prefs['profile.password_manager_enabled'] = False
+            chrome_options.add_experimental_option('prefs', prefs)
             if not selenium_hub is None:
                 driver = webdriver.Remote(selenium_hub, webdriver.DesiredCapabilities.CHROME.copy(),options=chrome_options)
             else:
