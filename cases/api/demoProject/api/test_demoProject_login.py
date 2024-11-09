@@ -10,7 +10,7 @@ class TestLogin:
 
     def setup_class(self):
         self._api_demoProject_client=API_DemoProject_Client()
-        self._login_path='/horizon/auth/login/'
+        self._login_path='/my/index'
 
     def test_get_index(self):
         httpResponse=self._api_demoProject_client.doRequest.get(self._login_path)
