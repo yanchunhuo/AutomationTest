@@ -1,8 +1,10 @@
+<!--
 ### [感谢Thordata]()
 Thordata：可靠且性价比高的海外代理IP提供商。为企业和开发者提供稳定、高效的海外代理 IP 服务。注册即可免费试用1GB住宅代理，并获得 2000 次免费 SERP API 调用。
 <a href="https://www.thordata.com/?ls=github&lk=automationtest" target="_blank">
     <img src="https://github.com/yanchunhuo/resources/blob/master/APIAutomationTest/Thordata.png" alt="Thordata">
 </a>
+-->
 
 # [自动化测试]()
 
