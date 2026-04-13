@@ -16,7 +16,7 @@ kazoo==2.8.0
 websockets==9.1
 Js2Py==0.71
 # pytest
-pytest==5.0.0
+pytest==9.0.3
 pytest-xdist==1.30.0
 allure-pytest==2.7.0
 pytest-rerunfailures==8.0
