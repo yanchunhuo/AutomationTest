@@ -23,7 +23,7 @@ class Read_APP_UI_Devices_Info(object):
         config.read(filepath,encoding='utf-8')
         devices_info = APP_UI_Devices_Info()
         get_lambda=lambda info:list(filter(None,info.split('||'))) if info else []
-        devices_info.devices_desc=get_lambda(config.get('devices_info','devices_desc',fallback=''))
+        devices_info.devices_desc=config.get('devices_info','devices_desc',fallback='')
         devices_info.app_ui_configs = get_lambda(config.get('devices_info', 'app_ui_configs', fallback=''))
         api_configs=[]
         get_api_config=lambda tmp_api_config:list(filter(None,tmp_api_config.split('&&'))) if tmp_api_config else []
