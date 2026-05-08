@@ -53,7 +53,7 @@ if __name__ == '__main__':
     else:
         # 获得当前allure所有进程id
         get_allure_process_ids_command = "ps -ef|grep -i allure\\.CommandLine|grep -v grep|awk '{print $2}'"
-        allure_process_ids = subprocess.check_output(get_allure_process_ids_command, shell=True)
+        get_allure_process_id = subprocess.check_output(get_allure_process_ids_command, shell=True)
         allure_process_ids = allure_process_ids.decode('utf-8')
         allure_process_ids = allure_process_ids.split('\n')
 
