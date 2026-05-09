@@ -30,7 +30,7 @@ if __name__=='__main__':
     args=parser.parse_args()
     report_config = Read_Report_Config().report_config
     if args.ie_port:
-        ieport=args.ie_port
+        iePort=args.ie_port
     else:
         ieport=report_config.web_ui_ie_port    
     if args.chrome_port:
