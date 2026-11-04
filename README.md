@@ -1,10 +1,8 @@
-<!--
-### [感谢Thordata]()
-Thordata：可靠且性价比高的海外代理IP提供商。为企业和开发者提供稳定、高效的海外代理 IP 服务。注册即可免费试用1GB住宅代理，并获得 2000 次免费 SERP API 调用。
-<a href="https://www.thordata.com/?ls=github&lk=automationtest" target="_blank">
-    <img src="https://github.com/yanchunhuo/resources/blob/master/APIAutomationTest/Thordata.png" alt="Thordata">
+### [感谢Swiftproxy]()
+Swiftproxy：提供覆盖全球 220+ 个地区的 9000 万+ 真实住宅 IP，支持动态和静态住宅代理，可帮助自动化测试项目模拟不同地区的真实网络访问环境，测试地域限制内容及跨地区网站访问。支持 HTTP(S)、SOCKS5 协议，并提供免费试用。使用优惠码 PROXY90 可享 9 折优惠。
+<a href="https://www.swiftproxy.net/?ref=automationtest" target="_blank">
+    <img src="https://github.com/yanchunhuo/resources/blob/master/1.png" alt="Swiftproxy">
 </a>
--->
 
 # [自动化测试]()
 
