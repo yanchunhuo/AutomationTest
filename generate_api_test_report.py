@@ -17,7 +17,7 @@ import platform
 import subprocess
 
 def generate_windows_reports(test_time, port):
-    generate_report_command='allure generate output/api/report_data -o output/api/report/api_report_%s'%(test_time)
+    generate_report_command='allure report generate output/api/report_data -o output/api/report/api_report_%s'%(test_time)
     subprocess.check_output(generate_report_command,shell=True)
     open_report_command='start cmd.exe @cmd /c "allure open -p %s output/api/report/api_report_%s"'%(port,test_time)
     subprocess.check_output(open_report_command,shell=True)
