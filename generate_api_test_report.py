@@ -32,7 +32,7 @@ if __name__ == '__main__':
         report_config = Read_Report_Config().report_config
         port = report_config.api_port
     test_time=DateTimeTool.getNowTime('%Y_%m_%d_%H_%M_%S_%f')
-    if 'Windows' == platform.system():
+    if 'Windows' == platform.system().lower():
         get_allure_process_id_command = 'netstat -ano|findstr "0.0.0.0:%s"' % port
         try:
             get_allure_process_id = subprocess.check_output(get_allure_process_id_command, shell=True)
