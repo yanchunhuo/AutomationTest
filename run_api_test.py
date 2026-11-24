@@ -48,7 +48,7 @@ if __name__=='__main__':
         if int(args.clr):
             pytest_execute_params.append('--clean-alluredir')
     if args.dir:
-        dir=args.dir
+        dir='tests/cases/api/'
     # 存储要运行的环境信息
     if os.path.exists('config/tmp'):
         FileTool.truncateDir('config/tmp/')
